@@ -48,8 +48,8 @@ The link to the project requirements and proposal is [project link](https://docs
 
 2. **2nd milestone: Model Training, Quantization, and Deployment**
      - Timeline | 9 days
-     - We will train a custom dataset using the Llama 3 model. 
-     - Quantize the model using Llama.ccp 
+     - Finetune a model on the custom dataset using the Llama 3 model. 
+     - Quantize the model using Llama.cp 
      - Evaluate Model Perfomance. 
      - Model Deployment to a Cloud service
 

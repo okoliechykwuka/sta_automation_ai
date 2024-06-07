@@ -41,20 +41,20 @@ The link to the project requirements and proposal is [project link](https://docs
 
 1. **1st milestone: Project Setup and Data Pipeline Creation**
 
-    - Timeline | 4 days 
+    **Timeline | 4 days**
     * Set up the development environment and version control systems. 
     * Finalize project plan and detailed specifications. 
     * Create a pipeline for the dataset that is used to fine-tune the model
 
 2. **2nd milestone: Model Training, Quantization, and Deployment**
-     - Timeline | 9 days
+     **Timeline | 9 days**
      - Finetune a model on the custom dataset using the Llama 3 model. 
      - Quantize the model using Llama.cp 
      - Evaluate Model Perfomance. 
      - Model Deployment to a Cloud service
 
 3. **3rd milestone: Chatbot Development**
-    - Timeline | 9 days
+     **Timeline | 9 days**
     - Design and implement a Keyword Test Automated Chatbot System. 
     -  Evaluate the performance of the Chatbot System 
     -  Set up the Graph Knowledge base system. 
@@ -64,7 +64,7 @@ The link to the project requirements and proposal is [project link](https://docs
     - Integration of Graph DB to the chatbot system
 
 4. **4th milestone: Chatbot Deployment and Documentation**
-    - Timeline | 7 days
+    **Timeline | 7 days**
     * Conduct comprehensive testing across all components. 
     * Perform user acceptance testing and collect feedback 
     * Deploy the application to a production environment. 

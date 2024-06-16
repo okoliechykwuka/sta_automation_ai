@@ -3186,7 +3186,7 @@ Validate Navigate To Next Page
 pipeline.add_dataframe(validate_account_number)
 pipeline.add_dataframe(validate_invoice_number)
 pipeline.add_dataframe(validate_credit_card_number)
-pipeline.add_dataframe(validate_customer_method)
+pipeline.add_dataframe(validate_customer_method)   
 pipeline.add_dataframe(validate_routing_number)
 pipeline.add_dataframe(validate_visa_debit_card)
 pipeline.add_dataframe(validate_invalid_account)

@@ -1,5 +1,13 @@
 import pandas as pd
 import json
+import sys
+import os
+
+# Add the parent directory to sys.path
+current_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(current_dir)
+sys.path.append(parent_dir)
+
 from data_pipeline import TestCasePipeline
 
 pipeline = TestCasePipeline()
@@ -1224,11 +1232,11 @@ pipeline.add_dataframe(validate_navigate_to_invoice_page_in_schedule_payments)
 combined_df = pipeline.combine_dataframes()
 
 # Save combined dataframe to JSON
-json_filepath = 'data/json/test_payNow.json'
+json_filepath = '../json/test_payNow.json'
 json_file = pipeline.to_json(combined_df, json_filepath)
 
 # Converting JSON to CSV
-csv_filepath = 'data/csv/test_payNOW.csv'
+csv_filepath = '../csv/test_payNOW.csv'
 csv_file = pipeline.json_to_csv(json_filepath, csv_filepath)
 
 print(f"JSON data saved to: {json_file}")

@@ -1,5 +1,13 @@
 import pandas as pd
 import json
+import sys
+import os
+
+# Add the parent directory to sys.path
+current_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(current_dir)
+sys.path.append(parent_dir)
+
 from data_pipeline import TestCasePipeline
 
 pipeline = TestCasePipeline()
@@ -922,11 +930,11 @@ pipeline.add_dataframe(token_api)
 combined_df = pipeline.combine_dataframes()
 
 # Save combined dataframe to JSON
-json_filepath = 'data/json/clientCentral_apiWeb.json'
+json_filepath = '../json/clientCentral_apiWeb.json'
 json_file = pipeline.to_json(combined_df, json_filepath)
 
 # Converting JSON to CSV
-csv_filepath = 'data/csv/clientCentral_apiWeb.csv'
+csv_filepath = '../csv/clientCentral_apiWeb.csv'
 csv_file = pipeline.json_to_csv(json_filepath, csv_filepath)
 
 print(f"JSON data saved to: {json_file}")

@@ -1,4 +1,4 @@
-# STRUCTURED DATA: LLM FORMAT
+# STRUCTURED DATA FOR SDT LLM
 
 They're 5 parent directories the datasets are located for the datafiles, which are;
 

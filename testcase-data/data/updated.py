@@ -44,5 +44,5 @@ def combine_json_files(folder_path, output_file):
 
 
 # all data updated in the pipeline combined into a single CSV/JSON file
-combine_csv_files("data/csv", "data/combined/testcaseKeywords.csv")
-combine_json_files("data/json", "data/combined/testcaseKeywords.json")
+combine_csv_files("csv/", "combined/testcase_data.csv")
+combine_json_files("json/", "combined/testcase_data.json")

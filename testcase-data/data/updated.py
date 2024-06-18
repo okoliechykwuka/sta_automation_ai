@@ -4,25 +4,22 @@ import os
 import json
 
 def combine_csv_files(folder_path: str, output_file: str):
-    """
-    Combines all CSV files in a folder into a single CSV file.
+  """
+  Combines all CSV files in a folder into a single CSV file.
 
-    Args:
-        folder_path: Path to the folder containing the CSV files.
-        output_file: Path to the output CSV file.
-    """
+  Args:
+      folder_path: Path to the folder containing the CSV files.
+      output_file: Path to the output CSV file.
+  """
 
-    all_files = glob.glob(f"{folder_path}/*.csv")
-    df_list = []
-    for filename in all_files:
-        df = pd.read_csv(filename, index_col=None, header=0)
-        df_list.append(df)
+  all_files = glob.glob(f"{folder_path}/*.csv")
+  df_list = []
+  for filename in all_files:
+      df = pd.read_csv(filename, index_col=None, header=0)
+      df_list.append(df)
 
-    combined_df = pd.concat(df_list, axis=0, ignore_index=True)
-    combined_df.to_csv(output_file, index=False)
-
-import pandas as pd
-import glob
+  combined_df = pd.concat(df_list, axis=0, ignore_index=True)
+  combined_df.to_csv(output_file, index=False)
 
 def combine_json_files(folder_path, output_file):
   """
@@ -44,5 +41,5 @@ def combine_json_files(folder_path, output_file):
 
 
 # all data updated in the pipeline combined into a single CSV/JSON file
-combine_csv_files("csv/", "combined/testcase_data.csv")
-combine_json_files("json/", "combined/testcase_data.json")
+combine_csv_files("csv/", "combined/new_testcase_data018.csv")
+combine_json_files("json/", "combined/new_testcase_data018.json")

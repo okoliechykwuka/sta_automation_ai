@@ -1,25 +1,14 @@
 import pandas as pd
 import json
-from test_case_pipeline import TestCasePipeline
+import sys
+import os
 
-# D A T A S E T   R E S T R U C T U R E D
-# They're 5 parent directory dataset location for the datafiles, which are; 
-# 1. ClientCentral_Keywords Ram/
-# 2. PayNOW Datadriver Testcases Ramashanker/
-# 3. PayNOW Test Cases Ramashanker/
-# 4. PayNOW_Keywords Ramashanker/
-# 5. ClientCentral_Testcases Ram/
+# Add the parent directory to sys.path
+current_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(current_dir)
+sys.path.append(parent_dir)
 
-# 1. C l i e n t   C e n t r a l _ K e y w o r d s   R a m
-# A P I  &  W E B
-
-# Creating a new dataframe in the desired format
-# This desired format is in four columns: 'Prompt', 'Response', 'Description', 'Testcase name'
-# The 'Prompt' column contains the question or task to be performed
-# The 'Response' column contains the code or answer to the question or task
-# The 'Description' column contains a brief description of the task
-# The 'Testcase name' column contains the name of the test case
-
+from data_pipeline import TestCasePipeline
 
 pipeline = TestCasePipeline()
 
@@ -941,11 +930,11 @@ pipeline.add_dataframe(token_api)
 combined_df = pipeline.combine_dataframes()
 
 # Save combined dataframe to JSON
-json_filepath = 'data/clientCentral_apiWeb.json'
+json_filepath = '../json/clientCentral_apiWeb.json'
 json_file = pipeline.to_json(combined_df, json_filepath)
 
 # Converting JSON to CSV
-csv_filepath = 'data/clientCentral_apiWeb.csv'
+csv_filepath = '../csv/clientCentral_apiWeb.csv'
 csv_file = pipeline.json_to_csv(json_filepath, csv_filepath)
 
 print(f"JSON data saved to: {json_file}")

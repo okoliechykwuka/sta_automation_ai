@@ -1,6 +1,14 @@
 import pandas as pd
 import json
-from testcase_pipeline import TestCasePipeline
+import sys
+import os
+
+# Add the parent directory to sys.path
+current_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(current_dir)
+sys.path.append(parent_dir)
+
+from data_pipeline import TestCasePipeline
 
 pipeline = TestCasePipeline()
 
@@ -3186,7 +3194,7 @@ Validate Navigate To Next Page
 pipeline.add_dataframe(validate_account_number)
 pipeline.add_dataframe(validate_invoice_number)
 pipeline.add_dataframe(validate_credit_card_number)
-pipeline.add_dataframe(validate_customer_method)
+pipeline.add_dataframe(validate_customer_method)   
 pipeline.add_dataframe(validate_routing_number)
 pipeline.add_dataframe(validate_visa_debit_card)
 pipeline.add_dataframe(validate_invalid_account)
@@ -3285,11 +3293,11 @@ pipeline.add_dataframe(validate_navigate_to_next_page)
 combined_df = pipeline.combine_dataframes()
 
 # Save combined dataframe to JSON
-json_filepath = 'data/payNow_datadriver.json'
+json_filepath = '../json/payNow_datadriver.json'
 json_file = pipeline.to_json(combined_df, json_filepath)
 
 # Converting JSON to CSV
-csv_filepath = 'data/payNow_datadriver.csv'
+csv_filepath = '../csv/payNow_datadriver.csv'
 csv_file = pipeline.json_to_csv(json_filepath, csv_filepath)
 
 print(f"JSON data saved to: {json_file}")

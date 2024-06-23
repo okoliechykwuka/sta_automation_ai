@@ -10,7 +10,7 @@ coverage, and defect detection.
 ### Project Goals
 
 The objectives of the AI-powered test automation framework are:
-
+P
 1. AI-Powered Test Automation Framework
     - Develop an AI-powered test automation framework using Llama 3 for generating
 and improving keyword-driven test cases.

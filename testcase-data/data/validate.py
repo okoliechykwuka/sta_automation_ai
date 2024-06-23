@@ -5,3 +5,4 @@ df = pd.read_csv(path)
 
 print(df.shape)
 # print(df)
+print(df.columns)

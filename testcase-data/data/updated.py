@@ -19,6 +19,7 @@ def combine_csv_files(folder_path: str, output_file: str):
       df_list.append(df)
 
   combined_df = pd.concat(df_list, axis=0, ignore_index=True)
+  combined_df = combined_df.iloc[:, :-1]  # Drop last column (empty)
   combined_df.to_csv(output_file, index=False)
 
 def combine_json_files(folder_path, output_file):
@@ -37,9 +38,12 @@ def combine_json_files(folder_path, output_file):
         data_list.append(json.loads(line.strip()))
 
   combined_df = pd.DataFrame(data_list)
-  combined_df.to_json(output_file, orient='records')  # Save as JSON array
+  combined_df = combined_df.iloc[:, :-1]  # Drop last column (empty)
+  combined_df.to_json(output_file, orient='records')  # Save as JSON array  
+
+
 
 
 # all data updated in the pipeline combined into a single CSV/JSON file
-combine_csv_files("csv/", "combined/new_testcase_data018.csv")
-combine_json_files("json/", "combined/new_testcase_data018.json")
+combine_csv_files("csv/", "combined/all_combined_testcase_data023.csv")
+combine_json_files("json/", "combined/all_combined_testcase_data023.json")

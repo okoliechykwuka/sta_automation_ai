@@ -1,0 +1,10 @@
+﻿TestcaseName,KeywordName,Argument1,Argument2
+FTC_117 Validate Process Payment With Visa Debit Card,Launch PayNow Application,NON_INTEGRATED_MERCHANT,
+FTC_117 Validate Process Payment With Visa Debit Card,Enter Customer Details,customer_details,NON_INTEGRATED_MERCHANT
+FTC_117 Validate Process Payment With Visa Debit Card,Select Payment Type,Lump Sum,
+FTC_117 Validate Process Payment With Visa Debit Card,Enter Lumpsum Amount,1,
+FTC_117 Validate Process Payment With Visa Debit Card,Select Payment Method,Credit Card,
+FTC_117 Validate Process Payment With Visa Debit Card,Enter Credit Card Values,creditcard_details,
+FTC_117 Validate Process Payment With Visa Debit Card,Validate Errors After Clicking On Process Invoice,creditcard_details.Error_Message,
+FTC_117 Validate Process Payment With Visa Debit Card,Process Invoice Payment,,
+FTC_117 Validate Process Payment With Visa Debit Card,Validate Payment Receipt Is Generated,,

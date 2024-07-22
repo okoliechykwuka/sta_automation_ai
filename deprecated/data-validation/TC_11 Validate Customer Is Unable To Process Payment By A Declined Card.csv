@@ -1,0 +1,8 @@
+﻿TestcaseName                                                            ,KeywordName                                       ,Argument1                  ,Argument2
+TC_11 Validate Customer Is Unable To Process Payment By A Declined Card ,Launch PayNow Application                         ,NON_INTEGRATED_MERCHANT    ,
+TC_11 Validate Customer Is Unable To Process Payment By A Declined Card ,Enter Customer Details                            ,customer_details           ,NON_INTEGRATED_MERCHANT
+TC_11 Validate Customer Is Unable To Process Payment By A Declined Card ,Select Payment Type                               ,Lump Sum                   ,
+TC_11 Validate Customer Is Unable To Process Payment By A Declined Card ,Enter Lumpsum Amount                              ,1                          ,
+TC_11 Validate Customer Is Unable To Process Payment By A Declined Card ,Select Payment Method                             ,Credit Card                ,
+TC_11 Validate Customer Is Unable To Process Payment By A Declined Card ,Enter Credit Card Values                          ,card_details               ,
+TC_11 Validate Customer Is Unable To Process Payment By A Declined Card ,Validate Errors After Clicking On Process Invoice ,card_details.Error_Message ,

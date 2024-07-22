@@ -1,0 +1,21 @@
+prompt,testcase type,test case name,response,documentation
+Validate that customers cannot process payments with a declined card,data-driven,TC_11 Validate Customer Is Unable To Process Payment By A Declined Card,"***Settings***
+Documentation: Validates that payments are not processed with a declined card.
+Test Template: Validate Declined Card Payment
+Test Tags: Priority1, test:retry(1)
+Resource: ../../../Config/super.resource
+Library: DataDriver, ${TESTDATA_FOLDER}, sheet_name=DeclinedCardPayment
+***Test Cases***
+TC_11 Validate Customer Is Unable To Process Payment By A Declined Card
+***Keywords***
+Validate Declined Card Payment
+[Arguments] $TC_11 Validate Customer Is Unable To Process Payment By A Declined Card
+[Documentation] Validates that no payment is processed when the card is declined.
+Launch PayNow Application NON_INTEGRATED_MERCHANT
+${customer_details} Enter Customer Details NON_INTEGRATED_MERCHANT
+Select Payment Type Lump Sum
+Enter Lumpsum Amount 1
+Select Payment Method Credit Card
+Enter Credit Card Values card_details
+Validate Errors After Clicking On Process Invoice card_details.Error_Message
+Validate Errors After Clicking On Process Invoice ${{card_details.Error_Message}}",This test validates that customers cannot process payments with a declined card by ensuring that the application correctly handles and rejects such transactions.

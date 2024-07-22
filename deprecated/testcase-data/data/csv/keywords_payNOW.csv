@@ -1,0 +1,243 @@
+Prompt,Response,Description,Testcase name
+Generate a robot framework test case for testing to Validate All Invoices Due For 61-90 Days Are Selected When Customer Clicks On 61-90 Amount link In Summary Of Outstanding Invoices functionality of the PayNOW datadriver.,"*** Settings ***
+Documentation          Test cases for validating that all invoices due for 61-90 days are selected when customer clicks on 61-90 amount link in summary of outstanding invoices functionality of the PayNOW datadriver
+Library                SeleniumLibrary
+
+*** Variables ***
+${URL}                      https://example.com/paynow
+${CUSTOMER_DETAILS}         customer_details
+${DUE_61_90_INVOICES}       due_61_90_invoices
+
+*** Test Cases ***
+Validate 61-90 Days Due Invoices Selected
+    [Documentation] Test case for validating that all invoices due for 61-90 days are selected when customer clicks on 61-90 amount link in summary of outstanding invoices functionality of the PayNOW datadriver
+    Launch PayNow Application ${URL}
+    Enter Customer Details ${CUSTOMER_DETAILS}
+    Click 61-90 Amount Link
+    Validate All 61-90 Days Due Invoices Selected ${DUE_61_90_INVOICES}",This test case checks the validation for selecting all invoices due for 61-90 days when customer clicks on 61-90 amount link in summary of outstanding invoices functionality of the PayNOW datadriver.,Validate 61-90 Days Due Invoices Selected
+Generate a robot framework test case for testing to Validate AutoPay functionality of the PayNOW datadriver.,"*** Settings ***
+Documentation          Test cases for validating the AutoPay functionality of the PayNOW datadriver
+Library                SeleniumLibrary
+
+*** Variables ***
+${URL}                      https://example.com/paynow
+${CUSTOMER_DETAILS}         customer_details
+${AUTOPAY_DETAILS}          autopay_details
+
+*** Test Cases ***
+Validate AutoPay
+    [Documentation] Test case for validating the AutoPay functionality of the PayNOW datadriver
+    Launch PayNow Application ${URL}
+    Enter Customer Details ${CUSTOMER_DETAILS}
+    Setup AutoPay ${AUTOPAY_DETAILS}
+    Validate AutoPay Setup",This test case checks the validation for AutoPay functionality of the PayNOW datadriver.,Validate AutoPay
+Generate a robot framework test case for testing to Validate Common API functionality of the PayNOW datadriver.,"*** Settings ***
+Documentation          Test cases for validating the common API functionality of the PayNOW datadriver
+Library                SeleniumLibrary
+
+*** Variables ***
+${URL}                      https://example.com/paynow
+${API_DETAILS}              api_details
+
+*** Test Cases ***
+Validate Common API
+    [Documentation] Test case for validating the common API functionality of the PayNOW datadriver
+    Launch PayNow Application ${URL}
+    Enter API Details ${API_DETAILS}
+    Validate API Response",This test case checks the validation for common API functionality of the PayNOW datadriver.,Validate Common API
+Generate a robot framework test case for testing to Validate Customer API functionality of the PayNOW datadriver.,"*** Settings ***
+Documentation          Test cases for validating the customer API functionality of the PayNOW datadriver
+Library                SeleniumLibrary
+
+*** Variables ***
+${URL}                      https://example.com/paynow
+${CUSTOMER_API_DETAILS}     customer_api_details
+
+*** Test Cases ***
+Validate Customer API
+    [Documentation] Test case for validating the customer API functionality of the PayNOW datadriver
+    Launch PayNow Application ${URL}
+    Enter Customer API Details ${CUSTOMER_API_DETAILS}
+    Validate API Response",This test case checks the validation for customer API functionality of the PayNOW datadriver.,Validate Customer API
+Generate a robot framework test case for testing to Validate Invoice API functionality of the PayNOW datadriver.,"*** Settings ***
+Documentation          Test cases for validating the invoice API functionality of the PayNOW datadriver
+Library                SeleniumLibrary
+
+*** Variables ***
+${URL}                      https://example.com/paynow
+${INVOICE_API_DETAILS}      invoice_api_details
+
+*** Test Cases ***
+Validate Invoice API
+    [Documentation] Test case for validating the invoice API functionality of the PayNOW datadriver
+    Launch PayNow Application ${URL}
+    Enter Invoice API Details ${INVOICE_API_DETAILS}
+    Validate API Response",This test case checks the validation for invoice API functionality of the PayNOW datadriver.,Validate Invoice API
+Generate a robot framework test case for testing to Validate Process Payment API functionality of the PayNOW datadriver.,"*** Settings ***
+Documentation          Test cases for validating the process payment API functionality of the PayNOW datadriver
+Library                SeleniumLibrary
+
+*** Variables ***
+${URL}                      https://example.com/paynow
+${PAYMENT_API_DETAILS}      payment_api_details
+
+*** Test Cases ***
+Validate Process Payment API
+    [Documentation] Test case for validating the process payment API functionality of the PayNOW datadriver
+    Launch PayNow Application ${URL}
+    Enter Payment API Details ${PAYMENT_API_DETAILS}
+    Validate API Response",This test case checks the validation for process payment API functionality of the PayNOW datadriver.,Validate Process Payment API
+Generate a robot framework test case for testing to Validate Scheduled Payments API functionality of the PayNOW datadriver.,"*** Settings ***
+Documentation          Test cases for validating the scheduled payments API functionality of the PayNOW datadriver
+Library                SeleniumLibrary
+
+*** Variables ***
+${URL}                      https://example.com/paynow
+${SCHEDULED_API_DETAILS}    scheduled_api_details
+
+*** Test Cases ***
+Validate Scheduled Payments API
+    [Documentation] Test case for validating the scheduled payments API functionality of the PayNOW datadriver
+    Launch PayNow Application ${URL}
+    Enter Scheduled API Details ${SCHEDULED_API_DETAILS}
+    Validate API Response",This test case checks the validation for scheduled payments API functionality of the PayNOW datadriver.,Validate Scheduled Payments API
+Generate a robot framework test case for testing to Validate Common Open Invoices functionality of the PayNOW datadriver.,"*** Settings ***
+Documentation          Test cases for validating the common open invoices functionality of the PayNOW datadriver
+Library                SeleniumLibrary
+
+*** Variables ***
+${URL}                      https://example.com/paynow
+${COMMON_INVOICE_DETAILS}   common_invoice_details
+
+*** Test Cases ***
+Validate Common Open Invoices
+    [Documentation] Test case for validating the common open invoices functionality of the PayNOW datadriver
+    Launch PayNow Application ${URL}
+    Enter Common Invoice Details ${COMMON_INVOICE_DETAILS}
+    Validate Open Invoices Displayed",This test case checks the validation for common open invoices functionality of the PayNOW datadriver.,Validate Common Open Invoices
+Generate a robot framework test case for testing to Validate Customer Payment functionality of the PayNOW datadriver.,"*** Settings ***
+Documentation          Test cases for validating the customer payment functionality of the PayNOW datadriver
+Library                SeleniumLibrary
+
+*** Variables ***
+${URL}                      https://example.com/paynow
+${CUSTOMER_PAYMENT_DETAILS} customer_payment_details
+
+*** Test Cases ***
+Validate Customer Payment
+    [Documentation] Test case for validating the customer payment functionality of the PayNOW datadriver
+    Launch PayNow Application ${URL}
+    Enter Customer Payment Details ${CUSTOMER_PAYMENT_DETAILS}
+    Validate Payment Processed",This test case checks the validation for customer payment functionality of the PayNOW datadriver.,Validate Customer Payment
+Generate a robot framework test case for testing to Validate Integrated Open Invoices functionality of the PayNOW datadriver.,"*** Settings ***
+Documentation          Test cases for validating the integrated open invoices functionality of the PayNOW datadriver
+Library                SeleniumLibrary
+
+*** Variables ***
+${URL}                      https://example.com/paynow
+${INTEGRATED_INVOICE_DETAILS} integrated_invoice_details
+
+*** Test Cases ***
+Validate Integrated Open Invoices
+    [Documentation] Test case for validating the integrated open invoices functionality of the PayNOW datadriver
+    Launch PayNow Application ${URL}
+    Enter Integrated Invoice Details ${INTEGRATED_INVOICE_DETAILS}
+    Validate Open Invoices Displayed",This test case checks the validation for integrated open invoices functionality of the PayNOW datadriver.,Validate Integrated Open Invoices
+Generate a robot framework test case for testing to Validate Payment Status functionality of the PayNOW datadriver.,"*** Settings ***
+Documentation          Test cases for validating the payment status functionality of the PayNOW datadriver
+Library                SeleniumLibrary
+
+*** Variables ***
+${URL}                      https://example.com/paynow
+${PAYMENT_STATUS_DETAILS}   payment_status_details
+
+*** Test Cases ***
+Validate Payment Status
+    [Documentation] Test case for validating the payment status functionality of the PayNOW datadriver
+    Launch PayNow Application ${URL}
+    Enter Payment Status Details ${PAYMENT_STATUS_DETAILS}
+    Validate Payment Status Displayed",This test case checks the validation for payment status functionality of the PayNOW datadriver.,Validate Payment Status
+Generate a robot framework test case for testing to Validate Non-Integrated Open Invoices functionality of the PayNOW datadriver.,"*** Settings ***
+Documentation          Test cases for validating the non-integrated open invoices functionality of the PayNOW datadriver
+Library                SeleniumLibrary
+
+*** Variables ***
+${URL}                      https://example.com/paynow
+${NONINTEGRATED_INVOICE_DETAILS} nonintegrated_invoice_details
+
+*** Test Cases ***
+Validate Non-Integrated Open Invoices
+    [Documentation] Test case for validating the non-integrated open invoices functionality of the PayNOW datadriver
+    Launch PayNow Application ${URL}
+    Enter Non-Integrated Invoice Details ${NONINTEGRATED_INVOICE_DETAILS}
+    Validate Open Invoices Displayed",This test case checks the validation for non-integrated open invoices functionality of the PayNOW datadriver.,Validate Non-Integrated Open Invoices
+Generate a robot framework test case for testing to Validate User Login functionality of the PayNOW datadriver.,"*** Settings ***
+Documentation          Test cases for validating the user login functionality of the PayNOW datadriver
+Library                SeleniumLibrary
+
+*** Variables ***
+${URL}                      https://example.com/paynow
+${USER_LOGIN_DETAILS}       user_login_details
+
+*** Test Cases ***
+Validate User Login
+    [Documentation] Test case for validating the user login functionality of the PayNOW datadriver
+    Launch PayNow Application ${URL}
+    Enter User Login Details ${USER_LOGIN_DETAILS}
+    Validate Login Successful",This test case checks the validation for user login functionality of the PayNOW datadriver.,Validate User Login
+Generate a robot framework test case for testing to Validate Omnicorp Autopay functionality of the PayNOW datadriver.,"*** Settings ***
+Documentation          Test cases for validating the omnicorp autopay functionality of the PayNOW datadriver
+Library                SeleniumLibrary
+
+*** Variables ***
+${URL}                      https://example.com/paynow
+${OMNICORP_AUTOPAY_DETAILS} omnicorp_autopay_details
+
+*** Test Cases ***
+Validate Omnicorp Autopay
+    [Documentation] Test case for validating the omnicorp autopay functionality of the PayNOW datadriver
+    Launch PayNow Application ${URL}
+    Enter Omnicorp Autopay Details ${OMNICORP_AUTOPAY_DETAILS}
+    Validate Autopay Setup",This test case checks the validation for omnicorp autopay functionality of the PayNOW datadriver.,Validate Omnicorp Autopay
+Generate a robot framework test case for testing to Validate Omnicorp Open Invoices functionality of the PayNOW datadriver.,"*** Settings ***
+Documentation          Test cases for validating the omnicorp open invoices functionality of the PayNOW datadriver
+Library                SeleniumLibrary
+
+*** Variables ***
+${URL}                      https://example.com/paynow
+${OMNICORP_INVOICE_DETAILS} omnicorp_invoice_details
+
+*** Test Cases ***
+Validate Omnicorp Open Invoices
+    [Documentation] Test case for validating the omnicorp open invoices functionality of the PayNOW datadriver
+    Launch PayNow Application ${URL}
+    Enter Omnicorp Invoice Details ${OMNICORP_INVOICE_DETAILS}
+    Validate Open Invoices Displayed",This test case checks the validation for omnicorp open invoices functionality of the PayNOW datadriver.,Validate Omnicorp Open Invoices
+Generate a robot framework test case for testing to Validate Omnicorp Scheduled Payments functionality of the PayNOW datadriver.,"*** Settings ***
+Documentation          Test cases for validating the omnicorp scheduled payments functionality of the PayNOW datadriver
+Library                SeleniumLibrary
+
+*** Variables ***
+${URL}                      https://example.com/paynow
+${OMNICORP_SCHEDULED_DETAILS} omnicorp_scheduled_details
+
+*** Test Cases ***
+Validate Omnicorp Scheduled Payments
+    [Documentation] Test case for validating the omnicorp scheduled payments functionality of the PayNOW datadriver
+    Launch PayNow Application ${URL}
+    Enter Omnicorp Scheduled Details ${OMNICORP_SCHEDULED_DETAILS}
+    Validate Scheduled Payments",This test case checks the validation for omnicorp scheduled payments functionality of the PayNOW datadriver.,Validate Omnicorp Scheduled Payments
+Generate a robot framework test case for testing to Validate Common API functionality of the PayNOW datadriver.,"*** Settings ***
+Documentation          Test cases for validating the common API functionality of the PayNOW datadriver
+Library                SeleniumLibrary
+
+*** Variables ***
+${URL}                      https://example.com/paynow
+${API_DETAILS}              api_details
+
+*** Test Cases ***
+Validate Common API
+    [Documentation] Test case for validating the common API functionality of the PayNOW datadriver
+    Launch PayNow Application ${URL}
+    Enter API Details ${API_DETAILS}
+    Validate API Response",This test case checks the validation for common API functionality of the PayNOW datadriver.,Validate Common API

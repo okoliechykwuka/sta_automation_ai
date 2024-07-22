@@ -1,0 +1,17 @@
+    Prompt,Testcase Type,Testcase Name,Response,Documentation
+    Generate a keyword-driven test case for TC_08 Validate Customer Is Able To Schedule AutoPay Payments On A Sunday Of The Week,keyword-driven,Validate Schedule AutoPay,"***Settings***
+    Library     SeleniumLibrary
+        
+    ***Test Cases***
+    Validate Schedule AutoPay
+        [Arguments] ${day_of_week} ${payment_details}
+        [Return] ${boolean}
+        [Documentation] Checks if the customer is able to schedule AutoPay payments specifically on a Sunday; returns true if successful.","This test checks for the ability to schedule payments on Sundays, highlighting the critical role of specific days in payment processing"
+    Create a keyword-driven test scenario for Omnicorp Autopay,keyword-driven,Setup Omnicorp Autopay,"***Settings***
+    Library     SeleniumLibrary
+        
+    ***Test Cases***
+    Setup Omnicorp Autopay
+        [Arguments] ${customer_id} ${payment_info}
+        [Return] ${setup_status}
+        [Documentation] Sets up Autopay for a customer with given ID and payment information; returns setup status.","This scenario sets up AutoPay for Omnicorp customers, using dynamic templates to adjust arguments based on customer data."

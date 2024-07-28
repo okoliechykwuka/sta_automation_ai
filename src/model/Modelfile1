@@ -1,0 +1,25 @@
+# Modelfile
+from "/content/models/unsloth.Q5_K_M.gguf"
+
+template """
+{{ if .System }}system
+{{ .System }}
+{{ end }}
+{{ if .Prompt }}user
+{{ .Prompt }}
+{{ end }}
+assistant
+{{ .Response }}
+"""
+
+parameter stop "system"
+parameter stop "user"
+parameter stop "assistant"
+parameter stop "reserved_special_token"
+parameter max_length 512 
+
+system "You are an expert assistant in Robot Framework. Based on user input, generate relevant instructions for validating test cases."
+
+# User input example for testing the model
+#- instruction: "Validate data-driven paynow test cases for Sterlingcooper Testcases TC_124 Validate Specific Error Message When Making Payment With Expired Credit Card."
+#  input: "Test Case Type: data-driven  \nTest Case Name: TC_124 Validate Specific Error Message When Making Payment With Expired Credit Card"

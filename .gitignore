@@ -110,4 +110,6 @@ src/app/path_test.py
 src/app/newserver.py
 
 # models
-src/app/unsloth.Q4_K_M.gguf
+src/app/model/unsloth.Q4_K_M.gguf
+src/app/.streamlit/secrets.toml
+

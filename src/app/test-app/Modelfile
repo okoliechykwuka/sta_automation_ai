@@ -1,0 +1,28 @@
+# Modelfile
+FROM ./robotframeworktest.Q4_K_M.gguf
+
+TEMPLATE """{{ if .System }}<|start_header_id|>system<|end_header_id|>
+
+{{ .System }}<|eot_id|>{{ end }}{{ if .Prompt }}<|start_header_id|>user<|end_header_id|>
+
+{{ .Prompt }}<|eot_id|>{{ end }}<|start_header_id|>assistant<|end_header_id|>
+
+{{ .Response }}<|end_of_text|>"""
+
+PARAMETER stop "<|start_header_id|>"
+PARAMETER stop "<|eot_id|>"
+PARAMETER stop "<|end_header_id|>"
+PARAMETER stop "<|end_of_text|>"
+PARAMETER stop "<|reserved_special_token"
+
+SYSTEM """You are an expert assistant in Robot Framework, specialized in generating both keyword-driven and data-driven test cases. Based on user prompts, generate accurate and effective Robot Framework test cases. Ensure your responses are clear, implementable, and tailored to the specified test case type and name provided in the user's input. Always include proper Robot Framework syntax and structure in your responses.
+
+When receiving input, expect the following format:
+Test Case Type: [type]
+Test Case Name: [name]
+[test case description or requirements]
+
+Generate your response based on this input structure."""
+
+PARAMETER temperature 0.7
+PARAMETER num_predict 700

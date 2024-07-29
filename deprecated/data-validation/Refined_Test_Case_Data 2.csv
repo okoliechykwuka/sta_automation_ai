@@ -1,0 +1,1206 @@
+testcase_name,prompt,testcase_type,response,Expected Testcase,status
+Omnicorp Autopay,Create a keyword-driven test scenario for Omnicorp Autopay,Keyword-Driven,"    *** Keywords ***
+    Login To PayNOW And Navigate To Autopay
+        [Arguments]  account_number, invoice_number
+        Documentation: Login To PayNOW And Navigate To Autopay
+
+    Enter Customer And Credit Card Details For AutoPay
+        [Arguments]  card_number
+        Documentation: Enter Customer AutoPay And Credit Card Details
+
+    Save AutoPay
+        Documentation: Save AutoPay
+
+    Validate Created AutoPay Details For Sepecific Day Of Month
+        [Arguments]  expected_scheduleday, expected_invoicetype, expected_paymentday, expected_invoiceduedays
+        Documentation: Validate Created AutoPay Details For Sepecific Day Of Month
+
+    Enter Customer Details For AutoPay
+        [Arguments]  customer_details, merchant
+        Documentation: enter Customer details
+
+    Validate AutoPay Details Are Deleted
+        Documentation: Validated AutoPay Details Are Deleted
+
+    Validate AutoPay Origin In Scheduled Payments
+        [Arguments]  account_number, invoice_number, expected_origin
+        Documentation: Validate AutoPay Origin In Schedule Payments
+
+    Delete AutoPay Details
+        Documentation: Delete Created AutoPay Details
+
+    Select Specific Day Of The Month
+        Documentation: Select Specific Day Of The Month
+
+    Validate Created AutoPay Details For Each Day Of Week
+        [Arguments]  expected_scheduleday, expected_invoicetype
+        Documentation: Validate Created AutoPay Details For Each Day Of Week
+
+    Validate Created AutoPay Details For Specific Day Of Week
+        [Arguments]  expected_scheduleday, expected_invoicetype, expected_dayofweek
+        Documentation: Created AutoPay Details For Specific Day Of Week
+
+    Select Invoices That Are Within Due Date
+        [Arguments]  due
+        Documentation: Select Invoices That Are Due Within Days
+
+    Select Invoices Due For The Payment
+        Documentation: Select Invoices Due For The Payment
+
+    Select Specific Day Of The Week
+        [Arguments]  day
+        Documentation: Select Specific Day Of The Week
+
+    Close Delete AutoPay Confirmation Popup
+        Documentation: Close Delete AutoPay Confirmation Popup
+
+    Select Invoices That Are Past The Invoice Date
+        [Arguments]  invoice_due
+        Documentation: Select Invoices That Are Days Or More Past Due Date
+
+    Validate Delete AutoPay Confirmation Popup Is Closed
+        Documentation: Validate Delete AutoPay Confirmation Popup Is Closed
+
+    Select Each Day As Payment Option
+        Documentation: Select Each Day As Payment Option
+
+    *** Test Cases ***
+    Test Omnicorp_Autopay
+        Login To PayNOW And Navigate To Autopay  account_number, invoice_number
+        Enter Customer And Credit Card Details For AutoPay  card_number
+        Validate Created AutoPay Details For Sepecific Day Of Month  expected_scheduleday, expected_invoicetype, expected_paymentday, expected_invoiceduedays
+        Enter Customer Details For AutoPay  customer_details, merchant
+        Validate AutoPay Origin In Scheduled Payments  account_number, invoice_number, expected_origin
+        Validate Created AutoPay Details For Each Day Of Week  expected_scheduleday, expected_invoicetype
+        Validate Created AutoPay Details For Specific Day Of Week  expected_scheduleday, expected_invoicetype, expected_dayofweek
+        Select Invoices That Are Within Due Date  due
+        Select Specific Day Of The Week  day
+        Select Invoices That Are Past The Invoice Date  invoice_due
+","This is the expected Keyword driven testcase as per the prompt                                                                    Validate Customer Is Able To Schedule AutoPay Payments On A Daily Basis
+    [Documentation]    Schedule Auto-Pay Payments on a Daily Basis
+    ${account_number}    Send Request To Create Customer    ${OMNICORP_MERCHANT}    3
+    ${invoice_number}    Send Request To Create Invoice For Customer    ${account_number}    ${OMNICORP_MERCHANT}    3    ${account_number}    100    today-1
+    Login To PayNOW And Navigate To Autopay    ${account_number}    ${invoice_number}
+    Select Each Day As Payment Option
+    Select Invoices Due For The Payment
+    Enter Customer And Credit Card Details For AutoPay    4111111111111111
+    Send Request To Create AutoPay For Each Day    ${account_number}    4111111111111111
+    Send Event To Process Schedule Payment    ${account_number}    ${invoice_number}
+    Validate Scheduled Payment Status    ${account_number}    ${invoice_number}    Completed",success
+FTC_88 Validate Credit Card Number,Build a data-driven test plan for FTC_88 Validate Credit Card Number,Data-Driven,"    *** Settings ***
+    Library  OperatingSystem
+    Library  SeleniumLibrary
+    Library  Collections
+
+    *** Variables ***
+    ${CSV_FILE}  FTC_88 Validate Credit Card Number.csv
+
+    *** Test Cases ***
+    FTC_88 Validate Credit Card Number
+        [Template]  Generate Random Customer Details
+
+    *** Keywords ***
+    Generate Random Customer Details
+        Documentation: 
+
+    *** Settings ***
+    Library  OperatingSystem
+    Library  SeleniumLibrary
+    Library  Collections
+
+    *** Variables ***
+    ${CSV_FILE}  FTC_88 Validate Credit Card Number.csv
+
+    *** Test Cases ***
+    FTC_88 Validate Credit Card Number
+        [Template]  Launch PayNow Application
+
+    *** Keywords ***
+    Launch PayNow Application
+        Documentation: 
+
+    *** Settings ***
+    Library  OperatingSystem
+    Library  SeleniumLibrary
+    Library  Collections
+
+    *** Variables ***
+    ${CSV_FILE}  FTC_88 Validate Credit Card Number.csv
+
+    *** Test Cases ***
+    FTC_88 Validate Credit Card Number
+        [Template]  Enter Customer Details
+
+    *** Keywords ***
+    Enter Customer Details
+        Documentation: 
+
+    *** Settings ***
+    Library  OperatingSystem
+    Library  SeleniumLibrary
+    Library  Collections
+
+    *** Variables ***
+    ${CSV_FILE}  FTC_88 Validate Credit Card Number.csv
+
+    *** Test Cases ***
+    FTC_88 Validate Credit Card Number
+        [Template]  Select Payment Type
+
+    *** Keywords ***
+    Select Payment Type
+        Documentation: 
+
+    *** Settings ***
+    Library  OperatingSystem
+    Library  SeleniumLibrary
+    Library  Collections
+
+    *** Variables ***
+    ${CSV_FILE}  FTC_88 Validate Credit Card Number.csv
+
+    *** Test Cases ***
+    FTC_88 Validate Credit Card Number
+        [Template]  Enter Lumpsum Amount
+
+    *** Keywords ***
+    Enter Lumpsum Amount
+        Documentation: 
+
+    *** Settings ***
+    Library  OperatingSystem
+    Library  SeleniumLibrary
+    Library  Collections
+
+    *** Variables ***
+    ${CSV_FILE}  FTC_88 Validate Credit Card Number.csv
+
+    *** Test Cases ***
+    FTC_88 Validate Credit Card Number
+        [Template]  Select Payment Method
+
+    *** Keywords ***
+    Select Payment Method
+        Documentation: 
+
+    *** Settings ***
+    Library  OperatingSystem
+    Library  SeleniumLibrary
+    Library  Collections
+
+    *** Variables ***
+    ${CSV_FILE}  FTC_88 Validate Credit Card Number.csv
+
+    *** Test Cases ***
+    FTC_88 Validate Credit Card Number
+        [Template]  Enter Credit Card Values
+
+    *** Keywords ***
+    Enter Credit Card Values
+        Documentation: 
+
+    *** Settings ***
+    Library  OperatingSystem
+    Library  SeleniumLibrary
+    Library  Collections
+
+    *** Variables ***
+    ${CSV_FILE}  FTC_88 Validate Credit Card Number.csv
+
+    *** Test Cases ***
+    FTC_88 Validate Credit Card Number
+        [Template]  Validate Errors After Clicking On Process Invoice
+
+    *** Keywords ***
+    Validate Errors After Clicking On Process Invoice
+        Documentation: 
+
+    *** Settings ***
+    Library  OperatingSystem
+    Library  SeleniumLibrary
+    Library  Collections
+
+    *** Variables ***
+    ${CSV_FILE}  FTC_88 Validate Credit Card Number.csv
+
+    *** Test Cases ***
+    FTC_88 Validate Credit Card Number
+        [Template]  Process Invoice Payment
+
+    *** Keywords ***
+    Process Invoice Payment
+        Documentation: 
+
+    *** Settings ***
+    Library  OperatingSystem
+    Library  SeleniumLibrary
+    Library  Collections
+
+    *** Variables ***
+    ${CSV_FILE}  FTC_88 Validate Credit Card Number.csv
+
+    *** Test Cases ***
+    FTC_88 Validate Credit Card Number
+        [Template]  Validate Payment Receipt Is Generated
+
+    *** Keywords ***
+    Validate Payment Receipt Is Generated
+        Documentation: 
+
+","This is the expected data driven testcase as per the prompt                                                                             *** Settings ***
+# robocop: disable
+Documentation     suite contain test cases for validating Personal method as credit card with Valid and invalid data
+Test Template     Validate Credit Card Field With Valid And Invalid Data
+Resource          ../../../Config/super.resource
+Library           DataDriver    ${TESTDATA_FOLDER}    sheet_name=Credit_Card
+
+
+*** Test Cases ***
+${test_case_name}
+
+
+*** Keywords ***
+Validate Credit Card Field With Valid And Invalid Data
+    [Arguments]    ${test_case_name}
+    [Documentation]    Validate Credit Card With Invalid Data
+    ${creditcard_details}    Read TestData From Excel    ${TESTDATA_FOLDER}    ${test_case_name}    Credit_Card
+    ${customer_details}    Generate Random Customer Details
+    Launch PayNow Application    ${NON_INTEGRATED_MERCHANT}
+    Enter Customer Details    ${customer_details}    ${NON_INTEGRATED_MERCHANT}
+    Select Payment Type    Lump Sum
+    Enter Lumpsum Amount    1
+    Select Payment Method    Credit Card
+    Enter Credit Card Values    ${creditcard_details}
+    ${status}    Run Keyword And Return Status    Dictionary Should Contain Key    ${creditcard_details}    Error_Message
+    IF    '${status}'=='True'
+        Validate Errors After Clicking On Process Invoice    ${creditcard_details}[Error_Message]
+    ELSE
+        Process Invoice Payment
+        Validate Payment Receipt Is Generated
+    END",success
+FTC_117 Validate Process Payment With Visa Debit Card,Create a data-driven test scenario for FTC_117 Validate Process Payment With Visa Debit Card,Data-Driven,"    *** Settings ***
+    Library  OperatingSystem
+    Library  SeleniumLibrary
+    Library  Collections
+
+    *** Variables ***
+    ${CSV_FILE}  FTC_117 Validate Process Payment With Visa Debit Card.csv
+
+    *** Test Cases ***
+    FTC_117 Validate Process Payment With Visa Debit Card
+        [Template]  Launch PayNow Application
+
+    *** Keywords ***
+    Launch PayNow Application
+        Documentation: 
+
+    *** Settings ***
+    Library  OperatingSystem
+    Library  SeleniumLibrary
+    Library  Collections
+
+    *** Variables ***
+    ${CSV_FILE}  FTC_117 Validate Process Payment With Visa Debit Card.csv
+
+    *** Test Cases ***
+    FTC_117 Validate Process Payment With Visa Debit Card
+        [Template]  Enter Customer Details
+
+    *** Keywords ***
+    Enter Customer Details
+        Documentation: 
+
+    *** Settings ***
+    Library  OperatingSystem
+    Library  SeleniumLibrary
+    Library  Collections
+
+    *** Variables ***
+    ${CSV_FILE}  FTC_117 Validate Process Payment With Visa Debit Card.csv
+
+    *** Test Cases ***
+    FTC_117 Validate Process Payment With Visa Debit Card
+        [Template]  Select Payment Type
+
+    *** Keywords ***
+    Select Payment Type
+        Documentation: 
+
+    *** Settings ***
+    Library  OperatingSystem
+    Library  SeleniumLibrary
+    Library  Collections
+
+    *** Variables ***
+    ${CSV_FILE}  FTC_117 Validate Process Payment With Visa Debit Card.csv
+
+    *** Test Cases ***
+    FTC_117 Validate Process Payment With Visa Debit Card
+        [Template]  Enter Lumpsum Amount
+
+    *** Keywords ***
+    Enter Lumpsum Amount
+        Documentation: 
+
+    *** Settings ***
+    Library  OperatingSystem
+    Library  SeleniumLibrary
+    Library  Collections
+
+    *** Variables ***
+    ${CSV_FILE}  FTC_117 Validate Process Payment With Visa Debit Card.csv
+
+    *** Test Cases ***
+    FTC_117 Validate Process Payment With Visa Debit Card
+        [Template]  Select Payment Method
+
+    *** Keywords ***
+    Select Payment Method
+        Documentation: 
+
+    *** Settings ***
+    Library  OperatingSystem
+    Library  SeleniumLibrary
+    Library  Collections
+
+    *** Variables ***
+    ${CSV_FILE}  FTC_117 Validate Process Payment With Visa Debit Card.csv
+
+    *** Test Cases ***
+    FTC_117 Validate Process Payment With Visa Debit Card
+        [Template]  Enter Credit Card Values
+
+    *** Keywords ***
+    Enter Credit Card Values
+        Documentation: 
+
+    *** Settings ***
+    Library  OperatingSystem
+    Library  SeleniumLibrary
+    Library  Collections
+
+    *** Variables ***
+    ${CSV_FILE}  FTC_117 Validate Process Payment With Visa Debit Card.csv
+
+    *** Test Cases ***
+    FTC_117 Validate Process Payment With Visa Debit Card
+        [Template]  Validate Errors After Clicking On Process Invoice
+
+    *** Keywords ***
+    Validate Errors After Clicking On Process Invoice
+        Documentation: 
+
+    *** Settings ***
+    Library  OperatingSystem
+    Library  SeleniumLibrary
+    Library  Collections
+
+    *** Variables ***
+    ${CSV_FILE}  FTC_117 Validate Process Payment With Visa Debit Card.csv
+
+    *** Test Cases ***
+    FTC_117 Validate Process Payment With Visa Debit Card
+        [Template]  Process Invoice Payment
+
+    *** Keywords ***
+    Process Invoice Payment
+        Documentation: 
+
+    *** Settings ***
+    Library  OperatingSystem
+    Library  SeleniumLibrary
+    Library  Collections
+
+    *** Variables ***
+    ${CSV_FILE}  FTC_117 Validate Process Payment With Visa Debit Card.csv
+
+    *** Test Cases ***
+    FTC_117 Validate Process Payment With Visa Debit Card
+        [Template]  Validate Payment Receipt Is Generated
+
+    *** Keywords ***
+    Validate Payment Receipt Is Generated
+        Documentation: 
+
+","This is the expected data driven testcase as per the prompt                                                                              *** Settings ***
+# robocop: disable
+Documentation     suite contain test cases for validating Personal method as credit card with Valid and invalid data
+Test Template     Validate Credit Card Field With Valid And Invalid Data
+Test Tags    Priority1    test:retry(1)
+Resource          ../../../Config/super.resource
+Library           DataDriver    ${TESTDATA_FOLDER}    sheet_name=Surcharge
+
+
+*** Test Cases ***
+${test_case_name}
+
+
+*** Keywords ***
+Validate Credit Card Field With Valid And Invalid Data
+    [Arguments]    ${test_case_name}
+    [Documentation]    Validate Credit Card With Invalid Data
+    ${creditcard_details}    Read TestData From Excel    ${TESTDATA_FOLDER}    ${test_case_name}    Surcharge
+    ${customer_details}    Generate Random Customer Details
+    Launch PayNow Application    ${NON_INTEGRATED_MERCHANT}
+    Enter Customer Details    ${customer_details}    ${NON_INTEGRATED_MERCHANT}
+    Select Payment Type    Lump Sum
+    Enter Lumpsum Amount    1
+    Select Payment Method    Credit Card
+    Enter Credit Card Values    ${creditcard_details}
+    ${status}    Run Keyword And Return Status    Dictionary Should Contain Key    ${creditcard_details}    Error_Message
+    IF    '${status}'=='True'
+        Validate Errors After Clicking On Process Invoice    ${creditcard_details}[Error_Message]
+    ELSE
+        Process Invoice Payment
+        Validate Payment Receipt Is Generated
+    END",success
+Non-Integrated OpenInvoices,Generate a keyword-driven test case for Non-Integrated OpenInvoices,Keyword-Driven,"    *** Keywords ***
+    Validate All Invoices Should Be Removed
+        Documentation: Validating all invoices are removed are not
+
+    Validate Filled-In Specific Invoice Data
+        [Arguments]  invoice_number, expected_dueamount, expected_amounttopay
+        Documentation: Validate data for Specific Invoice
+
+    Click On Clear All Button
+        Documentation: Click on clear all button
+
+    Click On Add Invoice
+        Documentation: scroll down and click on add invoice button
+
+    Enter Credit Card Values
+        [Arguments]  creditcard_details
+        Documentation: Select Credit Card and enters Credit Number. Expired date and cvv number
+
+    Create Multiple Invoices
+        Documentation: is will creates multiple invoices
+
+    Enter Customer Details Without State
+        Documentation: Enter Customer Details Without State
+
+    Validate Filled-In Specific Invoice Data After Removing Other Invoice
+        [Arguments]  invoice_no_to_unselect, expected_invoicenumber, expected_dueamount
+        Documentation: lidate Invoice Datas are correct or not - invoice_no_to_unselect will be removed from invoices
+
+    Validate Invoice Details With Invalid Data
+        [Arguments]  test_case_validation, specific_invoice
+        Documentation: Validate Invoice Details With Invalid Data
+
+    Enter Account Number
+        [Arguments]  account_number
+        Documentation: Enter Account Number
+
+    Add Invoice Details
+        [Arguments]  invoice_number, due_amount, amount_to_pay
+        Documentation: entering invoice. amount due. amount to pay. note fields
+
+    Validate Customer Can Navigate Back From Payment Methods
+        [Arguments]  payment_method
+        Documentation: Navigate Back From Payment Methods
+
+    Validate Selected Invoice Should Be Removed
+        [Arguments]  invoice_number
+        Documentation: validating selected invoice is removed or not
+
+    Validate Dundermifflin Wikipedia Screen Is Visible
+        Documentation: Validate Dundermifflin Wikipedia Screen Is Visible
+
+    *** Test Cases ***
+    Test Non-Integrated_OpenInvoices
+        Validate Filled-In Specific Invoice Data  invoice_number, expected_dueamount, expected_amounttopay
+        Enter Credit Card Values  creditcard_details
+        Validate Filled-In Specific Invoice Data After Removing Other Invoice  invoice_no_to_unselect, expected_invoicenumber, expected_dueamount
+        Validate Invoice Details With Invalid Data  test_case_validation, specific_invoice
+        Enter Account Number  account_number
+        Add Invoice Details  invoice_number, due_amount, amount_to_pay
+        Validate Customer Can Navigate Back From Payment Methods  payment_method
+        Validate Selected Invoice Should Be Removed  invoice_number
+","This is the expected Keyword driven testcase as per the prompt                                                                   Validate Non Integrated Customer Is Able To Process The Lump Sum Payment
+    [Documentation]    Enter Customer Details, Credit card details, and Process Lump sum Payment for Non-Integrated user
+    ${customer_details}    Generate Random Customer Details
+    Launch PayNow Application    ${NON_INTEGRATED_MERCHANT}
+    Enter Customer Details    ${customer_details}    ${NON_INTEGRATED_MERCHANT}
+    Select Payment Type    Lump Sum
+    Enter Lumpsum Amount    1
+    Select Payment Method    Credit Card
+    Enter Credit Card Details    @{CREDIT_CARD_DETAILS}
+    Validate Total Charges Under Summary Of Payment    $1.03
+    Process Invoice Payment
+    Validate Details In Generated Payment Receipt    Lump Sum (Apply to Oldest)    411111******1111    Card    $1.03",success
+TC_08 Validate Customer Is Able To Schedule AutoPay Payments On A Sunday Of The Week,Generate a keyword-driven test case for TC_08 Validate Customer Is Able To Schedule AutoPay Payments On A Sunday Of The Week,Keyword-Driven,"    *** Keywords ***
+    Send Request To Create Customer
+        Documentation: 
+
+    Send Request To Create Invoice For Customer
+        Documentation: 
+
+    Login To PayNOW And Navigate To Autopay
+        Documentation: 
+
+    Select Specific Day Of The Week
+        Documentation: 
+
+    Select Invoices Due For The Payment
+        Documentation: 
+
+    Enter Customer And Credit Card Details For AutoPay
+        Documentation: 
+
+    Validate Created AutoPay Details For Specific Day Of Week
+        Documentation: 
+
+    Send Request To Create AutoPay For Specific Day Of The Week
+        Documentation: 
+
+    Validate Created AutoPay Details For Specific Day Of Week
+        Documentation: 
+
+    Validate AutoPay Origin In Scheduled Payments
+        Documentation: 
+
+    *** Test Cases ***
+    Test TC_08_Validate_Customer_Is_Able_To_Schedule_AutoPay_Payments_On_A_Sunday_Of_The_Week
+","This is the expected Keyword driven testcase as per the prompt                                                            Validate Customer Is Able To Schedule AutoPay Payments On A Sunday Of The Week ${account_number}    Send Request To Create Customer    ${OMNICORP_MERCHANT}    3
+    ${invoice_number}    Send Request To Create Invoice For Customer    ${account_number}    ${OMNICORP_MERCHANT}    3
+    Login To PayNOW And Navigate To Autopay    ${account_number}    ${invoice_number}
+    Select Specific Day Of The Week    ${Day}
+    Select Invoices Due For The Payment
+    Enter Customer And Credit Card Details For AutoPay    4111111111111111'
+    Validate Created AutoPay Details For Specific Day Of Week    Days of Week	All Invoices Due	${Day}
+    Send Request To Create AutoPay For Specific Day Of The Week    ${account_number}    4111111111111111    ${Day}
+    Validate Created AutoPay Details For Specific Day Of Week    Days of Week	All Invoices Due	${Day}
+    Validate AutoPay Origin In Scheduled Payments    ${account_number}     ${invoice_number}    AutoPay",success
+TC_05 Validate Merchant Is Able To Schedule Payment With Master Credit Card,Generate a keyword-driven test case for TC_05 Validate Merchant Is Able To Schedule Payment With Master Credit Card,Keyword-Driven,"    *** Keywords ***
+    Launch PayNow Application
+        Documentation: 
+
+    Enter Account Number And Invoice
+        Documentation: 
+
+    Enter Customer Details
+        Documentation: 
+
+    Select Payment Method 
+
+        Documentation: 
+
+    Enter Credit Card Details
+        Documentation: 
+
+    Select Payment Date
+        Documentation: 
+
+    Create Schedule Payment
+        Documentation: 
+
+    Send Event To Process Schedule Payment
+        Documentation: 
+
+    Validate Scheduled Payment Status
+        Documentation: 
+
+    *** Test Cases ***
+    Test TC_05_Validate_Merchant_Is_Able_To_Schedule_Payment_With_Master_Credit_Card
+"," This is the expected Keyword driven testcase as per the prompt                                                           Validate Merchant Is Able To Schedule Payment With Master Credit Card                   ${account_number}    Send Request To Create Customer    ${OMNICORP_MERCHANT}    3
+    ${invoice_number}    Send Request To Create Invoice For Customer    ${account_number}    ${OMNICORP_MERCHANT}    3    ${account_number}    100    today-2
+    ${customer_details}    Generate Random Customer Details
+    Launch PayNow Application    ${OMNICORP_MERCHANT}
+    Enter Account Number And Invoice    ${account_number}    ${invoice_number}
+    Enter Customer Details    ${customer_details}    ${OMNICORP_MERCHANT}
+    Select Payment Method    Credit Card
+    Enter Credit Card Details    ${Creditcard_Number}    ${Expiry_Date}    ${CVV}
+    Select Payment Date    today+1
+    Create Schedule Payment
+    Send Event To Process Schedule Payment    ${account_number}    ${invoice_number}
+    Validate Scheduled Payment Status    ${account_number}    ${invoice_number}    ${Status}",success
+Integrated OpenInvoices,Build a keyword-driven test plan for Integrated OpenInvoices,Keyword-Driven,"    *** Keywords ***
+    Expand All Line Items
+        Documentation: Expand All Line Items
+
+    Save Payment Method With Nickname
+        [Arguments]  payment_method, nickname
+        Documentation: Save the Payment method for future use by giving it a nickname
+
+    Validate Unpaid Invoices Are Displayed
+        [Arguments]  invoice
+        Documentation: Validate Unapaid Invoices Are Displayed
+
+    Validate Invoice Status Is Paid
+        [Arguments]  invoice_number
+        Documentation: Validate Invoice Status Is Paid
+
+    Select Multiple Invoices
+        [Arguments]  invoice_list
+        Documentation: Select Multiple Invoices
+
+    Click On Total Amount Link
+        Documentation: Click On Total Amount Link
+
+    Validate Customer PO Number From The Specific Invoice Grid
+        [Arguments]  invoice_number
+        Documentation: Validate Customer PO Number From The Specific Invoice Grid
+
+    Choose Filter Type
+        [Arguments]  filter_name
+        Documentation: Choose the Filter Based on the Given Filter Name. For Example. to Select the Amount To Pay Filter. Use the Keyword: Choose Filter Menu: Amount To Pay
+
+    Collapse Specific Line Item
+        Documentation: Collapse Specific Line Item
+
+    Click On Days Past Due Amount Link
+        [Arguments]  , due_date
+        Documentation: Click On Days Past Due Amount Link
+
+    Validate Selected Date Is Displayed In Date Range
+        [Arguments]  increment
+        Documentation: Validate Selected Date Is Displayed In Date Range
+
+    Validate Date Range Is Displayed In Payment History Tab
+        Documentation: Date Range Is Displayed In Payment History Tab
+
+    Validate Multiple Invoices Check Box Should Be Checked By Default
+        [Arguments]  invoice
+        Documentation: Invoice Age And Ckeck Box Should Be Selected
+
+    Enter Amount And Pay Invoice
+        [Arguments]  amount
+        Documentation: Enter Amount And Click On Pay Invoice
+
+    Cancel Login With Invoice Popup
+        Documentation: Cancel Loading Invoice Popup
+
+    Select Date Range From Calendar
+        [Arguments]  start_date, end_date
+        Documentation: Select Date Range From Calendar
+
+    Validate All Invoices Are Checked
+        Documentation: Validate Invoice Checkbox After Clicking Total Amount Link
+
+    Collapse All Line Items
+        Documentation: Collapse All Line Items
+
+    Select All Due Invoices
+        Documentation: Select All Due Invoices
+
+    Navigate To Menu Tab
+        [Arguments]  tab_name
+        Documentation: Navigate To Payment History Page from Paynow - Openinvoice Page
+
+    Validate Line Item Is Expanded
+        Documentation: Validate Order Line Number Is Displayed
+
+    Pay Invoice From Invoice Screen
+        [Arguments]  invoice_number
+        Documentation: Pay Invoice From Invoice Screen
+
+    Unselect Invoice Checkboxes
+        Documentation: Unselect Invoice Checkboxes
+
+    Validate Total Amount After Selecting State
+        Documentation: Validate Total Amount After Selecting State
+
+    Use Valid Check And Pay The Amount
+        [Arguments]  amount, account_type, account_number, routing_number
+        Documentation: Use Valid Check And Pay The Amount
+
+    Select Any Saved Payment Method
+        [Arguments]  cardno_or_checkno
+        Documentation: To choose a Credit Card. provide the Card Number. like ""4111 1111 1111 1111"". For ACH/eCheck selection. Provide the Check Number. such as ""1111111"".
+
+    Validate Discount Applied For Early Payment Before Due Date
+        [Arguments]  invoice_number
+        Documentation: Validate Discount Applied for Early Payment Before Due Date
+
+    Validate Invoice Checkbox Should Be Unselected
+        Documentation: Validate Checkbox Should Be Unselected
+
+    Filter Invoice By Using Logical Operator
+        [Arguments]  logical_operator, filter_option, value
+        Documentation: Select And Or Filter Options and Enter Value
+
+    Validate This Month Is Displayed In Date Range
+        Documentation: Validate This Month Is Displayed In Date Range
+
+    Validate All Invoices Associated With Account Number Are Displayed
+        [Arguments]  invoice_list
+        Documentation: All Invoices Associated With Account Number Are Displayed
+
+    Use Valid Credit Card And Pay The Amount
+        [Arguments]  amount, card_no, expired_date, cvv_number
+        Documentation: Use Valid Credit Card And Pay The Amount
+
+    Validate Login With Invoice Popup Is Closed
+        Documentation: Login With Invoice Popup is Closed
+
+    Select All Invoices On Page
+        Documentation: Select All On Page
+
+    Validate Invoice Checkbox Is Checked
+        [Arguments]  invoice_number
+        Documentation: Validate Invoice Checkbox Is Checked
+
+    Clear Filter
+        Documentation: Clear Filters
+
+    Select Specific Invoices
+        [Arguments]  invoice_list
+        Documentation: Select Specific Invoices
+
+    Validate Invoices Are Sorted In Grid
+        Documentation: Validate Invoices Are Sorted In Grid
+
+    # robocop: disable=file-too-long
+        Documentation: nan
+
+    Validate Invoice Date From The Specific Invoice Grid
+        [Arguments]  invoice_number
+        Documentation: Validate Invoice Date From The Specific Invoice Grid
+
+    Choose Filter Option And Enter Value
+        [Arguments]  filter_option, value
+        Documentation: Choose Filter option and Enter Value
+
+    Validate Selected Invoices Count
+        [Arguments]  invoice_list
+        Documentation: Number Of Invoices Paying By Selecing Invoices
+
+    Close Delete Payment Method Confirmation Dialog Box
+        [Arguments]  cardno_or_checkno
+        Documentation: Close Delete Payment Method Confirmation Popup
+
+    Validate Invoices Count In Selected Page
+        Documentation: Validate Next Page Invoices Are Displayed
+
+    Unselect All Invoices On Page
+        Documentation: Unselect All Invoices On Page
+
+    Validate Delete Payment Method Confirmation Dialog Box Is Closed
+        Documentation: Validate Delete Payment Method Confirmation popup Is Closed
+
+    Select Date Range
+        [Arguments]  date_range
+        Documentation: Select Date Range
+
+    Navigate To Invoice PDF Page
+        Documentation: Navigate To Invoice PDF Page
+
+    Validate Total Amount In Summary Of Outstanding Invoice
+        Documentation: Validate Total Amount In Summary Of Outstanding Invoice
+
+    Validate Invoice Number Is Displayed
+        [Arguments]  inv_number
+        Documentation: Validate Paid Amount In Paid Invoice Should Be Equal
+
+    Validate Secure Payments Dialog Box Is Displayed
+        Documentation: Validate Secure Payments Dialog Box Is Displayed
+
+    Re-enter Login Credentials If Failed
+        [Arguments]  account_number, invoice_number
+        Documentation: Re-enter Login Credentials If Failed
+
+    Validate Invoice Checkbox Should Be Selected
+        Documentation: Checkbox Should Be Selected
+
+    Validate PDF Content
+        [Arguments]  invoice_content, invoice_number
+        Documentation: Validate PDF Should Displayed
+
+    Validate Invoice Page Is Displayed
+        [Arguments]  invoice_number
+        Documentation: Validate Invoice Page Is displayed
+
+    Validate Account Number Is Displayed
+        [Arguments]  exp_accountno, exp_customername
+        Documentation: Validate Customer Name Is Visible After logging In
+
+    Validate Specific Invoice Checkbox
+        [Arguments]  invoice_list, due_date
+        Documentation: Validate Specific Invoice Checkbox
+
+    Validate Account Number Exists Under Saved Payment Method
+        [Arguments]  account_number
+        Documentation: Validate Account Number Exists under Saved Payment Method
+
+    Validate Last Month Is Displayed In Date Range
+        Documentation: Validate Last Month Is Displayed In Date Range
+
+    Validate Saved Payment Method Is Deleted
+        [Arguments]  cardno_or_checkno
+        Documentation: Validate Saved Payment Method is Deleted
+
+    Pay The Invoice Using ACH/Echeck And Save The Payment Method
+        [Arguments]  integrated_merchant, account_type, account_number, routing_number
+        Documentation: Pay The Invoice Using ACH/Echeck And Save The Payment Method
+
+    Validate Due Invoices Are Selected
+        [Arguments]  invoice_number
+        Documentation: Validate Due Invoices Are Selected
+
+    Load Invoices Without Entering Invoice Number
+        Documentation: Load Invoices Without Entering Invoice Number
+
+    Select Use Saved Payment Method
+        Documentation: Select Use Saved Payment Method
+
+    Validate Total Amount After Selecting Invoices
+        [Arguments]  expected_totalpaymentamount
+        Documentation: Validate Total Amount After Selecting Invoices
+
+    Validate Cloud Based Modular Page Is Displayed
+        Documentation: Validate Cloud Based Modular Page Is Displayed
+
+    Sort Invoices Grid With Date
+        Documentation: Sort Invoices Grid With Date
+
+    Validate Yesterday Date Is Displayed In Date Range
+        [Arguments]  increment
+        Documentation: Validate Selected Date Is Displayed In Date Range
+
+    Validate PayNOW Page Is Displayed
+        Documentation: Validate PayNOW Page Is Displayed
+
+    Select All Invoices
+        Documentation: Select All Invoices
+
+    Load Invoice With Account Number And Invoice Number
+        [Arguments]  account_number, invoice_number
+        Documentation: Loading Invoice with Account Number And Invoice
+
+    Validate Amount To Pay Is Updated In Open Invoice Page
+        [Arguments]  invoice_number, actual_amount
+        Documentation: Validate Open Invoice Page Is Displayed
+
+    Validate PayNOW Login Page Is Displayed
+        Documentation: Validate Login Page Is Displayed
+
+    Edit Nickname Of Saved Payment Method
+        [Arguments]  cardno_or_checkno, nickname
+        Documentation: To Edit a Credit Card Nickname. provide the Card Number. like ""4111 1111 1111 1111"". For ACH/eCheck selection. Provide the Check Number. such as ""1111111"".
+
+    Navigate To Invoice Page
+        [Arguments]  invoice_number
+        Documentation: Navigate To Invoice Page
+
+    Select Quick Date From Dropdown
+        [Arguments]  label_name
+        Documentation: Select Quick Date From Dropdown
+
+    Open PayNOW From PDF
+        [Arguments]  invoice_content
+        Documentation: Navigate To PayNOW From Pdf
+
+    Pay The Invoice Using Credit Card And Save The Payment Method
+        [Arguments]  integrated_merchant, card_no, expired_date, cvv_number, nickname
+        Documentation: Pay The Invoice Using Credit Card And Save The Payment Method
+
+    Save Payment Method For Future Use
+        [Arguments]  payment_method, nickname
+        Documentation: Save the Payment method for future use by giving it a nickname
+
+    Delete Saved Payment Method
+        [Arguments]  cardno_or_checkno
+        Documentation: To Delete a Credit Card. provide the Card Number. like ""4111 1111 1111 1111"". For ACH/eCheck selection. Provide the Check Number. such as ""1111111"".
+
+    Validate Original Amount From The Specific Invoice Grid
+        [Arguments]  invoice_number
+        Documentation: Validate Original Amount From The Specific Invoice Grid
+
+    Expand Specific Line Item
+        Documentation: Expand Specific Line Item
+
+    Validate Amount Due Is Displayed In Days Past Due
+        [Arguments]  due_date
+        Documentation: Validate Amount Due Is Displayed In Days Past Due
+
+    Validate Nickname Of Saved Payment Method Is Edited
+        [Arguments]  expected_nickname
+        Documentation: Validate Nickname Of Saved Payment Method Is Edited
+
+    Validate Today's Date Is Displayed In Date Range
+        Documentation: Todays Date Is Displayed In Date Range
+
+    Validate Filtered Invoices Are Displayed
+        [Arguments]  invoice_number
+        Documentation: Validate Filtered Invoices Are Displayed
+
+    Validate Line Item Is Collapsed
+        Documentation: Validate Order Line Number Is Not Displayed
+
+    Validate Surcharge Is Updated
+        Documentation: Navigate Back From Payment Methods
+
+    Load Invoices With Invalid Invoice Number
+        [Arguments]  invoice_number
+        Documentation: Load Invoices Without Entering Invoice Number
+
+    Validate Next Button Is Dispayed
+        Documentation: navigate to next page. Previous page . First page or Last page
+
+    Get PDF Content From Browser
+        [Arguments]  invoice_number
+        Documentation: Get PDF Content From Browser
+
+    Validate Invoice Due Date From The Specific Invoice Grid
+        [Arguments]  invoice_number
+        Documentation: Validate Invoice Due Date From The Specific Invoice Grid
+
+    Validate Error Message For Empty Login Details
+        Documentation: Validate Error Message For Empty Login Details
+
+    Return To Open Invoices Page
+        Documentation: Return To Open Invoices Page
+
+    *** Test Cases ***
+    Test Integrated_OpenInvoices
+        Save Payment Method With Nickname  payment_method, nickname
+        Validate Unpaid Invoices Are Displayed  invoice
+        Validate Invoice Status Is Paid  invoice_number
+        Select Multiple Invoices  invoice_list
+        Validate Customer PO Number From The Specific Invoice Grid  invoice_number
+        Choose Filter Type  filter_name
+        Click On Days Past Due Amount Link  , due_date
+        Validate Selected Date Is Displayed In Date Range  increment
+        Validate Multiple Invoices Check Box Should Be Checked By Default  invoice
+        Enter Amount And Pay Invoice  amount
+        Select Date Range From Calendar  start_date, end_date
+        Navigate To Menu Tab  tab_name
+        Pay Invoice From Invoice Screen  invoice_number
+        Use Valid Check And Pay The Amount  amount, account_type, account_number, routing_number
+        Select Any Saved Payment Method  cardno_or_checkno
+        Validate Discount Applied For Early Payment Before Due Date  invoice_number
+        Filter Invoice By Using Logical Operator  logical_operator, filter_option, value
+        Validate All Invoices Associated With Account Number Are Displayed  invoice_list
+        Use Valid Credit Card And Pay The Amount  amount, card_no, expired_date, cvv_number
+        Validate Invoice Checkbox Is Checked  invoice_number
+        Select Specific Invoices  invoice_list
+        Validate Invoice Date From The Specific Invoice Grid  invoice_number
+        Choose Filter Option And Enter Value  filter_option, value
+        Validate Selected Invoices Count  invoice_list
+        Close Delete Payment Method Confirmation Dialog Box  cardno_or_checkno
+        Select Date Range  date_range
+        Validate Invoice Number Is Displayed  inv_number
+        Re-enter Login Credentials If Failed  account_number, invoice_number
+        Validate PDF Content  invoice_content, invoice_number
+        Validate Invoice Page Is Displayed  invoice_number
+        Validate Account Number Is Displayed  exp_accountno, exp_customername
+        Validate Specific Invoice Checkbox  invoice_list, due_date
+        Validate Account Number Exists Under Saved Payment Method  account_number
+        Validate Saved Payment Method Is Deleted  cardno_or_checkno
+        Pay The Invoice Using ACH/Echeck And Save The Payment Method  integrated_merchant, account_type, account_number, routing_number
+        Validate Due Invoices Are Selected  invoice_number
+        Validate Total Amount After Selecting Invoices  expected_totalpaymentamount
+        Validate Yesterday Date Is Displayed In Date Range  increment
+        Load Invoice With Account Number And Invoice Number  account_number, invoice_number
+        Validate Amount To Pay Is Updated In Open Invoice Page  invoice_number, actual_amount
+        Edit Nickname Of Saved Payment Method  cardno_or_checkno, nickname
+        Navigate To Invoice Page  invoice_number
+        Select Quick Date From Dropdown  label_name
+        Open PayNOW From PDF  invoice_content
+        Pay The Invoice Using Credit Card And Save The Payment Method  integrated_merchant, card_no, expired_date, cvv_number, nickname
+        Save Payment Method For Future Use  payment_method, nickname
+        Delete Saved Payment Method  cardno_or_checkno
+        Validate Original Amount From The Specific Invoice Grid  invoice_number
+        Validate Amount Due Is Displayed In Days Past Due  due_date
+        Validate Nickname Of Saved Payment Method Is Edited  expected_nickname
+        Validate Filtered Invoices Are Displayed  invoice_number
+        Load Invoices With Invalid Invoice Number  invoice_number
+        Get PDF Content From Browser  invoice_number
+        Validate Invoice Due Date From The Specific Invoice Grid  invoice_number
+","This is the expected Keyword driven testcase as per the prompt                                                                                      Validate Integrated Customer Is Able To Process Payment Through Credit Card
+    [Documentation]    Validate Process Invoice Payment Through Credit Card for Integrated Customer
+    [Tags]    test:retry(1)    Priority1
+    ${account_number}    Send Request To Create Customer    ${STERLING_COOPER_MERCHANT}
+    ${invoice_number}    Send Request To Create Invoice For Customer    ${account_number}    ${STERLING_COOPER_MERCHANT}
+    ${customer_details}    Generate Random Customer Details
+    Launch PayNow Application    ${STERLING_COOPER_MERCHANT}
+    Enter Account Number And Invoice    ${account_number}    ${invoice_number}
+    Enter Customer Details    ${customer_details}    ${STERLING_COOPER_MERCHANT}
+    Select Specific Invoice And Enter Amount    ${invoice_number}    1
+    Add Reason For Less Than Due Amount    ${invoice_number}    Testing
+    Select Payment Method    Credit Card
+    Enter Credit Card Details    @{CREDIT_CARD_DETAILS}
+    Validate Total Charges Under Summary Of Payment    $1.03
+    Process Invoice Payment
+    Validate Details In Generated Payment Receipt    Specific Invoice    411111******1111    Card    $1.03",success
+Common OpenInvoices,Generate a keyword-driven test case for Common OpenInvoices,Keyword-Driven,"    *** Keywords ***
+    Select Payment Method
+        [Arguments]  payment_method
+        Documentation: Select Payment Method keyword will select ""Credit Card"" or ""ACH / eCheck"" depends on the argument we pass
+
+    Enter ACH/ECheck Values
+        [Arguments]  echeck_details
+        Documentation: Select ACH/echeck and Enter Account number. Re entered Account number and Routing number of ACH/echeck
+
+    Navigate To Window
+        Documentation: Navigate To Window
+
+    Process Payment Without Payment Authorization
+        Documentation: Process Payment Without Selecting Payment Authorization
+
+    Validate Payment Method And Total Amount
+        [Arguments]  expected_payment_method, expected_amount
+        Documentation: Validating Payment Method and Total Amount
+
+    Enter Customer Details
+        [Arguments]  too-long-keyword
+        Documentation: customer_details, merchant
+
+    Validate Payment Authorization Is Unchecked By Default
+        Documentation: Validate Payment Authorization Checkbox Is Not Checked By Default
+
+    Click On Close Button
+        Documentation: Click On Close Button
+
+    Signout From Payment Receipt Page
+        Documentation: Signout From Payment Receipt Page
+
+    Navigate To Contact Unified Payments Group For More Information
+        Documentation: Navigate To Contact Unified Payments Group For More Information
+
+    Validate Surcharge Amount Is Displayed
+        Documentation: Validate Surcharge Amount is displayed
+
+    Validate Total Charges Under Summary Of Payment
+        [Arguments]  expected_charges
+        Documentation: Validate Payment Amount is same as Total Charge are not
+
+    Validate Payment Authorization Screen Is Closed
+        Documentation: Validate Payment Authorization Screen Is Closed
+
+    Validate Customer Invoice Referral Page Is Visible
+        Documentation: Validate Customer Invoice Referral Page Is Visible
+
+    Validate Details In Generated Payment Receipt
+        [Arguments]  payment_type, account_number, payment_method, amount
+        Documentation: Validating generated payment receipt
+
+    Validate Surcharge Percentage Should Be Equal
+        [Arguments]  exp_percentage
+        Documentation: Validate Surcharge Percentage
+
+    Validate Checkboxes Are Selected By Default
+        Documentation: validating invoice check boxes are selected by default or not
+
+    Add Reason For Less Than Due Amount
+        [Arguments]  invoice, reason
+        Documentation: Entering reason under notes section
+
+    Validate Errors After Clicking On Process Invoice
+        [Arguments]  error_message
+        Documentation: validate error message after clicking on process payment button
+
+    Enter Zip Code
+        [Arguments]  zip_code
+        Documentation: Enter Zip Code
+
+    Wait Till Loading Text Is Invisible
+        Documentation: Wait Till Loading Text Is Invisible
+
+    Validate Invoice Receipt Is Received In Email
+        [Arguments]  transaction_id
+        Documentation: Validate Invoice Receipt Is Received in Email
+
+    Get Transaction ID
+        Documentation: Get Transaction ID
+
+    Validate Find Routing Number Popover Is Displayed
+        Documentation: Click on how to find routing number symbol (?)
+
+    Generate Random Customer Details
+        Documentation: Generate Random Customer Details
+
+    Select Specific Invoice And Enter Amount
+        [Arguments]  invoice_number, amount
+        Documentation: Enter Invoice Amount for Specific Invoice
+
+    Select Account Type In ACH/ECheck
+        [Arguments]  account_type
+        Documentation: Select Account Type In Check
+
+    Validate Send EMail Receipt Is Checked By Default
+        Documentation: Validate Send E-Mail Receipt is Checked by Default
+
+    Navigate To Payment Authorization And Validate Title
+        Documentation: Navigate To Payment Authorization And Validate Title
+
+    Enter Lumpsum Amount
+        [Arguments]  amount
+        Documentation: Entering Lumpsum Amount
+
+    Validate Payment Type And Account Number
+        [Arguments]  expected_payment_method, expected_account_number
+        Documentation: Validating Payment type and account number
+
+    Select State
+        [Arguments]  state
+        Documentation: we are selecting state from dropdown
+
+     Enter Credit Card Details
+        [Arguments]  card_number, expired_data, cvv_number
+        Documentation: Select Credit Card and enters Credit Number. Expired date and cvv number
+
+    Validate Terms Conditions And Privacy Policy Page Is Closed
+        Documentation: Terms Conditions And Privacy Policy Page Is Closed
+
+    Validate Future Payment Details In Scheduled Payments Page
+        [Arguments]  future_date
+        Documentation: Navigate to Schedule Payments and Validate Future Payment Details are available are not
+
+    Select Payment Type
+        [Arguments]  payment_type
+        Documentation: Select Payment Type keyword will select ""Choose Invoices"" or "" Lump Sum Payment"" depends on the argument we pass
+
+    Process Invoice Payment
+        Documentation: process invoice payment keyword select payment authorization terms checkbox and click on process payment
+
+    Navigate To Terms Conditions And Privacy Policy Page
+        Documentation: Click On Terms Conditions And Privacy Policy
+
+    Validate Terms Conditions And Privacy Policy Page Is Displayed
+        Documentation: Validate Terms Conditions And Privacy Policy Page Is Displayed
+
+    Validate Payment Receipt Is Generated
+        Documentation: Validate payment receipt is generated or not
+
+    Enter ACH/ECheck Details
+        [Arguments]  account_number, routing_number
+        Documentation: Select ACH/echeck and Enter Account number. Re entered Account number and Routing number of ACH/echeck
+
+    *** Test Cases ***
+    Test Common_OpenInvoices
+        Select Payment Method  payment_method
+        Enter ACH/ECheck Values  echeck_details
+        Validate Payment Method And Total Amount  expected_payment_method, expected_amount
+        Enter Customer Details  too-long-keyword
+        Validate Total Charges Under Summary Of Payment  expected_charges
+        Validate Details In Generated Payment Receipt  payment_type, account_number, payment_method, amount
+        Validate Surcharge Percentage Should Be Equal  exp_percentage
+        Add Reason For Less Than Due Amount  invoice, reason
+        Validate Errors After Clicking On Process Invoice  error_message
+        Enter Zip Code  zip_code
+        Validate Invoice Receipt Is Received In Email  transaction_id
+        Select Specific Invoice And Enter Amount  invoice_number, amount
+        Select Account Type In ACH/ECheck  account_type
+        Enter Lumpsum Amount  amount
+        Validate Payment Type And Account Number  expected_payment_method, expected_account_number
+        Select State  state
+         Enter Credit Card Details  card_number, expired_data, cvv_number
+        Validate Future Payment Details In Scheduled Payments Page  future_date
+        Select Payment Type  payment_type
+        Enter ACH/ECheck Details  account_number, routing_number
+","This is the expected Keyword driven testcase as per the prompt                                                                                      Validate Integrated Customer Is Able To Process Payment Through Credit Card
+    [Documentation]    Validate Process Invoice Payment Through Credit Card for Integrated Customer
+    [Tags]    test:retry(1)    Priority1
+    ${account_number}    Send Request To Create Customer    ${STERLING_COOPER_MERCHANT}
+    ${invoice_number}    Send Request To Create Invoice For Customer    ${account_number}    ${STERLING_COOPER_MERCHANT}
+    ${customer_details}    Generate Random Customer Details
+    Launch PayNow Application    ${STERLING_COOPER_MERCHANT}
+    Enter Account Number And Invoice    ${account_number}    ${invoice_number}
+    Enter Customer Details    ${customer_details}    ${STERLING_COOPER_MERCHANT}
+    Select Specific Invoice And Enter Amount    ${invoice_number}    1
+    Add Reason For Less Than Due Amount    ${invoice_number}    Testing
+    Select Payment Method    Credit Card
+    Enter Credit Card Details    @{CREDIT_CARD_DETAILS}
+    Validate Total Charges Under Summary Of Payment    $1.03
+    Process Invoice Payment
+    Validate Details In Generated Payment Receipt    Specific Invoice    411111******1111    Card    $1.03",success

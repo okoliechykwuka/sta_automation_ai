@@ -1,0 +1,11 @@
+﻿TestcaseName,KeywordName,Argument1,Argument2,Argument3
+TC_05 Validate Merchant Is Able To Schedule Payment With Master Credit Card,Launch PayNow Application,OMNICORP_MERCHANT,,
+TC_05 Validate Merchant Is Able To Schedule Payment With Master Credit Card,Enter Account Number And Invoice,account_number,invoice_number,
+TC_05 Validate Merchant Is Able To Schedule Payment With Master Credit Card,Enter Customer Details,customer_details,OMNICORP_MERCHANT,
+TC_05 Validate Merchant Is Able To Schedule Payment With Master Credit Card,"Select Payment Method 
+",Credit Card,,
+TC_05 Validate Merchant Is Able To Schedule Payment With Master Credit Card,Enter Credit Card Details,Scheduled_Payments.Creditcard_Number,Scheduled_Payments.Expiry_Date,Scheduled_Payments.CVV
+TC_05 Validate Merchant Is Able To Schedule Payment With Master Credit Card,Select Payment Date,today+1,,
+TC_05 Validate Merchant Is Able To Schedule Payment With Master Credit Card,Create Schedule Payment,,,
+TC_05 Validate Merchant Is Able To Schedule Payment With Master Credit Card,Send Event To Process Schedule Payment,account_number,invoice_number,
+TC_05 Validate Merchant Is Able To Schedule Payment With Master Credit Card,Validate Scheduled Payment Status,account_number,invoice_number,Scheduled_Payments.Status

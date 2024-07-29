@@ -1,0 +1,15 @@
+ReturnValue      ,KeywordName                                                           ,Arguments                                                            ,Documentation
+                 ,Validate All Invoices Should Be Removed                               ,                                                                     ,Validating all invoices are removed are not
+                 ,Validate Filled-In Specific Invoice Data                              ,"invoice_number, expected_dueamount, expected_amounttopay"           ,Validate data for Specific Invoice
+                 ,Click On Clear All Button                                             ,                                                                     ,Click on clear all button
+                 ,Click On Add Invoice                                                  ,                                                                     ,scroll down and click on add invoice button
+                 ,Enter Credit Card Values                                              ,creditcard_details                                                   ,Select Credit Card and enters Credit Number. Expired date and cvv number
+                 ,Create Multiple Invoices                                              ,                                                                     ,is will creates multiple invoices
+customer_details ,Enter Customer Details Without State                                  ,                                                                     ,Enter Customer Details Without State
+                 ,Validate Filled-In Specific Invoice Data After Removing Other Invoice ,"invoice_no_to_unselect, expected_invoicenumber, expected_dueamount" ,lidate Invoice Datas are correct or not - invoice_no_to_unselect will be removed from invoices
+                 ,Validate Invoice Details With Invalid Data                            ,"test_case_validation, specific_invoice"                             ,Validate Invoice Details With Invalid Data
+                 ,Enter Account Number                                                  ,account_number                                                       ,Enter Account Number
+                 ,Add Invoice Details                                                   ,"invoice_number, due_amount, amount_to_pay"                          ,entering invoice. amount due. amount to pay. note fields
+                 ,Validate Customer Can Navigate Back From Payment Methods              ,payment_method                                                       ,Navigate Back From Payment Methods
+                 ,Validate Selected Invoice Should Be Removed                           ,invoice_number                                                       ,validating selected invoice is removed or not
+                 ,Validate Dundermifflin Wikipedia Screen Is Visible                    ,                                                                     ,Validate Dundermifflin Wikipedia Screen Is Visible

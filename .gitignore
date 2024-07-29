@@ -101,3 +101,15 @@ Thumbs.db
 # Others
 *.log
 config.yaml
+
+
+# files
+src/app/chatbot.py
+src/app/newapp.py
+src/app/path_test.py
+src/app/newserver.py
+
+# models
+src/app/model/unsloth.Q4_K_M.gguf
+src/app/.streamlit/secrets.toml
+

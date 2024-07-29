@@ -1,0 +1,11 @@
+﻿TestcaseName                                                                         ,KeywordName                                                 ,Argument1           ,Argument2         ,Argument3
+TC_08 Validate Customer Is Able To Schedule AutoPay Payments On A Sunday Of The Week ,Send Request To Create Customer                             ,OMNICORP_MERCHANT   ,3                 ,
+TC_08 Validate Customer Is Able To Schedule AutoPay Payments On A Sunday Of The Week ,Send Request To Create Invoice For Customer                 ,account_number      ,OMNICORP_MERCHANT ,
+TC_08 Validate Customer Is Able To Schedule AutoPay Payments On A Sunday Of The Week ,Login To PayNOW And Navigate To Autopay                     ,account_number      ,invoice_number    ,
+TC_08 Validate Customer Is Able To Schedule AutoPay Payments On A Sunday Of The Week ,Select Specific Day Of The Week                             ,Payment_details.Day ,                  ,
+TC_08 Validate Customer Is Able To Schedule AutoPay Payments On A Sunday Of The Week ,Select Invoices Due For The Payment                         ,                    ,                  ,
+TC_08 Validate Customer Is Able To Schedule AutoPay Payments On A Sunday Of The Week ,Enter Customer And Credit Card Details For AutoPay          ,4111111111111111'   ,                  ,
+TC_08 Validate Customer Is Able To Schedule AutoPay Payments On A Sunday Of The Week ,Validate Created AutoPay Details For Specific Day Of Week   ,Days of Week        ,All Invoices Due  ,Payment_details.Day
+TC_08 Validate Customer Is Able To Schedule AutoPay Payments On A Sunday Of The Week ,Send Request To Create AutoPay For Specific Day Of The Week ,account_number      ,4111111111111111' ,Payment_details.Day
+TC_08 Validate Customer Is Able To Schedule AutoPay Payments On A Sunday Of The Week ,Validate Created AutoPay Details For Specific Day Of Week   ,Days of Week        ,All Invoices Due  ,Payment_details.Day
+TC_08 Validate Customer Is Able To Schedule AutoPay Payments On A Sunday Of The Week ,Validate AutoPay Origin In Scheduled Payments               ,account_number      ,invoice_number    ,AutoPay

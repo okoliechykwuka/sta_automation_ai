@@ -5,11 +5,6 @@ from langchain.callbacks.manager import CallbackManager
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 from langchain_ollama.llms import OllamaLLM
 
-from langchain_community.cache import InMemoryCache
-from langchain.globals import set_llm_cache
-
-set_llm_cache(InMemoryCache())
-
 # Set page config
 st.set_page_config(page_title="Software Test Automation AI", layout="wide", page_icon="🧪")
 
@@ -22,7 +17,6 @@ def init_ollama():
             num_ctx=6096,
             temperature=0.1,
             callback_manager=CallbackManager([StreamingStdOutCallbackHandler()]),
-            cache=True
         )
     except Exception as e:
         st.error(f"Failed to initialize Ollama: {str(e)}")

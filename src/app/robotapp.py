@@ -1,26 +1,38 @@
 import streamlit as st
-# import openai
 import pandas as pd
 from fpdf import FPDF
 from langchain.callbacks.manager import CallbackManager
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
-from langchain_community.llms.ollama import Ollama
+from langchain_ollama.llms import OllamaLLM
 
+from langchain_community.cache import InMemoryCache
+from langchain.globals import set_llm_cache
+
+set_llm_cache(InMemoryCache())
 
 # Set page config
 st.set_page_config(page_title="Software Test Automation AI", layout="wide", page_icon="🧪")
 
+# Initialize Ollama client
+@st.cache_resource
+def init_ollama():
+    try:
+        return OllamaLLM(
+            model="sta_llama3:latest",
+            num_ctx=6096,
+            temperature=0.1,
+            callback_manager=CallbackManager([StreamingStdOutCallbackHandler()]),
+            cache=True
+        )
+    except Exception as e:
+        st.error(f"Failed to initialize Ollama: {str(e)}")
+        return None
 
-ollama_llm = Ollama(model="sta_llama3:latest", num_ctx=6096, temperature=0.1, callback_manager=CallbackManager([StreamingStdOutCallbackHandler()]))
+ollama_llm = init_ollama()
 
-
-# Custom CSS
+# Custom CSS (unchanged)
 st.markdown("""
     <style>
-    .stApp {
-        background-color: #1E1E1E;
-        color: #FFFFFF;
-    }
     .stButton>button {
         color: #FFFFFF;
         background-color: #0E76A8;
@@ -37,49 +49,12 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# Load OpenAI API key from secrets
-def load_api_key():
-    try:
-        return st.secrets["OPENAI_API_KEY"]
-    except KeyError:
-        st.error("Failed to load API key: Check your secrets configuration.")
-        return None
-
-# api_key = load_api_key()
-# if api_key:
-#     openai.api_key = api_key
-
-# @st.cache_resource
-# def load_llama_model():
-#     try:
-#         model = Llama(model_path='./unsloth.Q4_K_M.gguf')
-#         return model
-#     except Exception as e:
-#         st.error(f"Error loading the LLaMA model: {str(e)}")
-#         return None
-
-# model = load_llama_model()
-
-# def call_openai_model(prompt):
-#     try:
-#         response = openai.chat.completions.create(
-#             model="gpt-4",
-#             messages=[
-#                 {"role": "system", "content": "You are a test case generator that precisely follows given examples and instructions."},
-#                 {"role": "user", "content": prompt}
-#             ],
-#             max_tokens=1000
-#         )
-#         return response.choices[0].message.content
-#     except Exception as e:
-#         st.error(f"Error calling OpenAI: {str(e)}")
-#         return "Error in generating response."
-
 def generate_llama_response(prompt):
+    if ollama_llm is None:
+        return "Ollama LLM is not initialized. Please check your connection and retry."
     try:
-        result = ollama_llm(prompt, max_tokens=200, temperature=0.7, top_p=0.9)
-        # response = "".join([res['text'] for res in result['choices']])
-        return result#response.strip()
+        result = ollama_llm(prompt)
+        return result.strip()
     except Exception as e:
         st.error(f"Error generating response with LLaMA: {str(e)}")
         return "Error in generating response."
@@ -99,8 +74,6 @@ def generate_test_case(model_choice, test_case_type, user_input, uploaded_data=N
     
     if model_choice == "Llama Custom" and ollama_llm:
         return generate_llama_response(prompt)
-    # elif model_choice == "OpenAI GPT":
-    #     return call_openai_model(prompt)
     else:
         return "Please select a model and enter a scenario."
 
@@ -114,22 +87,20 @@ def export_to_pdf(content):
 # Main layout
 st.title('Software Test Automation AI')
 
-# Add logo (ensure the logo path is correct)
-# st.image('.streamlit/robot_head_logo-removebg-preview.png', width=100)
-
 # Sidebar
 with st.sidebar:
-    model_choice = st.selectbox("Choose the model:", ["Llama Custom", "OpenAI GPT"])
-    test_case_type = st.selectbox("Select test case type:", ["Functional", "Performance", "Keyword-driven", "Security", "Usability", "Data-Driven"])
+    model_choice = st.selectbox("Choose the model:", ["Llama Custom"])
+    test_case_type = st.selectbox("Select test case type:", ["Keyword-driven", "Data-Driven"])
     if model_choice == "Llama Custom":
         temperature = st.slider('Temperature', 0.01, 2.0, 0.7, 0.01)
         top_p = st.slider('Top P', 0.01, 1.0, 0.9, 0.01)
 
     # Display chat history
     st.subheader("Conversation History")
-    if 'messages' in st.session_state:
-        for message in st.session_state.messages:
-            st.text(f"{message['role'].capitalize()}: {message['content']}")
+    if 'messages' not in st.session_state:
+        st.session_state.messages = []
+    # for message in st.session_state.messages:
+    #     st.text(f"{message['role'].capitalize()}: {message['content']}")
 
     # Clear conversation button
     if st.button("Clear Conversation"):
@@ -156,21 +127,17 @@ with col2:
 if st.button("Generate Test Case", key="generate_button"):
     uploaded_data = df if 'df' in locals() else None
     response = generate_test_case(model_choice, test_case_type, user_input, uploaded_data)
-    print("----------------------------------------------------------------")
-    print(response)
     
-    if 'messages' not in st.session_state:
-        st.session_state.messages = []
     st.session_state.messages.append({"role": "user", "content": user_input})
     st.session_state.messages.append({"role": "assistant", "content": response})
     
     st.text_area("Generated Test Case", value=response, height=300)
 
     # Export to PDF button
-    # pdf = export_to_pdf(response)
-    # st.download_button(
-    #     label="Download Test Case as PDF",
-    #     data=pdf,
-    #     file_name="test_case.pdf",
-    #     mime="application/pdf"
-    # )
+    pdf = export_to_pdf(response)
+    st.download_button(
+        label="Download Test Case as PDF",
+        data=pdf,
+        file_name="test_case.pdf",
+        mime="application/pdf"
+    )

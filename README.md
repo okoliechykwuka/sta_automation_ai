@@ -35,6 +35,10 @@ remotely, ensuring ease of use and accessibility
 
 The link to the project requirements and proposal is [project link](https://docs.google.com/document/d/1Glbf7YMBQ3khtANOYF6E6wsSpQbm-3hHPd262kqlBB0/edit?usp=sharing)
 
+
+The link to the project documentation  is [project documentation](https://docs.google.com/document/d/1d1pn0I61F4xtBMRCUnEnIRu2LXiNVwVotpJthWEtAM4/edit?usp=sharing)
+
+
 ## Project Milestone
 
 1. **1st milestone: Project Setup and Data Pipeline Creation**

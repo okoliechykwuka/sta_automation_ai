@@ -1,0 +1,503 @@
+PROMPT,RESPONSE
+"Generate a keyword-driven test case for validating email input on a signup form. Ensure the testcase includes steps for checking the input with valid, invalid, and borderline email addresses.","Test Case Type: keyword-driven
+Test Case Name: validate_email_input
+
+*** Settings ***
+Documentation    Validate email input on signup form
+Test Setup       Initialize Environment
+Test Teardown    Cleanup Environment
+Suite Setup      Open Application
+Suite Teardown   Close Application
+Resource         resource_file.robot
+
+*** Variables ***
+${VALID_USER}       testuser
+${VALID_PASSWORD}   secret
+
+*** Test Cases ***
+validate_email_input
+[Documentation]    Validate email input using the following steps
+Enter Email Address In Signup Form    email_address
+Validate Email Error Message For Invalid Address    error_message
+Validate Email Error Message For Borderline Case    error_message
+Validate Successful Signup With Valid Email    user_details
+Validate Email Error Message For Already Existing Email    error_message
+
+*** Keywords ***
+Enter Email Address In Signup Form
+[Arguments]    email_address
+[Return]    ${string}
+[Documentation]    Keyword description
+Log    email_address
+
+Validate Email Error Message For Invalid Address
+[Arguments]    error_message
+[Return]    ${boolean}
+[Documentation]    Keyword description
+Log    error_message
+
+Validate Email Error Message For Borderline Case
+[Arguments]    error_message
+[Return]    ${boolean}
+[Documentation]    Keyword description
+Log    error_message
+
+Validate Successful Signup With Valid Email
+[Arguments]    user_details
+[Return]    ${string}
+[Documentation]    Keyword description
+Log    user_details
+
+Validate Email Error Message For Already Existing Email
+[Arguments]    error_message
+[Return]    ${boolean}
+[Documentation]    Keyword description
+Log    error_message"
+Develop keyword-driven testcase on a user_registration scenario for new user sign-up,"Test Case Type: keyword-driven
+Test Case Name: user_registration
+
+*** Settings ***
+Documentation    Validate user registration
+Test Setup       Initialize Environment
+Test Teardown    Cleanup Environment
+Suite Setup      Open Application
+Suite Teardown   Close Application
+Resource         resource_file.robot
+
+*** Variables ***
+${VALID_USER}        newuser
+${VALID_PASSWORD}     password123
+${INVALID_EMAIL}      invalidemail.com
+${INVALID_PASSWORD}   shortpass
+
+*** Test Cases ***
+user_registration
+[Documentation]    Validate user registration using the following steps
+Launch Registration Application    browser_name|platform
+Enter User Details    username|password|email|confirm_password
+Submit Registration Form    nan
+Validate Successful Registration Message    expected_message
+Validate Error Message For Invalid Email    invalid_email|expected_error_message
+Validate Password Strength Indicator    password|expected_strength
+Validate Confirmation Message For Equal Passwords    password|confirm_password|expected_message
+Validate Registration Form Is Submitted    browser_name|platform
+
+*** Keywords ***
+Launch Registration Application
+[Arguments]    browser_name|platform
+[Return]    ${string}
+[Documentation]    Keyword description
+Log    browser_name|platform
+
+Enter User Details
+[Arguments]    username|password|email|confirm_password
+[Return]    ${string}
+[Documentation]    Keyword description
+Log    username|password|email|confirm_password
+
+Submit Registration Form
+[Arguments]    nan
+[Return]    ${string}
+[Documentation]    Keyword description
+Log    nan
+
+Validate Successful Registration Message
+[Arguments]    expected_message
+[Return]    ${boolean}
+[Documentation]    Keyword description
+Log    expected_message
+
+Validate Error Message For Invalid Email
+[Arguments]    invalid_email|expected_error_message
+[Return]    ${boolean}
+[Documentation]    Keyword description
+Log    invalid_email|expected_error_message
+
+Validate Password Strength Indicator
+[Arguments]    password|expected_strength
+[Return]    ${boolean}
+[Documentation]    Keyword description
+Log    password|expected_strength
+
+Validate Confirmation Message For Equal Passwords
+[Arguments]    password|confirm_password|expected_message
+[Return]    ${boolean}
+[Documentation]    Keyword description
+Log    password|confirm_password|expected_message
+
+Validate Registration Form Is Submitted
+[Arguments]    browser_name|platform
+[Return]    ${boolean}
+[Documentation]    Keyword description
+Log    browser_name|platform"
+Generate keyword-driven testcase for netbilling_keywords for API customeraccount,"Test Case Type: Keyword-Driven
+Test Case Name: customeraccount
+
+*** Settings ***
+Documentation    Validate customeraccount
+Test Setup       Initialize Environment
+Test Teardown    Cleanup Environment
+Suite Setup      Open Application
+Suite Teardown   Close Application
+Resource         resource_file.robot
+
+*** Variables ***
+${VALID_USER}       testuser
+${VALID_PASSWORD}   secret
+
+*** Test Cases ***
+customeraccount
+[Documentation]    Validate customeraccount using the following steps
+Send Request To Get Customer Account Details    account_id
+Create Request For Customer Account Creation    account_details
+Send Request To Create Customer Account    account_info
+Create Request For Customer Account Update    account_id, update_details
+Send Request To Update Customer Account    account_info
+Create Request For Customer Account Deletion    account_id
+Send Request To Delete Customer Account    account_id
+
+*** Keywords ***
+Send Request To Get Customer Account Details
+[Arguments]    account_id
+[Return]    ${string}
+[Documentation]    Keyword description
+Log    account_id
+
+Create Request For Customer Account Creation
+[Arguments]    account_details
+[Return]    ${string}
+[Documentation]    Keyword description
+Log    account_details
+
+Send Request To Create Customer Account
+[Arguments]    account_info
+[Return]    ${string}
+[Documentation]    Keyword description
+Log    account_info
+
+Create Request For Customer Account Update
+[Arguments]    account_id, update_details
+[Return]    ${string}
+[Documentation]    Keyword description
+Log    account_id, update_details
+
+Send Request To Update Customer Account
+[Arguments]    account_info
+[Return]    ${string}
+[Documentation]    Keyword description
+Log    account_info
+
+Create Request For Customer Account Deletion
+[Arguments]    account_id
+[Return]    ${string}
+[Documentation]    Keyword description
+Log    account_id
+
+Send Request To Delete Customer Account
+[Arguments]    account_id
+[Return]    ${string}
+[Documentation]    Keyword description
+Log    account_id"
+Generate data-driven testcase for clientcentral_testcases for refund processes Testcases TC_23 Validate Merchant Is Able To Issue Partial Refund On Credit Card,"Test Case Type: data-driven
+Test Case Name: TC_23 Validate Merchant Is Able To Issue Partial Refund On Credit Card
+
+*** Settings ***
+Documentation    Validate TC_23 Validate Merchant Is Able To Issue Partial Refund On Credit Card
+Test Template    Test Execution
+Resource         resource_file.robot
+
+*** Variables ***
+${VALID_USER}       testuser
+${VALID_PASSWORD}   secret
+
+*** Test Cases ***
+TC_23 Validate Merchant Is Able To Issue Partial Refund On Credit Card
+[Documentation]    Validate TC_23 Validate Merchant Is Able To Issue Partial Refund On Credit Card using the following steps
+Send Request To Create Customer    ${STERLING_COOPER}    ${nan}    ${nan}
+Send Request To Create Invoice For Customer    ${STERLING_COOPER}    ${account_number}    ${nan}
+Process Payment Through Credit Card    ${STERLING_COOPER}    ${account_number}    ${invoice_number}
+Navigate To Refund Process    ${account_number}    ${nan}    ${nan}
+Initiate Partial Refund    ${invoice_number}    ${50.00}    ${nan}
+Confirm Partial Refund    ${nan}    ${nan}    ${nan}
+Validate Refund Is Processed    ${invoice_number}    ${50.00}    ${nan}
+
+*** Keywords ***
+Send Request To Create Customer
+[Arguments]    ${STERLING_COOPER}    ${nan}    ${nan}
+[Return]    ${string}
+[Documentation]    Keyword description
+Log    ${STERLING_COOPER}    ${nan}    ${nan}
+
+Send Request To Create Invoice For Customer
+[Arguments]    ${STERLING_COOPER}    ${account_number}    ${nan}
+[Return]    ${string}
+[Documentation]    Keyword description
+Log    ${STERLING_COOPER}    ${account_number}    ${nan}
+
+Process Payment Through Credit Card
+[Arguments]    ${STERLING_COOPER}    ${account_number}    ${invoice_number}
+[Return]    ${string}
+[Documentation]    Keyword description
+Log    ${STERLING_COOPER}    ${account_number}    ${invoice_number}
+
+Navigate To Refund Process
+[Arguments]    ${account_number}    ${nan}    ${nan}
+[Return]    ${string}
+[Documentation]    Keyword description
+Log    ${account_number}    ${nan}    ${nan}
+
+Initiate Partial Refund
+[Arguments]    ${invoice_number}    ${50.00}    ${nan}
+[Return]    ${string}
+[Documentation]    Keyword description
+Log    ${invoice_number}    ${50.00}    ${nan}
+
+Confirm Partial Refund
+[Arguments]    ${nan}    ${nan}    ${nan}
+[Return]    ${boolean}
+[Documentation]    Keyword description
+Log    ${nan}    ${nan}    ${nan}
+
+Validate Refund Is Processed
+[Arguments]    ${invoice_number}    ${50.00}    ${nan}
+[Return]    ${boolean}
+[Documentation]    Keyword description
+Log    ${invoice_number}    ${50.00}    ${nan}"
+Create data-driven paynow test cases for RenterManager Testcases TC_06 Validate Manager Is Able To Generate Monthly Rent Statements,"*** Settings ***
+Documentation    Validate TC_06 Validate Manager Is Able To Generate Monthly Rent Statements
+Test Template    Test Execution
+iscardata    rent_statements
+validate_tc_06_validate_manager_is_able_to_generate_monthly_rent_statements
+
+*** Variables ***
+${VALID_USER}       testuser
+${VALID_PASSWORD}   secret
+
+*** Test Cases ***
+validate_tc_06_validate_manager_is_able_to_generate_monthly_rent_statements
+[Documentation]    Validate TC_06 Validate Manager Is Able To Generate Monthly Rent Statements using the following steps
+Send Request To Create Customer    ${RENTER_JONES}    ${nan}    ${nan}
+Generate Random Rental Details    ${RENTER_JONES}    ${nan}    ${nan}
+Create Lease Agreement For Renter    ${RENTER_JONES}    ${5}    ${nan}
+Apply Deposit And First Month Rent    ${RENTER_JONES}    ${5000}    ${6000}
+Simulate Payment For Subsequent Months    ${RENTER_JONES}    ${250}    ${1000}
+Navigate To Rent Statement Page    ${RENTER_JONES}    ${nan}    ${nan}
+Validate Rent Statement Is Generated    ${RENTER_JONES}    ${May 2023}    ${250}
+
+*** Keywords ***
+send_request_to_create_customer
+[Arguments]    ${RENTER_JONES}    ${nan}    ${nan}
+[Return]    ${string}
+[Documentation]    Keyword description
+Log    ${RENTER_JONES}    ${nan}    ${nan}
+
+generate_random_rental_details
+[Arguments]    ${RENTER_JONES}    ${nan}    ${nan}
+[Return]    ${string}
+[Documentation]    Keyword description
+Log    ${RENTER_JONES}    ${nan}    ${nan}
+
+create_lease_agreement_for_renter
+[Arguments]    ${RENTER_JONES}    ${5}    ${nan}
+[Return]    ${string}
+[Documentation]    Keyword description
+Log    ${RENTER_JONES}    ${5}    ${nan}
+
+apply_deposit_and_first_month_rent
+[Arguments]    ${RENTER_JONES}    ${5000}    ${6000}
+[Return]    ${string}
+[Documentation]    Keyword description
+Log    ${RENTER_JONES}    ${5000}    ${6000}
+
+simulate_payment_for_subsequent_months
+[Arguments]    ${RENTER_JONES}    ${250}    ${1000}
+[Return]    ${string}
+[Documentation]    Keyword description
+Log    ${RENTER_JONES}    ${250}    ${1000}
+
+navigate_to_rent_statement_page
+[Arguments]    ${RENTER_JONES}    ${nan}    ${nan}
+[Return]    ${string}
+[Documentation]    Keyword description
+Log    ${RENTER_JONES}    ${nan}    ${nan}
+
+validate_rent_statement_is_generated
+[Arguments]    ${RENTER_JONES}    ${May 2023}    ${250}
+[Return]    ${boolean}
+[Documentation]    Keyword description
+Log    ${RENTER_JONES}    ${May 2023}    ${250}"
+Validate keyword-driven clientcentral_keywords for API invoice,"Test Case Type: Keyword-Driven
+ Test Case Name: invoice
+
+*** Settings ***
+Documentation    Validate invoice
+Test Setup       Initialize Environment
+Test Teardown     Cleanup Environment
+Resource         resource_file.robot
+
+*** Variables ***
+${VALID_USER}       testuser
+${VALID_PASSWORD}   secret
+
+*** Test Cases ***
+invoice
+    [Documentation]    Validate invoice using the following steps
+Send Request To Get Invoice Details    id    
+    Create Body For Submit Invoice    business_id|invoice_id    
+    Send Request To Submit Invoice    business_id|invoice_id    
+    Create Body For Cancel Invoice    business_id|invoice_id    
+    Send Request To Cancel Invoice    business_id|invoice_id    
+    Create Body For Update Invoice Details    business_id|invoice_id
+
+*** Keywords ***
+Send Request To Get Invoice Details
+    [Arguments]    id
+    [Return]    ${string}
+    [Documentation]    Keyword description
+    Log    id
+
+Create Body For Submit Invoice
+    [Arguments]    business_id|invoice_id
+    [Return]    ${string}
+    [Documentation]    Keyword description
+    Log    business_id|invoice_id
+
+Send Request To Submit Invoice
+    [Arguments]    business_id|invoice_id
+    [Return]    ${string}
+    [Documentation]    Keyword description
+    Log    business_id|invoice_id
+
+Create Body For Cancel Invoice
+    [Arguments]    business_id|invoice_id
+    [Return]    ${string}
+    [Documentation]    Keyword description
+    Log    business_id|invoice_id
+
+Send Request To Cancel Invoice
+    [Arguments]    business_id|invoice_id
+    [Return]    ${string}
+    [Documentation]    Keyword description
+    Log    business_id|invoice_id
+
+Create Body For Update Invoice Details
+    [Arguments]    business_id|invoice_id
+    [Return]    ${string}
+    [Documentation]    Keyword description
+    Log    business_id|invoice_id"
+Perform keyword-driven testing for GlobalSystems payment_processing,"Test Case Type: Keyword-Driven
+ Test Case Name: payment_processing
+
+*** Settings ***
+Documentation    Validate payment_processing
+Test Setup       Initialize Environment
+Test Teardown     Cleanup Environment
+Suite Setup      Open Application
+Suite Teardown   Close Application
+Resource         resource_file.robot
+
+*** Variables ***
+${VALID_USER}       testuser
+${VALID_PASSWORD}   secret
+
+*** Test Cases ***
+payment_processing
+[Documentation]    Validate payment_processing using the following steps
+Login To PaymentPortal    username, password
+Navigate To PaymentPage    nan
+Enter Payment Details    amount, account_number, payment_method
+Submit Payment    nan
+Validate Payment Confirmation    expected_confirmation_message
+Logout From PaymentPortal    nan
+
+*** Keywords ***
+Login To PaymentPortal
+[Arguments]    username, password
+[Return]    ${boolean}
+[Documentation]    Keyword description
+Log    username, password
+
+Navigate To PaymentPage
+[Arguments]    nan
+[Return]    ${string}
+[Documentation]    Keyword description
+Log    nan
+
+Enter Payment Details
+[Arguments]    amount, account_number, payment_method
+[Return]    ${string}
+[Documentation]    Keyword description
+Log    amount, account_number, payment_method
+
+Submit Payment
+[Arguments]    nan
+[Return]    ${string}
+[Documentation]    Keyword description
+Log    nan
+
+Validate Payment Confirmation
+[Arguments]    expected_confirmation_message
+[Return]    ${boolean}
+[Documentation]    Keyword description
+Log    expected_confirmation_message
+
+Logout From PaymentPortal
+[Arguments]    nan
+[Return]    ${boolean}
+[Documentation]    Keyword description
+Log    nan"
+Validate data-driven clientcentral_testcases for dashboard Testcases TC_01 Validate Merchant Is Able To Navigate To Customer Details Page By Clicking on Customer,"*** Settings ***
+Documentation    Validate TC_01 Validate Merchant Is Able To Navigate To Customer Details Page By Clicking on Customer
+Test Template    Test Execution
+Resource         resource_file.robot
+
+*** Variables ***
+${VALID_USER}       testuser
+${VALID_PASSWORD}   secret
+
+*** Test Cases ***
+TC_01 Validate Merchant Is Able To Navigate To Customer Details Page By Clicking on Customer
+    [Documentation]    Validate TC_01 Validate Merchant Is Able To Navigate To Customer Details Page By Clicking on Customer using the following steps
+Send Request To Create Customer    ${STERLING_COOPER}    ${nan}    ${nan}    
+    Send Request To Create Invoice For Customer    ${STERLING_COOPER}    ${account_number}    ${nan}    
+    Send Request To Process Payment Through ACH/Echeck Card    ${STERLING_COOPER}    ${account_number}    ${invoice_number}    
+    Launch Client Central Application    ${STERLING_COOPER}    ${nan}    ${nan}    
+    Navigate To Customer Details Page    ${account_number}    ${nan}    ${nan}    
+    Validate Customer Details Page Is Displayed    ${account_number}    ${nan}    ${nan}
+
+*** Keywords ***
+Send Request To Create Customer
+    [Arguments]    ${STERLING_COOPER}    ${nan}    ${nan}
+    [Return]    ${string}
+    [Documentation]    Keyword description
+    Log    ${STERLING_COOPER}    ${nan}    ${nan}
+
+Send Request To Create Invoice For Customer
+    [Arguments]    ${STERLING_COOPER}    ${account_number}    ${nan}
+    [Return]    ${string}
+    [Documentation]    Keyword description
+    Log    ${STERLING_COOPER}    ${account_number}    ${nan}
+
+Send Request To Process Payment Through ACH/Echeck Card
+    [Arguments]    ${STERLING_COOPER}    ${account_number}    ${invoice_number}
+    [Return]    ${string}
+    [Documentation]    Keyword description
+    Log    ${STERLING_COOPER}    ${account_number}    ${invoice_number}
+
+Launch Client Central Application
+    [Arguments]    ${STERLING_COOPER}    ${nan}    ${nan}
+    [Return]    ${string}
+    [Documentation]    Keyword description
+    Log    ${STERLING_COOPER}    ${nan}    ${nan}
+
+Navigate To Customer Details Page
+    [Arguments]    ${account_number}    ${nan}    ${nan}
+    [Return]    ${string}
+    [Documentation]    Keyword description
+    Log    ${account_number}    ${nan}    ${nan}
+
+Validate Customer Details Page Is Displayed
+    [Arguments]    ${account_number}    ${nan}    ${nan}
+    [Return]    ${boolean}
+    [Documentation]    Keyword description
+    Log    ${account_number}    ${nan}    ${nan}"

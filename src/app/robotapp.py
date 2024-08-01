@@ -1,9 +1,31 @@
+import sys
+import os
 import streamlit as st
 import pandas as pd
 from fpdf import FPDF
 from langchain.callbacks.manager import CallbackManager
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
-from langchain_ollama.llms import OllamaLLM
+from langchain_community.llms.ollama import Ollama
+
+# Ensure the correct import path
+current_dir = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(current_dir)
+sys.path.append(os.path.join(current_dir, '../utilities'))
+
+from knowledge_graph import KnowledgeGraph
+from rag import rag_pipeline
+from config import config
+
+# Initialize Knowledge Graph
+kg = KnowledgeGraph()
+
+# Use the model endpoint from the configuration
+model_endpoint = config.MODEL_ENDPOINT
+
+# Function to build the knowledge graph
+def build_knowledge_graph():
+    kg.create_node("Person", {"name": "John Doe", "age": 29})
+    st.success("Knowledge Graph built successfully!")
 
 # Set page config
 st.set_page_config(page_title="Software Test Automation AI", layout="wide", page_icon="🧪")
@@ -12,11 +34,12 @@ st.set_page_config(page_title="Software Test Automation AI", layout="wide", page
 @st.cache_resource
 def init_ollama():
     try:
-        return OllamaLLM(
+        return Ollama(
             model="sta_llama3:latest",
             num_ctx=6096,
             temperature=0.1,
-            callback_manager=CallbackManager([StreamingStdOutCallbackHandler()]),
+            base_url="https://6407-102-91-4-155.ngrok-free.app/",
+            callback_manager=CallbackManager([StreamingStdOutCallbackHandler()])
         )
     except Exception as e:
         st.error(f"Failed to initialize Ollama: {str(e)}")
@@ -93,8 +116,6 @@ with st.sidebar:
     st.subheader("Conversation History")
     if 'messages' not in st.session_state:
         st.session_state.messages = []
-    # for message in st.session_state.messages:
-    #     st.text(f"{message['role'].capitalize()}: {message['content']}")
 
     # Clear conversation button
     if st.button("Clear Conversation"):
@@ -106,6 +127,8 @@ col1, col2 = st.columns(2)
 
 with col1:
     user_input = st.text_area("Enter your test scenario:", height=150)
+    if st.button("Build Knowledge Graph", key="build_graph"):
+        build_knowledge_graph()
 
 with col2:
     uploaded_file = st.file_uploader("Upload CSV or XLSX file for data-driven testing", type=['csv', 'xlsx'])

@@ -12,3 +12,5 @@ os
 streamlit
 requests
 neo4j
+pyvis
+plotly

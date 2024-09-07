@@ -1,0 +1,19 @@
+ReturnValue ,KeywordName                                                 ,Arguments                                                                                  ,Documentation
+            ,Login To PayNOW And Navigate To Autopay                     ,"account_number, invoice_number"                                                           ,Login To PayNOW And Navigate To Autopay
+            ,Enter Customer And Credit Card Details For AutoPay          ,card_number                                                                                ,Enter Customer AutoPay And Credit Card Details
+            ,Save AutoPay                                                ,                                                                                           ,Save AutoPay
+            ,Validate Created AutoPay Details For Sepecific Day Of Month ,"expected_scheduleday, expected_invoicetype, expected_paymentday, expected_invoiceduedays" ,Validate Created AutoPay Details For Sepecific Day Of Month
+            ,Enter Customer Details For AutoPay                          ,"customer_details, merchant"                                                               ,enter Customer details
+            ,Validate AutoPay Details Are Deleted                        ,                                                                                           ,Validated AutoPay Details Are Deleted
+            ,Validate AutoPay Origin In Scheduled Payments               ,"account_number, invoice_number, expected_origin"                                          ,Validate AutoPay Origin In Schedule Payments
+            ,Delete AutoPay Details                                      ,                                                                                           ,Delete Created AutoPay Details
+            ,Select Specific Day Of The Month                            ,                                                                                           ,Select Specific Day Of The Month
+            ,Validate Created AutoPay Details For Each Day Of Week       ,"expected_scheduleday, expected_invoicetype"                                               ,Validate Created AutoPay Details For Each Day Of Week
+            ,Validate Created AutoPay Details For Specific Day Of Week   ,"expected_scheduleday, expected_invoicetype, expected_dayofweek"                           ,Created AutoPay Details For Specific Day Of Week
+            ,Select Invoices That Are Within Due Date                    ,due                                                                                        ,Select Invoices That Are Due Within Days
+            ,Select Invoices Due For The Payment                         ,                                                                                           ,Select Invoices Due For The Payment
+            ,Select Specific Day Of The Week                             ,day                                                                                        ,Select Specific Day Of The Week
+            ,Close Delete AutoPay Confirmation Popup                     ,                                                                                           ,Close Delete AutoPay Confirmation Popup
+            ,Select Invoices That Are Past The Invoice Date              ,invoice_due                                                                                ,Select Invoices That Are Days Or More Past Due Date
+            ,Validate Delete AutoPay Confirmation Popup Is Closed        ,                                                                                           ,Validate Delete AutoPay Confirmation Popup Is Closed
+            ,Select Each Day As Payment Option                           ,                                                                                           ,Select Each Day As Payment Option

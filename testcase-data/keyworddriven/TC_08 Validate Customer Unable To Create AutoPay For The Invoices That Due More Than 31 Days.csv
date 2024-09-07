@@ -1,0 +1,8 @@
+TestcaseName,KeywordName,Argument1,Argument2,Argument3
+TC_08 Validate Customer Unable To Create AutoPay For The Invoices That Due More Than 31 Days,Send Request To Create Customer,OMNICORP_MERCHANT,3,
+TC_08 Validate Customer Unable To Create AutoPay For The Invoices That Due More Than 31 Days,Send Request To Create Invoice For Customer,account_number,OMNICORP_MERCHANT,3
+TC_08 Validate Customer Unable To Create AutoPay For The Invoices That Due More Than 31 Days,Login To PayNOW And Navigate To Autopay,account_number,invoice_number,
+TC_08 Validate Customer Unable To Create AutoPay For The Invoices That Due More Than 31 Days,Select Each Day As Payment Option,,,
+TC_08 Validate Customer Unable To Create AutoPay For The Invoices That Due More Than 31 Days,Select Invoices That Are Within Due Date,32,,
+TC_08 Validate Customer Unable To Create AutoPay For The Invoices That Due More Than 31 Days,Enter Customer And Credit Card Details For AutoPay,4217651111111119,,
+TC_08 Validate Customer Unable To Create AutoPay For The Invoices That Due More Than 31 Days,Validate Error Message Is Displayed,Due within days must be a number between 1 & 30,,

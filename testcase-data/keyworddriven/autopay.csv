@@ -1,0 +1,6 @@
+ReturnValue     ,KeywordName                                                 ,Arguments                              ,Documentation
+autopay_details ,Send Request To Get AutoPay Details                         ,"date, customer_number"                ,Send Request To Get AutoPay Details
+json_body       ,Create Request For AutoPay                                  ,"autopay_details, 16digits_cardnumber" ,Create Request For AutoPay
+                ,Send Request To Create AutoPay For Day Of The Month         ,"customer_number, card_number"         ,Get Auto Pay Details For Day Of The Month
+                ,Send Request To Create AutoPay For Each Day                 ,"customer_number, card_number"         ,Get Auto Pay Details For Each Day
+                ,Send Request To Create AutoPay For Specific Day Of The Week ,"customer_number, card_number, day"    ,Get Auto Pay Details For Specific Day Of The Week

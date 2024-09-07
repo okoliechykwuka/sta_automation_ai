@@ -1,0 +1,9 @@
+TestcaseName,KeywordName,Argument1,Argument2,Documentation
+TC_23 Validate That Application Sends Message If The State Field Is NOT Selected,Enter Customer Details Without State,,,Application Sends Message If The State Field Is NOT Selected
+TC_23 Validate That Application Sends Message If The State Field Is NOT Selected,Launch PayNow Application,NON_INTEGRATED_MERCHANT,,Application Sends Message If The State Field Is NOT Selected
+TC_23 Validate That Application Sends Message If The State Field Is NOT Selected,Enter Customer Details,customer_details,NON_INTEGRATED_MERCHANT,Application Sends Message If The State Field Is NOT Selected
+TC_23 Validate That Application Sends Message If The State Field Is NOT Selected,Select Payment Type,Lump Sum,,Application Sends Message If The State Field Is NOT Selected
+TC_23 Validate That Application Sends Message If The State Field Is NOT Selected,Enter Lumpsum Amount,1,,Application Sends Message If The State Field Is NOT Selected
+TC_23 Validate That Application Sends Message If The State Field Is NOT Selected,Select Payment Method,ACH / eCheck,,Application Sends Message If The State Field Is NOT Selected
+TC_23 Validate That Application Sends Message If The State Field Is NOT Selected,Enter ACH/ECheck Details,ACH_ECHECK_DETAILS,,Application Sends Message If The State Field Is NOT Selected
+TC_23 Validate That Application Sends Message If The State Field Is NOT Selected,Validate Errors After Clicking On Process Invoice,Please select a state (or region),,Application Sends Message If The State Field Is NOT Selected

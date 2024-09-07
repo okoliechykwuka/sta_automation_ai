@@ -1,0 +1,14 @@
+TestcaseName,KeywordName,Argument1,Argument2,Argument3
+TC_07 Validate Customer Is Able To Schedule Payment To Multiple Invoices With Multiple Invoice Due Dates,Send Request To Create Customer,OMNICORP_MERCHANT,3,
+TC_07 Validate Customer Is Able To Schedule Payment To Multiple Invoices With Multiple Invoice Due Dates,Create Multiple Invoices With Multiple Due Dates,account_number,OMNICORP_MERCHANT,
+TC_07 Validate Customer Is Able To Schedule Payment To Multiple Invoices With Multiple Invoice Due Dates,Generate Random Customer Details,,,
+TC_07 Validate Customer Is Able To Schedule Payment To Multiple Invoices With Multiple Invoice Due Dates,Launch PayNow Application,OMNICORP_MERCHANT,,
+TC_07 Validate Customer Is Able To Schedule Payment To Multiple Invoices With Multiple Invoice Due Dates,Enter Account Number And Invoice,account_number,invoices_list.1,
+TC_07 Validate Customer Is Able To Schedule Payment To Multiple Invoices With Multiple Invoice Due Dates,Enter Customer Details,customer_details,OMNICORP_MERCHANT,
+TC_07 Validate Customer Is Able To Schedule Payment To Multiple Invoices With Multiple Invoice Due Dates,Select All Invoices,,,
+TC_07 Validate Customer Is Able To Schedule Payment To Multiple Invoices With Multiple Invoice Due Dates,Select Payment Method,Credit Card,,
+TC_07 Validate Customer Is Able To Schedule Payment To Multiple Invoices With Multiple Invoice Due Dates,Enter Credit Card Details,CREDIT_CARD_DETAILS,,
+TC_07 Validate Customer Is Able To Schedule Payment To Multiple Invoices With Multiple Invoice Due Dates,Select Payment Date,today+1,,
+TC_07 Validate Customer Is Able To Schedule Payment To Multiple Invoices With Multiple Invoice Due Dates,Create Schedule Payment,,,
+TC_07 Validate Customer Is Able To Schedule Payment To Multiple Invoices With Multiple Invoice Due Dates,Send Event To Process Schedule Payment,account_number,invoices_list.1,
+TC_07 Validate Customer Is Able To Schedule Payment To Multiple Invoices With Multiple Invoice Due Dates,Validate Scheduled Payment Status,account_number,invoices_list.1,Completed

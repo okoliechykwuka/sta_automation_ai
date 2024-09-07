@@ -41,32 +41,32 @@ if "graph_data" not in st.session_state:
 if "uploaded_files" not in st.session_state:
     st.session_state.uploaded_files = []
 
-# @retry(stop=stop_after_attempt(3), wait=wait_fixed(2))
-# @st.cache_resource
-# def init_ollama():
-#     try:
-#         return Ollama(
-#             model="sta_llama3.1_v2",
-#             num_ctx=6096,
-#             temperature=0.1,
-#             base_url="https://0c74-102-91-93-248.ngrok-free.app/",
-#             callbacks=[StreamingStdOutCallbackHandler()]
-#         )
-#     except Exception as e:
-#         st.error(f"Failed to initialize Ollama: {str(e)}")
-#         return
-
+@retry(stop=stop_after_attempt(3), wait=wait_fixed(2))
 @st.cache_resource
-def init_openai():
+def init_ollama():
     try:
-        return OpenAI(
-            api_key=config.OPENAI_API_KEY,
+        return Ollama(
+            model="sta_llama3.1_v2",
+            num_ctx=6096,
             temperature=0.1,
-            max_tokens=500  # Set the max tokens limit here
+            base_url="https://0c74-102-91-93-248.ngrok-free.app/",
+            callbacks=[StreamingStdOutCallbackHandler()]
         )
     except Exception as e:
-        st.error(f"Failed to initialize OpenAI: {str(e)}")
-        return None
+        st.error(f"Failed to initialize Ollama: {str(e)}")
+        return
+
+# @st.cache_resource
+# def init_openai():
+#     try:
+#         return OpenAI(
+#             api_key=config.OPENAI_API_KEY,
+#             temperature=0.1,
+#             max_tokens=500  # Set the max tokens limit here
+#         )
+#     except Exception as e:
+#         st.error(f"Failed to initialize OpenAI: {str(e)}")
+#         return None
 
 @st.cache_resource
 def init_neo4j():
@@ -81,23 +81,23 @@ def init_neo4j():
         return None
 
 # Initialize components
-openai_llm = init_openai()
-# ollama_llm = init_ollama()
+# openai_llm = init_openai()
+ollama_llm = init_ollama()
 neo4j_graph = init_neo4j()
 neo4j_driver = get_neo4j_driver()
 vector_index = create_vector_index()
 
-if openai_llm is None or neo4j_graph is None or neo4j_driver is None:
-    st.error("Failed to initialize required components. Please check your configurations.")
-    st.stop()
-
-# if ollama_llm is None or neo4j_graph is None or neo4j_driver is None:
+# if openai_llm is None or neo4j_graph is None or neo4j_driver is None:
 #     st.error("Failed to initialize required components. Please check your configurations.")
 #     st.stop()
 
+if ollama_llm is None or neo4j_graph is None or neo4j_driver is None:
+    st.error("Failed to initialize required components. Please check your configurations.")
+    st.stop()
+
 # Create a GraphCypherQAChain
 qa_chain = GraphCypherQAChain.from_llm(
-    openai_llm,
+    ollama_llm,
     graph=neo4j_graph,
     verbose=True
 )
@@ -144,7 +144,7 @@ def generate_test_cases(prompt, test_type, use_knowledge_graph, num_testcases, u
         full_prompt = f"{context}\nGenerate a new test case named '{test_type}_{i+1}' for: {prompt}\n"
         full_prompt += "Please follow a similar structure to the example test cases, including all relevant sections (Settings, Variables, Test Cases) and maintain a step-by-step approach."
 
-        response = openai_llm(full_prompt)
+        response = ollama_llm(full_prompt)
         responses.append(response)
         add_prompt_to_graph(neo4j_driver, prompt, response, f"{test_type}_{i+1}")
     return responses

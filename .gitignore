@@ -65,7 +65,6 @@ pytest_debug.log
 .vscode/
 
 # Environments
-.env
 .venv
 venv/
 stdautomationenv/

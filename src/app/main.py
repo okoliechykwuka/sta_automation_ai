@@ -14,7 +14,7 @@ import streamlit.components.v1 as components
 from langchain_openai import OpenAI
 import logging
 from neo4j.exceptions import Neo4jError
-from fpdf import FPDF  # For PDF generation
+from fpdf import FPDF
 # from tenacity import retry, stop_after_attempt, wait_fixed
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -56,18 +56,6 @@ def init_ollama():
         st.error(f"Failed to initialize Ollama: {str(e)}")
         return
 
-# @st.cache_resource
-# def init_openai():
-#     try:
-#         return OpenAI(
-#             api_key=config.OPENAI_API_KEY,
-#             temperature=0.1,
-#             max_tokens=500  # Set the max tokens limit here
-#         )
-#     except Exception as e:
-#         st.error(f"Failed to initialize OpenAI: {str(e)}")
-#         return None
-
 @st.cache_resource
 def init_neo4j():
     try:
@@ -81,15 +69,10 @@ def init_neo4j():
         return None
 
 # Initialize components
-# openai_llm = init_openai()
 ollama_llm = init_ollama()
 neo4j_graph = init_neo4j()
 neo4j_driver = get_neo4j_driver()
 vector_index = create_vector_index()
-
-# if openai_llm is None or neo4j_graph is None or neo4j_driver is None:
-#     st.error("Failed to initialize required components. Please check your configurations.")
-#     st.stop()
 
 if ollama_llm is None or neo4j_graph is None or neo4j_driver is None:
     st.error("Failed to initialize required components. Please check your configurations.")
@@ -165,13 +148,13 @@ def download_test_cases(test_cases):
 
     for idx, test_case in enumerate(test_cases, 1):
         if idx > 1:
-            # Add a line of dashes before each test case (except the first one)
+            # line of dashes before each test case (except the first one)
             pdf.cell(0, 5, "-" * 150, ln=True, align="C")
-            pdf.ln(5)  # Add some space after the line of dashes
+            pdf.ln(5)  # space after the line of dashes
 
         pdf.cell(200, 8, f"Test Case {idx}", ln=True, align="L")
         pdf.multi_cell(0, 6, test_case)
-        pdf.ln(5)  # Add some space after each test case
+        pdf.ln(5)  # space after each test case
     
     pdf_output = pdf.output(dest='S').encode('latin1')
     st.download_button(

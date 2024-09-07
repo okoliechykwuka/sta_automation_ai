@@ -9,5 +9,9 @@ class Config:
     NEO4J_USER = os.getenv('NEO4J_USER')
     NEO4J_PASSWORD = os.getenv('NEO4J_PASSWORD')
     MODEL_ENDPOINT = os.getenv('MODEL_ENDPOINT')
+    OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 
 config = Config()
+
+# print(f"Loaded OPENAI_API_KEY: {config.OPENAI_API_KEY}")
+print(f"Loaded MODEL_ENDPOINT: {config.MODEL_ENDPOINT}")

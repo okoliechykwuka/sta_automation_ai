@@ -108,6 +108,15 @@ src/app/chatbot.py
 src/app/newapp.py
 src/app/path_test.py
 src/app/newserver.py
+src/app/pyvis_graph.html
+src/app/oldkg.py
+src/app/oldmain_v2.py
+src/app/oldmain.py
+src/utilities/helper_functions.py
+src/utilities/logger.py
+docker-compose.yml
+Dockerfile
+
 
 # models
 src/app/model/unsloth.Q4_K_M.gguf

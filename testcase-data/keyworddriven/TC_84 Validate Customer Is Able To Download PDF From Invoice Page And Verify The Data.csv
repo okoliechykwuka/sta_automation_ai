@@ -1,0 +1,11 @@
+TestcaseName,KeywordName,Argument1,Argument2,Documentation
+TC_84 Validate Customer Is Able To Download PDF From Invoice Page And Verify The Data,Send Request To Create Customer,STERLING_COOPER_MERCHANT,,Customer Is Able To Download PDF From Invoice Page And Verify The Data
+TC_84 Validate Customer Is Able To Download PDF From Invoice Page And Verify The Data,Send Request To Create Invoice For Customer,account_number,STERLING_COOPER_MERCHANT,Customer Is Able To Download PDF From Invoice Page And Verify The Data
+TC_84 Validate Customer Is Able To Download PDF From Invoice Page And Verify The Data,Launch PayNow Application,STERLING_COOPER_MERCHANT,,Customer Is Able To Download PDF From Invoice Page And Verify The Data
+TC_84 Validate Customer Is Able To Download PDF From Invoice Page And Verify The Data,Enter Account Number And Invoice,account_number,invoice_number,Customer Is Able To Download PDF From Invoice Page And Verify The Data
+TC_84 Validate Customer Is Able To Download PDF From Invoice Page And Verify The Data,Navigate To Invoice Page,invoice_number,,Customer Is Able To Download PDF From Invoice Page And Verify The Data
+TC_84 Validate Customer Is Able To Download PDF From Invoice Page And Verify The Data,Navigate To Invoice PDF Page,,,Customer Is Able To Download PDF From Invoice Page And Verify The Data
+TC_84 Validate Customer Is Able To Download PDF From Invoice Page And Verify The Data,Get PDF Content From Browser,invoice_number,,Customer Is Able To Download PDF From Invoice Page And Verify The Data
+TC_84 Validate Customer Is Able To Download PDF From Invoice Page And Verify The Data,Validate PDF Content,invoice_content,invoice_number,Customer Is Able To Download PDF From Invoice Page And Verify The Data
+TC_84 Validate Customer Is Able To Download PDF From Invoice Page And Verify The Data,Open PayNOW From PDF,invoice_content,,Customer Is Able To Download PDF From Invoice Page And Verify The Data
+TC_84 Validate Customer Is Able To Download PDF From Invoice Page And Verify The Data,Validate PayNOW Page Is Displayed,,,Customer Is Able To Download PDF From Invoice Page And Verify The Data

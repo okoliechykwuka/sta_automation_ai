@@ -1,0 +1,13 @@
+﻿TestcaseName,KeywordName,Argument1,Argument2
+TC_08 Validate Customer Is Able To Process Payment For MAINE State (ME) With Credit Card,Send Request To Create Customer,OMNICORP_MERCHANT,3
+TC_08 Validate Customer Is Able To Process Payment For MAINE State (ME) With Credit Card,Send Request To Create Invoice For Customer,account_number,OMNICORP_MERCHANT
+TC_08 Validate Customer Is Able To Process Payment For MAINE State (ME) With Credit Card,Launch PayNow Application,OMNICORP_MERCHANT,
+TC_08 Validate Customer Is Able To Process Payment For MAINE State (ME) With Credit Card,Enter Account Number And Invoice,account_number,invoice_number
+TC_08 Validate Customer Is Able To Process Payment For MAINE State (ME) With Credit Card,Enter Customer Details,states,OMNICORP_MERCHANT
+TC_08 Validate Customer Is Able To Process Payment For MAINE State (ME) With Credit Card,Select Payment Type,Lump Sum,
+TC_08 Validate Customer Is Able To Process Payment For MAINE State (ME) With Credit Card,Enter Lumpsum Amount,97.99,
+TC_08 Validate Customer Is Able To Process Payment For MAINE State (ME) With Credit Card,Select Payment Method,Credit Card,
+TC_08 Validate Customer Is Able To Process Payment For MAINE State (ME) With Credit Card,Enter Credit Card Details,CREDIT_CARD_DETAILS,
+TC_08 Validate Customer Is Able To Process Payment For MAINE State (ME) With Credit Card,Validate Surcharge Percentage Should Be Equal,states.Surcharge_Percentage,
+TC_08 Validate Customer Is Able To Process Payment For MAINE State (ME) With Credit Card,Process Invoice Payment,,
+TC_08 Validate Customer Is Able To Process Payment For MAINE State (ME) With Credit Card,Validate Payment Receipt Is Generated,,

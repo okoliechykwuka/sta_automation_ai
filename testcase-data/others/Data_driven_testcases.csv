@@ -1,0 +1,152 @@
+prompt,testcase_type,testcase_name,response,documentation
+"Build a robot framework test case for testing content functionality in the  platform, specifically FTC_01 Validate Account Number.",data-driven,FTC_01 Validate Account Number,"*** Settings ***
+Description       This test case checks whether the account number entered by a user is valid, following the predefined rules and format.
+Test Teardown    Close All Browsers
+Test Template    Validate FTC_01 Validate Account Number
+Resource         ../../../../Config/super.resource
+Library          DataDriver    ${TESTDATA_FOLDER}    sheet_name=FTC_01 Validate Account Number
+
+*** Test Cases ***
+    ${test_case_name}
+
+*** Keywords ***
+Validate FTC_01 Validate Account Number
+    [Arguments]    ${test_case_name}
+    [Description]       This test case checks whether the account number entered by a user is valid, following the predefined rules and format.
+    ${test_data}    Read TestData From Excel    ${TESTDATA_FOLDER}    ${test_case_name}   FTC_01 Validate Account Number
+    Launch PayNow Application    ${test_data}[NON_INTEGRATED_MERCHANT]
+    Enter Customer Details    ${test_data}[customer_details]    ${test_data}[NON_INTEGRATED_MERCHANT]
+    Select Payment Type    ${test_data}[Lump Sum]
+    Enter Lumpsum Amount    ${test_data}[1]
+    Select Payment Method    ${test_data}[ACH / eCheck]
+    Enter ACH/ECheck Details    ${test_data}[ACH_ECHECK_DETAILS]
+    Validate Errors After Clicking On Process Invoice    ${test_data}[customer_details.Error_Message]
+    Process Invoice Payment    
+    Validate Payment Receipt Is Generated    
+","The 'FTC_01 Validate Account Number' test case is designed to confirm the functionality and accuracy of account numbers within a system. It is crucial as it helps ensure the validity of customer's information, prevent fraudulent transactions, and ensure seamless financial operations."
+"Create a robot framework test case for testing content functionality in the  platform, specifically FTC_54 Validate Payment Amount.",data-driven,FTC_54 Validate Payment Amount,"*** Settings ***
+Description       This test case verifies whether the system correctly calculates, displays, and processes the payment amount entered by the user during a transaction process.
+Test Teardown    Close All Browsers
+Test Template    Validate FTC_54 Validate Payment Amount
+Resource         ../../../../Config/super.resource
+Library          DataDriver    ${TESTDATA_FOLDER}    sheet_name=FTC_54 Validate Payment Amount
+
+*** Test Cases ***
+    ${test_case_name}
+
+*** Keywords ***
+Validate FTC_54 Validate Payment Amount
+    [Arguments]    ${test_case_name}
+    [Description]       This test case verifies whether the system correctly calculates, displays, and processes the payment amount entered by the user during a transaction process.
+    ${test_data}    Read TestData From Excel    ${TESTDATA_FOLDER}    ${test_case_name}   FTC_54 Validate Payment Amount
+    Generate Random Customer Details    
+    Launch PayNow Application    ${test_data}[NON_INTEGRATED_MERCHANT]
+    Enter Customer Details    ${test_data}[customer_details]    ${test_data}[NON_INTEGRATED_MERCHANT]
+    Select Payment Type    ${test_data}[Lump Sum]
+    Enter Lumpsum Amount    ${test_data}[1]
+    Select Payment Method    ${test_data}[ACH / eCheck]
+    Enter ACH/ECheck Details    ${test_data}[ACH_ECHECK_DETAILS]
+    Validate Errors After Clicking On Process Invoice    ${test_data}[customer_details.Error_Message]
+    Process Invoice Payment    
+    Validate Payment Receipt Is Generated    
+",The test case 'FTC_54 Validate Payment Amount' primarily covers the functionality of verifying if the payment amount entered by a user is valid or not. This step is crucial in any payment or transaction process to ensure that the system accurately processes the correct amount and helps in avoiding any financial inconsistencies or errors.
+"Build a robot framework test case for testing content functionality in the  platform, specifically FTC_88 Validate Credit Card Number.",data-driven,FTC_88 Validate Credit Card Number,"*** Settings ***
+Description       This test case checks the functionality of the system's ability to correctly validate a given credit card number, ensuring that it meets the established criteria for a legitimate and valid credit card number.
+Test Teardown    Close All Browsers
+Test Template    Validate FTC_88 Validate Credit Card Number
+Resource         ../../../../Config/super.resource
+Library          DataDriver    ${TESTDATA_FOLDER}    sheet_name=FTC_88 Validate Credit Card Number
+
+*** Test Cases ***
+    ${test_case_name}
+
+*** Keywords ***
+Validate FTC_88 Validate Credit Card Number
+    [Arguments]    ${test_case_name}
+    [Description]       This test case checks the functionality of the system's ability to correctly validate a given credit card number, ensuring that it meets the established criteria for a legitimate and valid credit card number.
+    ${test_data}    Read TestData From Excel    ${TESTDATA_FOLDER}    ${test_case_name}   FTC_88 Validate Credit Card Number
+    Generate Random Customer Details    
+    Launch PayNow Application    ${test_data}[NON_INTEGRATED_MERCHANT]
+    Enter Customer Details    ${test_data}[customer_details]    ${test_data}[NON_INTEGRATED_MERCHANT]
+    Select Payment Type    ${test_data}[Lump Sum]
+    Enter Lumpsum Amount    ${test_data}[1]
+    Select Payment Method    ${test_data}[Credit Card]
+    Enter Credit Card Values    ${test_data}[creditcard_details]
+    Validate Errors After Clicking On Process Invoice    ${test_data}[creditcard_details.Error_Message]
+    Process Invoice Payment    
+    Validate Payment Receipt Is Generated    
+","The test case 'FTC_88 Validate Credit Card Number' is primarily focused on assessing the functionality of the credit card validation system within an application or platform. It ensures that the system can accurately determine whether a given number is a valid credit card number. This is crucial as it prevents fraud, safeguards financial transactions and enhances user-trust."
+"Validate a robot framework test case for testing content functionality in the  platform, specifically TC_01 Validate Customer Is Unable To Login Into Paynow With Invalid Account Number and Valid or Invalid Invoice Number.",data-driven,TC_01 Validate Customer Is Unable To Login Into Paynow With Invalid Account Number and Valid or Invalid Invoice Number,"*** Settings ***
+Description       This test case assesses the login functionality of Paynow by attempting to log in with an invalid account number and either a valid or invalid invoice number. The expected result is that the customer should not be able to access the system.
+Test Teardown    Close All Browsers
+Test Template    Validate TC_01 Validate Customer Is Unable To Login Into Paynow With Invalid Account Number and Valid or Invalid Invoice Number
+Resource         ../../../../Config/super.resource
+Library          DataDriver    ${TESTDATA_FOLDER}    sheet_name=TC_01 Validate Customer Is Unable To Login Into Paynow With Invalid Account Number and Valid or Invalid Invoice Number
+
+*** Test Cases ***
+    ${test_case_name}
+
+*** Keywords ***
+Validate TC_01 Validate Customer Is Unable To Login Into Paynow With Invalid Account Number and Valid or Invalid Invoice Number
+    [Arguments]    ${test_case_name}
+    [Description]       This test case assesses the login functionality of Paynow by attempting to log in with an invalid account number and either a valid or invalid invoice number. The expected result is that the customer should not be able to access the system.
+    ${test_data}    Read TestData From Excel    ${TESTDATA_FOLDER}    ${test_case_name}   TC_01 Validate Customer Is Unable To Login Into Paynow With Invalid Account Number and Valid or Invalid Invoice Number
+    Launch PayNow Application    ${test_data}[NON_INTEGRATED_MERCHANT]
+    Enter Account Number And Invoice    ${test_data}[login_details.Account_Number]    ${test_data}[login_details.Invoice_Number]
+    Validate Error Message Is Displayed    ${test_data}[login_details.Error_Message]
+    Validate Account Number Is Displayed    ${test_data}[login_details.Account_No]    ${test_data}[login_details.Customer_Name]
+","This test case verifies that a customer is prevented from logging into the Paynow system with an invalid account number, irrespective of whether they use a valid or invalid invoice number. The functionality it checks is significant for account security and data integrity, ensuring unauthorized access to an account is prevented when incorrect information is used."
+"Build a robot framework test case for testing content functionality in the  platform, specifically TC_05 Validate Merchant Is Able To Schedule Payment With Master Credit Card.",data-driven,TC_05 Validate Merchant Is Able To Schedule Payment With Master Credit Card,"*** Settings ***
+Description       This test case checks if a merchant has the functionality to schedule a payment using a Master Credit Card.
+Test Teardown    Close All Browsers
+Test Template    Validate TC_05 Validate Merchant Is Able To Schedule Payment With Master Credit Card
+Resource         ../../../../Config/super.resource
+Library          DataDriver    ${TESTDATA_FOLDER}    sheet_name=TC_05 Validate Merchant Is Able To Schedule Payment With Master Credit Card
+
+*** Test Cases ***
+    ${test_case_name}
+
+*** Keywords ***
+Validate TC_05 Validate Merchant Is Able To Schedule Payment With Master Credit Card
+    [Arguments]    ${test_case_name}
+    [Description]       This test case checks if a merchant has the functionality to schedule a payment using a Master Credit Card.
+    ${test_data}    Read TestData From Excel    ${TESTDATA_FOLDER}    ${test_case_name}   TC_05 Validate Merchant Is Able To Schedule Payment With Master Credit Card
+    Launch PayNow Application    ${test_data}[OMNICORP_MERCHANT]
+    Enter Account Number And Invoice    ${test_data}[account_number]    ${test_data}[invoice_number]
+    Enter Customer Details    ${test_data}[customer_details]    ${test_data}[OMNICORP_MERCHANT]
+    Select Payment Method 
+    ${test_data}[Credit Card]
+    Enter Credit Card Details    ${test_data}[Scheduled_Payments.Creditcard_Number]    ${test_data}[Scheduled_Payments.Expiry_Date]
+    Select Payment Date    ${test_data}[today+1]
+    Create Schedule Payment    
+    Send Event To Process Schedule Payment    ${test_data}[account_number]    ${test_data}[invoice_number]
+    Validate Scheduled Payment Status    ${test_data}[account_number]    ${test_data}[invoice_number]
+","The test case 'TC_05 Validate Merchant Is Able To Schedule Payment With Master Credit Card' primarily checks if the merchant is able to schedule payments using a Master Credit Card. This functionality is of critical importance as it determines the versatility and convenience of payment options available to the merchant, directly impacting their operational efficiency and customer satisfaction."
+"Generate a robot framework test case for testing content functionality in the  platform, specifically TC_08 Validate Customer Is Able To Process Payment For MAINE State (ME) With Credit Card.",data-driven,TC_08 Validate Customer Is Able To Process Payment For MAINE State (ME) With Credit Card,"*** Settings ***
+Description       This test case verifies that a customer from Maine (ME) state is successfully able to process a payment transaction through credit card.
+Test Teardown    Close All Browsers
+Test Template    Validate TC_08 Validate Customer Is Able To Process Payment For MAINE State (ME) With Credit Card
+Resource         ../../../../Config/super.resource
+Library          DataDriver    ${TESTDATA_FOLDER}    sheet_name=TC_08 Validate Customer Is Able To Process Payment For MAINE State (ME) With Credit Card
+
+*** Test Cases ***
+    ${test_case_name}
+
+*** Keywords ***
+Validate TC_08 Validate Customer Is Able To Process Payment For MAINE State (ME) With Credit Card
+    [Arguments]    ${test_case_name}
+    [Description]       This test case verifies that a customer from Maine (ME) state is successfully able to process a payment transaction through credit card.
+    ${test_data}    Read TestData From Excel    ${TESTDATA_FOLDER}    ${test_case_name}   TC_08 Validate Customer Is Able To Process Payment For MAINE State (ME) With Credit Card
+    Send Request To Create Customer    ${test_data}[OMNICORP_MERCHANT]    ${test_data}[3]
+    Send Request To Create Invoice For Customer    ${test_data}[account_number]    ${test_data}[OMNICORP_MERCHANT]
+    Launch PayNow Application    ${test_data}[OMNICORP_MERCHANT]
+    Enter Account Number And Invoice    ${test_data}[account_number]    ${test_data}[invoice_number]
+    Enter Customer Details    ${test_data}[states]    ${test_data}[OMNICORP_MERCHANT]
+    Select Payment Type    ${test_data}[Lump Sum]
+    Enter Lumpsum Amount    ${test_data}[97.99]
+    Select Payment Method    ${test_data}[Credit Card]
+    Enter Credit Card Details    ${test_data}[CREDIT_CARD_DETAILS]
+    Validate Surcharge Percentage Should Be Equal    ${test_data}[states.Surcharge_Percentage]
+    Process Invoice Payment    
+    Validate Payment Receipt Is Generated    
+","This test case, 'TC_08 Validate Customer Is Able To Process Payment For MAINE State (ME) With Credit Card', is designed to verify the functionality of credit card payments for customers residing in the state of Maine. It is essential for ensuring that the payment processing system accurately supports credit card transactions, thus providing Maine customers with a seamless checkout experience."

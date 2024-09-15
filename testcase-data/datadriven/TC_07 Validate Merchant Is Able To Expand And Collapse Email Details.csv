@@ -1,0 +1,9 @@
+TestcaseName,KeywordName,Argument1,Argument2,Argument3,Argument4
+TC_07 Validate Merchant Is Able To Expand And Collapse Email Details,Send Request To Create Customer,STERLING_COOPER,,,
+TC_07 Validate Merchant Is Able To Expand And Collapse Email Details,Send Request To Create Invoice For Customer,STERLING_COOPER,account_number,,
+TC_07 Validate Merchant Is Able To Expand And Collapse Email Details,Send Request To Process Payment For Credit Card,STERLING_COOPER,account_number,invoice_number,4111111111111111
+TC_07 Validate Merchant Is Able To Expand And Collapse Email Details,Send Invoice Email And Navigate To Email Summary,account_number,,,
+TC_07 Validate Merchant Is Able To Expand And Collapse Email Details,Expand Details In Email Summary,,,,
+TC_07 Validate Merchant Is Able To Expand And Collapse Email Details,Validate Email Details Are Expanded In Email Summary,,,,
+TC_07 Validate Merchant Is Able To Expand And Collapse Email Details,Collapse Details In Email Summary,,,,
+TC_07 Validate Merchant Is Able To Expand And Collapse Email Details,Validate Email Details Are Collapsed In Email Summary,,,,

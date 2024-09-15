@@ -1,0 +1,199 @@
+prompt,testcase_type,testcase_name,response,documentation
+"Validate a robot framework test case for testing content functionality in the  platform, specifically integrated_openinvoices.",keyword-driven,integrated_openinvoices,"*** Settings ***
+Description          This test case checks the interaction and operation of the 'open invoices' feature with other system components, ensuring that it functions correctly within the integrated system.
+Library                SeleniumLibrary
+
+*** Variables ***
+${PAYMENT_METHOD, NICKNAME}            payment_method, nickname_value
+${INVOICE}            invoice_value
+${INVOICE_NUMBER}            invoice_number_value
+${INVOICE_LIST}            invoice_list_value
+${FILTER_NAME}            filter_name_value
+${, DUE_DATE}            , due_date_value
+${INCREMENT}            increment_value
+${AMOUNT}            amount_value
+${START_DATE, END_DATE}            start_date, end_date_value
+${TAB_NAME}            tab_name_value
+${AMOUNT, ACCOUNT_TYPE, ACCOUNT_NUMBER, ROUTING_NUMBER}            amount, account_type, account_number, routing_number_value
+${CARDNO_OR_CHECKNO}            cardno_or_checkno_value
+${LOGICAL_OPERATOR, FILTER_OPTION, VALUE}            logical_operator, filter_option, value_value
+${AMOUNT, CARD_NO, EXPIRED_DATE, CVV_NUMBER}            amount, card_no, expired_date, cvv_number_value
+${FILTER_OPTION, VALUE}            filter_option, value_value
+${DATE_RANGE}            date_range_value
+${INV_NUMBER}            inv_number_value
+${ACCOUNT_NUMBER, INVOICE_NUMBER}            account_number, invoice_number_value
+${INVOICE_CONTENT, INVOICE_NUMBER}            invoice_content, invoice_number_value
+${EXP_ACCOUNTNO, EXP_CUSTOMERNAME}            exp_accountno, exp_customername_value
+${INVOICE_LIST, DUE_DATE}            invoice_list, due_date_value
+${ACCOUNT_NUMBER}            account_number_value
+${INTEGRATED_MERCHANT, ACCOUNT_TYPE, ACCOUNT_NUMBER, ROUTING_NUMBER}            integrated_merchant, account_type, account_number, routing_number_value
+${EXPECTED_TOTALPAYMENTAMOUNT}            expected_totalpaymentamount_value
+${INVOICE_NUMBER, ACTUAL_AMOUNT}            invoice_number, actual_amount_value
+${CARDNO_OR_CHECKNO, NICKNAME}            cardno_or_checkno, nickname_value
+${LABEL_NAME}            label_name_value
+${INVOICE_CONTENT}            invoice_content_value
+${INTEGRATED_MERCHANT, CARD_NO, EXPIRED_DATE, CVV_NUMBER, NICKNAME}            integrated_merchant, card_no, expired_date, cvv_number, nickname_value
+${DUE_DATE}            due_date_value
+${EXPECTED_NICKNAME}            expected_nickname_value
+
+*** Test Cases ***
+Validate Integrated_openinvoices
+    [Description]    This test case checks the interaction and operation of the 'open invoices' feature with other system components, ensuring that it functions correctly within the integrated system.
+    Expand All Line Items    
+    Save Payment Method With Nickname    ${PAYMENT_METHOD}    ${ NICKNAME}
+    Validate Unpaid Invoices Are Displayed    ${INVOICE}
+    Validate Invoice Status Is Paid    ${INVOICE_NUMBER}
+    Select Multiple Invoices    ${INVOICE_LIST}
+    Click On Total Amount Link    
+    Validate Customer PO Number From The Specific Invoice Grid    ${INVOICE_NUMBER}
+    Choose Filter Type    ${FILTER_NAME}
+    Collapse Specific Line Item    
+    Click On Days Past Due Amount Link    ${}    ${ DUE_DATE}
+    Validate Selected Date Is Displayed In Date Range    ${INCREMENT}
+    Validate Date Range Is Displayed In Payment History Tab    
+    Validate Multiple Invoices Check Box Should Be Checked By Default    ${INVOICE}
+    Enter Amount And Pay Invoice    ${AMOUNT}
+    Cancel Login With Invoice Popup    
+    Select Date Range From Calendar    ${START_DATE}    ${ END_DATE}
+    Validate All Invoices Are Checked    
+    Collapse All Line Items    
+    Select All Due Invoices    
+    Navigate To Menu Tab    ${TAB_NAME}
+    Validate Line Item Is Expanded    
+    Pay Invoice From Invoice Screen    ${INVOICE_NUMBER}
+    Unselect Invoice Checkboxes    
+    Validate Total Amount After Selecting State    
+    Use Valid Check And Pay The Amount    ${AMOUNT}    ${ ACCOUNT_TYPE}    ${ ACCOUNT_NUMBER}    ${ ROUTING_NUMBER}
+    Select Any Saved Payment Method    ${CARDNO_OR_CHECKNO}
+    Validate Discount Applied For Early Payment Before Due Date    ${INVOICE_NUMBER}
+    Validate Invoice Checkbox Should Be Unselected    
+    Filter Invoice By Using Logical Operator    ${LOGICAL_OPERATOR}    ${ FILTER_OPTION}    ${ VALUE}
+    Validate This Month Is Displayed In Date Range    
+    Validate All Invoices Associated With Account Number Are Displayed    ${INVOICE_LIST}
+    Use Valid Credit Card And Pay The Amount    ${AMOUNT}    ${ CARD_NO}    ${ EXPIRED_DATE}    ${ CVV_NUMBER}
+    Validate Login With Invoice Popup Is Closed    
+    Select All Invoices On Page    
+    Validate Invoice Checkbox Is Checked    ${INVOICE_NUMBER}
+    Clear Filter    
+    Select Specific Invoices    ${INVOICE_LIST}
+    Validate Invoices Are Sorted In Grid    
+    # robocop: disable=file-too-long    
+    Validate Invoice Date From The Specific Invoice Grid    ${INVOICE_NUMBER}
+    Choose Filter Option And Enter Value    ${FILTER_OPTION}    ${ VALUE}
+    Validate Selected Invoices Count    ${INVOICE_LIST}
+    Close Delete Payment Method Confirmation Dialog Box    ${CARDNO_OR_CHECKNO}
+    Validate Invoices Count In Selected Page    
+    Unselect All Invoices On Page    
+    Validate Delete Payment Method Confirmation Dialog Box Is Closed    
+    Select Date Range    ${DATE_RANGE}
+    Navigate To Invoice PDF Page    
+    Validate Total Amount In Summary Of Outstanding Invoice    
+    Validate Invoice Number Is Displayed    ${INV_NUMBER}
+    Validate Secure Payments Dialog Box Is Displayed    
+    Re-enter Login Credentials If Failed    ${ACCOUNT_NUMBER}    ${ INVOICE_NUMBER}
+    Validate Invoice Checkbox Should Be Selected    
+    Validate PDF Content    ${INVOICE_CONTENT}    ${ INVOICE_NUMBER}
+    Validate Invoice Page Is Displayed    ${INVOICE_NUMBER}
+    Validate Account Number Is Displayed    ${EXP_ACCOUNTNO}    ${ EXP_CUSTOMERNAME}
+    Validate Specific Invoice Checkbox    ${INVOICE_LIST}    ${ DUE_DATE}
+    Validate Account Number Exists Under Saved Payment Method    ${ACCOUNT_NUMBER}
+    Validate Last Month Is Displayed In Date Range    
+    Validate Saved Payment Method Is Deleted    ${CARDNO_OR_CHECKNO}
+    Pay The Invoice Using ACH/Echeck And Save The Payment Method    ${INTEGRATED_MERCHANT}    ${ ACCOUNT_TYPE}    ${ ACCOUNT_NUMBER}    ${ ROUTING_NUMBER}
+    Validate Due Invoices Are Selected    ${INVOICE_NUMBER}
+    Load Invoices Without Entering Invoice Number    
+    Select Use Saved Payment Method    
+    Validate Total Amount After Selecting Invoices    ${EXPECTED_TOTALPAYMENTAMOUNT}
+    Validate Cloud Based Modular Page Is Displayed    
+    Sort Invoices Grid With Date    
+    Validate Yesterday Date Is Displayed In Date Range    ${INCREMENT}
+    Validate PayNOW Page Is Displayed    
+    Select All Invoices    
+    Load Invoice With Account Number And Invoice Number    ${ACCOUNT_NUMBER}    ${ INVOICE_NUMBER}
+    Validate Amount To Pay Is Updated In Open Invoice Page    ${INVOICE_NUMBER}    ${ ACTUAL_AMOUNT}
+    Validate PayNOW Login Page Is Displayed    
+    Edit Nickname Of Saved Payment Method    ${CARDNO_OR_CHECKNO}    ${ NICKNAME}
+    Navigate To Invoice Page    ${INVOICE_NUMBER}
+    Select Quick Date From Dropdown    ${LABEL_NAME}
+    Open PayNOW From PDF    ${INVOICE_CONTENT}
+    Pay The Invoice Using Credit Card And Save The Payment Method    ${INTEGRATED_MERCHANT}    ${ CARD_NO}    ${ EXPIRED_DATE}    ${ CVV_NUMBER}    ${ NICKNAME}
+    Save Payment Method For Future Use    ${PAYMENT_METHOD}    ${ NICKNAME}
+    Delete Saved Payment Method    ${CARDNO_OR_CHECKNO}
+    Validate Original Amount From The Specific Invoice Grid    ${INVOICE_NUMBER}
+    Expand Specific Line Item    
+    Validate Amount Due Is Displayed In Days Past Due    ${DUE_DATE}
+    Validate Nickname Of Saved Payment Method Is Edited    ${EXPECTED_NICKNAME}
+    Validate Today's Date Is Displayed In Date Range    
+    Validate Filtered Invoices Are Displayed    ${INVOICE_NUMBER}
+    Validate Line Item Is Collapsed    
+    Validate Surcharge Is Updated    
+    Load Invoices With Invalid Invoice Number    ${INVOICE_NUMBER}
+    Validate Next Button Is Dispayed    
+    Get PDF Content From Browser    ${INVOICE_NUMBER}
+    Validate Invoice Due Date From The Specific Invoice Grid    ${INVOICE_NUMBER}
+    Validate Error Message For Empty Login Details    
+    Return To Open Invoices Page    
+","The 'integrated_openinvoices' test case is primarily designed to test the proper functioning of the open invoices feature in an integrated system. This feature's functionality is essential as it assists in tracking unpaid invoices, which is necessary for accurate financial management. It also ensures that all transactions, necessary calculations, and entries are conducted and recorded correctly, making the test case pivotal in eliminating bugs and ensuring optimal software performance."
+"Generate a robot framework test case for testing content functionality in the  platform, specifically omnicorp_autopay.",keyword-driven,omnicorp_autopay,"*** Settings ***
+Description          This test case assesses the functionality of the autopay feature in Omnicorp's system. It checks whether automatic payments are processed correctly and on time.
+Library                SeleniumLibrary
+
+*** Variables ***
+${ACCOUNT_NUMBER, INVOICE_NUMBER}            account_number, invoice_number_value
+${CARD_NUMBER}            card_number_value
+${EXPECTED_SCHEDULEDAY, EXPECTED_INVOICETYPE, EXPECTED_PAYMENTDAY, EXPECTED_INVOICEDUEDAYS}            expected_scheduleday, expected_invoicetype, expected_paymentday, expected_invoiceduedays_value
+${CUSTOMER_DETAILS, MERCHANT}            customer_details, merchant_value
+${ACCOUNT_NUMBER, INVOICE_NUMBER, EXPECTED_ORIGIN}            account_number, invoice_number, expected_origin_value
+${EXPECTED_SCHEDULEDAY, EXPECTED_INVOICETYPE}            expected_scheduleday, expected_invoicetype_value
+${EXPECTED_SCHEDULEDAY, EXPECTED_INVOICETYPE, EXPECTED_DAYOFWEEK}            expected_scheduleday, expected_invoicetype, expected_dayofweek_value
+${DUE}            due_value
+${DAY}            day_value
+${INVOICE_DUE}            invoice_due_value
+
+*** Test Cases ***
+Validate Omnicorp_autopay
+    [Description]    This test case assesses the functionality of the autopay feature in Omnicorp's system. It checks whether automatic payments are processed correctly and on time.
+    Login To PayNOW And Navigate To Autopay    ${ACCOUNT_NUMBER}    ${ INVOICE_NUMBER}
+    Enter Customer And Credit Card Details For AutoPay    ${CARD_NUMBER}
+    Save AutoPay    
+    Validate Created AutoPay Details For Sepecific Day Of Month    ${EXPECTED_SCHEDULEDAY}    ${ EXPECTED_INVOICETYPE}    ${ EXPECTED_PAYMENTDAY}    ${ EXPECTED_INVOICEDUEDAYS}
+    Enter Customer Details For AutoPay    ${CUSTOMER_DETAILS}    ${ MERCHANT}
+    Validate AutoPay Details Are Deleted    
+    Validate AutoPay Origin In Scheduled Payments    ${ACCOUNT_NUMBER}    ${ INVOICE_NUMBER}    ${ EXPECTED_ORIGIN}
+    Delete AutoPay Details    
+    Select Specific Day Of The Month    
+    Validate Created AutoPay Details For Each Day Of Week    ${EXPECTED_SCHEDULEDAY}    ${ EXPECTED_INVOICETYPE}
+    Validate Created AutoPay Details For Specific Day Of Week    ${EXPECTED_SCHEDULEDAY}    ${ EXPECTED_INVOICETYPE}    ${ EXPECTED_DAYOFWEEK}
+    Select Invoices That Are Within Due Date    ${DUE}
+    Select Invoices Due For The Payment    
+    Select Specific Day Of The Week    ${DAY}
+    Close Delete AutoPay Confirmation Popup    
+    Select Invoices That Are Past The Invoice Date    ${INVOICE_DUE}
+    Validate Delete AutoPay Confirmation Popup Is Closed    
+    Select Each Day As Payment Option    
+","The 'omnicorp_autopay' test case evaluates the automated payment functionality of Omnicorp's system. It verifies that the autopay feature is correctly processing recurring payments at the set intervals, which is crucial to ensure seamless transactions and customer satisfaction. This test case is important to guard against payment errors, delays, overcharges, or undercharges."
+"Generate a robot framework test case for testing content functionality in the  platform, specifically omnicorp_scheduled_payments.",keyword-driven,omnicorp_scheduled_payments,"*** Settings ***
+Description          This test case verifies if the scheduled payments feature in the Omnicorp system works correctly. It checks if payments are correctly scheduled, updated, processed on the set date and time, and if any notifications or reminders are correctly sent.
+Library                SeleniumLibrary
+
+*** Variables ***
+${ACCOUNT_NUMBER, INVOICE_NUMBER}            account_number, invoice_number_value
+${INVOICE_NUMBER, EXPECTED_PAYMENT_ORIGIN}            invoice_number, expected_payment_origin_value
+${DATE}            date_value
+${ACCOUNT_NUMBER, INVOICE_NUMBER, EXPECTED_STATUS}            account_number, invoice_number, expected_status_value
+${EXPECTED_PAYMENT_DATE}            expected_payment_date_value
+
+*** Test Cases ***
+Validate Omnicorp_scheduled_payments
+    [Description]    This test case verifies if the scheduled payments feature in the Omnicorp system works correctly. It checks if payments are correctly scheduled, updated, processed on the set date and time, and if any notifications or reminders are correctly sent.
+    Navigate To Schedule Payments Tab    ${ACCOUNT_NUMBER}    ${ INVOICE_NUMBER}
+    Validate Scheduled Payment Origin Is Displyed    ${INVOICE_NUMBER}    ${ EXPECTED_PAYMENT_ORIGIN}
+    Create Schedule Payment    
+    Cancel Schedule Payment    
+    Select Payment Date    ${DATE}
+    Validate Scheduled Payment Status    ${ACCOUNT_NUMBER}    ${ INVOICE_NUMBER}    ${ EXPECTED_STATUS}
+    Get Schedule Payment Id    ${ACCOUNT_NUMBER}    ${ INVOICE_NUMBER}
+    Send Event To Process Schedule Payment    ${ACCOUNT_NUMBER}    ${ INVOICE_NUMBER}
+    Validate Scheduled Payment Date Is Displayed    ${EXPECTED_PAYMENT_DATE}
+    Accept Terms Discount Alert    
+","The 'omnicorp_scheduled_payments' test case primarily focuses on testing the functionality of the scheduled payments feature within the Omnicorp system. It verifies whether the system correctly schedules, manages, and processes payments as per the user-set timeline. This is important as timely payments are crucial for maintaining healthy financial relationships and avoiding penalties or discrepancies in financial reports."

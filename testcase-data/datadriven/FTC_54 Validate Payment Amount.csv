@@ -1,0 +1,11 @@
+﻿TestcaseName,KeywordName,Argument1,Argument2
+FTC_54 Validate Payment Amount,Generate Random Customer Details,,
+FTC_54 Validate Payment Amount,Launch PayNow Application,NON_INTEGRATED_MERCHANT,
+FTC_54 Validate Payment Amount,Enter Customer Details,customer_details,NON_INTEGRATED_MERCHANT
+FTC_54 Validate Payment Amount,Select Payment Type,Lump Sum,
+FTC_54 Validate Payment Amount,Enter Lumpsum Amount,1,
+FTC_54 Validate Payment Amount,Select Payment Method,ACH / eCheck,
+FTC_54 Validate Payment Amount,Enter ACH/ECheck Details,ACH_ECHECK_DETAILS,
+FTC_54 Validate Payment Amount,Validate Errors After Clicking On Process Invoice,customer_details.Error_Message,
+FTC_54 Validate Payment Amount,Process Invoice Payment,,
+FTC_54 Validate Payment Amount,Validate Payment Receipt Is Generated,,

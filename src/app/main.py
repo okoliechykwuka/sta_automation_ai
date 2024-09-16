@@ -41,7 +41,7 @@ if "graph_data" not in st.session_state:
 if "uploaded_files" not in st.session_state:
     st.session_state.uploaded_files = []
 
-@retry(stop=stop_after_attempt(3), wait=wait_fixed(2))
+# @retry(stop=stop_after_attempt(3), wait=wait_fixed(2))
 @st.cache_resource
 def init_ollama():
     try:

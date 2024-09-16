@@ -4,14 +4,16 @@ import streamlit as st
 import pandas as pd
 import networkx as nx
 from pyvis.network import Network
-from langchain_community.llms import Ollama
+# from langchain_community.llms import Ollama
+from langchain.llms import Ollama
 from langchain.callbacks.manager import CallbackManager
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 from langchain_community.graphs import Neo4jGraph
 from langchain.chains import GraphCypherQAChain
 import plotly.express as px
 import streamlit.components.v1 as components
-from langchain_openai import OpenAI
+# from langchain_openai import OpenAI
+from langchain.llms import OpenAI
 import logging
 from neo4j.exceptions import Neo4jError
 from fpdf import FPDF
@@ -42,12 +44,15 @@ if "uploaded_files" not in st.session_state:
 
 @st.cache_resource
 def init_ollama():
+    if not app_config.MODEL_ENDPOINT:
+        st.error("MODEL_ENDPOINT is missing.")
+        return None
     try:
         return Ollama(
             model="sta_llama3.1_v2",
             num_ctx=6096,
             temperature=0.1,
-            base_url="https://0c74-102-91-93-248.ngrok-free.app/",
+            base_url=app_config.MODEL_ENDPOINT,
             callbacks=[StreamingStdOutCallbackHandler()]
         )
     except Exception as e:
@@ -56,20 +61,22 @@ def init_ollama():
 
 @st.cache_resource
 def init_neo4j():
+    if not all([app_config.NEO4J_URI, app_config.NEO4J_USER, app_config.NEO4J_PASSWORD]):
+        st.error("Neo4j configuration variables are missing.")
+        return None
     try:
-        return Neo4jGraph(
+        graph = Neo4jGraph(
             url=app_config.NEO4J_URI,
             username=app_config.NEO4J_USER,
             password=app_config.NEO4J_PASSWORD
         )
-
         # Test the connection
         graph.query("RETURN 1")
         return graph
     except Exception as e:
         st.error(f"Failed to initialize Neo4j: {str(e)}")
-        st.error("Please check your Neo4j configuration and ensure the database is accessible.")
-        return None 
+        return None
+
 
 # Initialize components
 ollama_llm = init_ollama()
@@ -77,7 +84,8 @@ neo4j_graph = init_neo4j()
 neo4j_driver = get_neo4j_driver()
 vector_index = create_vector_index()
 
-if ollama_llm is None:
+# Check that all components are initialized
+if not all([ollama_llm, neo4j_graph, neo4j_driver, vector_index]):
     st.error("Failed to initialize required components. Please check your configurations.")
     st.stop()
 

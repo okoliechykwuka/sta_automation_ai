@@ -3,7 +3,8 @@ import sys
 import pandas as pd
 from neo4j import GraphDatabase
 from langchain_community.vectorstores import Neo4jVector
-from langchain_openai import OpenAIEmbeddings
+# from langchain_openai import OpenAIEmbeddings
+from langchain.embeddings.openai import OpenAIEmbeddings
 import streamlit as st
 
 current_dir = os.path.dirname(os.path.abspath(__file__))

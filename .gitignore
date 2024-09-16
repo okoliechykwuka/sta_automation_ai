@@ -119,10 +119,7 @@ Dockerfile
 
 # Ignore secrets files
 .env
-.streamlit/secrets.toml
 
 # models
 src/app/model/unsloth.Q4_K_M.gguf
 src/app/.streamlit/secrets.toml
-
-.env

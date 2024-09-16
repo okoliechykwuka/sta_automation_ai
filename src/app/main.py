@@ -15,7 +15,7 @@ from langchain_openai import OpenAI
 import logging
 from neo4j.exceptions import Neo4jError
 from fpdf import FPDF
-# from tenacity import retry, stop_after_attempt, wait_fixed
+from tenacity import retry, stop_after_attempt, wait_fixed
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(current_dir)

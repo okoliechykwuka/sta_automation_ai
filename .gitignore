@@ -65,6 +65,7 @@ pytest_debug.log
 .vscode/
 
 # Environments
+.env
 .venv
 venv/
 stdautomationenv/
@@ -121,3 +122,4 @@ Dockerfile
 src/app/model/unsloth.Q4_K_M.gguf
 src/app/.streamlit/secrets.toml
 
+.env

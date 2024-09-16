@@ -18,7 +18,7 @@ from fpdf import FPDF
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(current_dir)
-sys.path.append(os.path.join(current_dir, '../utilities'))
+sys.path.append(os.path.join(current_dir, '..'))
 
 from kgraph_index import (
     get_neo4j_driver, create_vector_index, map_data_to_graph, 
@@ -26,7 +26,7 @@ from kgraph_index import (
     get_similar_testcases, get_test_case_structure
 )
 from baseline_data import load_baseline_data
-from config import config
+from utilities.config import app_config
 
 # Initialize logging
 logging.basicConfig(level=logging.DEBUG)
@@ -58,13 +58,18 @@ def init_ollama():
 def init_neo4j():
     try:
         return Neo4jGraph(
-            url=config.NEO4J_URI,
-            username=config.NEO4J_USER,
-            password=config.NEO4J_PASSWORD
+            url=app_config.NEO4J_URI,
+            username=app_config.NEO4J_USER,
+            password=app_config.NEO4J_PASSWORD
         )
+
+        # Test the connection
+        graph.query("RETURN 1")
+        return graph
     except Exception as e:
         st.error(f"Failed to initialize Neo4j: {str(e)}")
-        return None
+        st.error("Please check your Neo4j configuration and ensure the database is accessible.")
+        return None 
 
 # Initialize components
 ollama_llm = init_ollama()

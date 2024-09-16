@@ -6,25 +6,25 @@ from langchain_community.vectorstores import Neo4jVector
 from langchain_openai import OpenAIEmbeddings
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(current_dir)
-sys.path.append(os.path.join(current_dir, '../utilities'))
+# Append the 'src' directory to sys.path
+sys.path.append(os.path.join(current_dir, '..'))
 
-from config import config
+from utilities.config import app_config
 
 def get_neo4j_driver():
     return GraphDatabase.driver(
-        config.NEO4J_URI, 
-        auth=(config.NEO4J_USER, config.NEO4J_PASSWORD),
+        app_config.NEO4J_URI, 
+        auth=(app_config.NEO4J_USER, app_config.NEO4J_PASSWORD),
         connection_timeout=30,  # Increase the connection timeout to 30 seconds
         max_connection_lifetime=600  # Increase max connection lifetime to 600 seconds (10 minutes)
     )
 
 def create_vector_index():
     return Neo4jVector.from_existing_graph(
-        OpenAIEmbeddings(api_key=config.OPENAI_API_KEY),
-        url=config.NEO4J_URI,
-        username=config.NEO4J_USER,
-        password=config.NEO4J_PASSWORD,
+        OpenAIEmbeddings(api_key=app_config.OPENAI_API_KEY),
+        url=app_config.NEO4J_URI,
+        username=app_config.NEO4J_USER,
+        password=app_config.NEO4J_PASSWORD,
         index_name='testcases',
         node_label="TestCase",
         text_node_properties=['prompt', 'testcase_name', 'response', 'documentation'],

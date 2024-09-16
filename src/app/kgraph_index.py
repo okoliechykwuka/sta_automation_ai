@@ -4,6 +4,7 @@ import pandas as pd
 from neo4j import GraphDatabase
 from langchain_community.vectorstores import Neo4jVector
 from langchain_openai import OpenAIEmbeddings
+import streamlit as st
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 # Append the 'src' directory to sys.path
@@ -20,16 +21,20 @@ def get_neo4j_driver():
     )
 
 def create_vector_index():
-    return Neo4jVector.from_existing_graph(
-        OpenAIEmbeddings(api_key=app_config.OPENAI_API_KEY),
-        url=app_config.NEO4J_URI,
-        username=app_config.NEO4J_USER,
-        password=app_config.NEO4J_PASSWORD,
-        index_name='testcases',
-        node_label="TestCase",
-        text_node_properties=['prompt', 'testcase_name', 'response', 'documentation'],
-        embedding_node_property='embedding',
-    )
+    try:
+        return Neo4jVector.from_existing_graph(
+            OpenAIEmbeddings(api_key=app_config.OPENAI_API_KEY),
+            url=app_config.NEO4J_URI,
+            username=app_config.NEO4J_USER,
+            password=app_config.NEO4J_PASSWORD,
+            index_name='testcases',
+            node_label="TestCase",
+            text_node_properties=['prompt', 'testcase_name', 'response', 'documentation'],
+            embedding_node_property='embedding',
+        )
+    except Exception as e:
+        st.error("An error occurred while creating the vector index. Please check your configuration.")
+        return None
 
 def map_data_to_graph(data):
     nodes = []
@@ -110,3 +115,9 @@ def add_prompt_to_graph(driver, prompt, response, testcase_name):
 def get_similar_testcases(vector_index, prompt, k=5):
     results = vector_index.similarity_search_with_score(prompt, k=k)
     return [(result[0].page_content, result[1]) for result in results]
+
+if __name__ == "__main__":
+    # Test your functions here
+    driver = get_neo4j_driver()
+    # For example, print the driver to verify it's working
+    print(driver)

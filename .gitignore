@@ -117,6 +117,9 @@ src/utilities/logger.py
 docker-compose.yml
 Dockerfile
 
+# Ignore secrets files
+.env
+.streamlit/secrets.toml
 
 # models
 src/app/model/unsloth.Q4_K_M.gguf

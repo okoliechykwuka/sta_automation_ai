@@ -14,3 +14,4 @@ neo4j
 pyvis
 plotly
 langchain-openai
+tenacity

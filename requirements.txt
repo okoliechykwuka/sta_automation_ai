@@ -8,7 +8,6 @@ Requests
 torch
 tqdm
 transformers
-os
 streamlit
 requests
 neo4j

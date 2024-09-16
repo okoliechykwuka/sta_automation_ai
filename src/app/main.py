@@ -15,7 +15,6 @@ from langchain_openai import OpenAI
 import logging
 from neo4j.exceptions import Neo4jError
 from fpdf import FPDF
-from tenacity import retry, stop_after_attempt, wait_fixed
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(current_dir)
@@ -41,7 +40,6 @@ if "graph_data" not in st.session_state:
 if "uploaded_files" not in st.session_state:
     st.session_state.uploaded_files = []
 
-@retry(stop=stop_after_attempt(3), wait=wait_fixed(2))
 @st.cache_resource
 def init_ollama():
     try:
@@ -54,7 +52,7 @@ def init_ollama():
         )
     except Exception as e:
         st.error(f"Failed to initialize Ollama: {str(e)}")
-        return
+        return None
 
 @st.cache_resource
 def init_neo4j():
@@ -74,7 +72,7 @@ neo4j_graph = init_neo4j()
 neo4j_driver = get_neo4j_driver()
 vector_index = create_vector_index()
 
-if ollama_llm is None or neo4j_graph is None or neo4j_driver is None:
+if ollama_llm is None:
     st.error("Failed to initialize required components. Please check your configurations.")
     st.stop()
 

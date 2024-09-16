@@ -20,16 +20,20 @@ def get_neo4j_driver():
     )
 
 def create_vector_index():
-    return Neo4jVector.from_existing_graph(
-        OpenAIEmbeddings(api_key=app_config.OPENAI_API_KEY),
-        url=app_config.NEO4J_URI,
-        username=app_config.NEO4J_USER,
-        password=app_config.NEO4J_PASSWORD,
-        index_name='testcases',
-        node_label="TestCase",
-        text_node_properties=['prompt', 'testcase_name', 'response', 'documentation'],
-        embedding_node_property='embedding',
-    )
+    try:
+        return Neo4jVector.from_existing_graph(
+            OpenAIEmbeddings(api_key=app_config.OPENAI_API_KEY),
+            url=app_config.NEO4J_URI,
+            username=app_config.NEO4J_USER,
+            password=app_config.NEO4J_PASSWORD,
+            index_name='testcases',
+            node_label="TestCase",
+            text_node_properties=['prompt', 'testcase_name', 'response', 'documentation'],
+            embedding_node_property='embedding',
+        )
+    except Exception as e:
+        st.error("An error occurred while creating the vector index. Please check your configuration.")
+        return None
 
 def map_data_to_graph(data):
     nodes = []

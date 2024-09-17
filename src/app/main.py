@@ -25,9 +25,9 @@ sys.path.append(current_dir)
 sys.path.append(os.path.join(current_dir, '..'))
 
 from kgraph_index import (
-    get_neo4j_driver, create_vector_index, compute_embeddings_for_new_nodes, map_data_to_graph, 
-    update_neo4j_with_graph, clear_neo4j_database, add_prompt_to_graph,
-    get_similar_testcases, get_test_case_structure
+    get_neo4j_driver, create_vector_index, compute_embeddings_for_new_nodes,
+    map_data_to_graph, update_neo4j_with_graph, clear_neo4j_database,
+    add_prompt_to_graph, get_similar_testcases, get_test_case_structure
 )
 from baseline_data import load_baseline_data
 from utilities.config import app_config
@@ -80,20 +80,20 @@ def init_neo4j():
         return None
 
 @st.cache_resource
-def get_vector_index():
+def init_vector_index():
     return create_vector_index()
 
 # Initialize components
 ollama_llm = init_ollama()
 neo4j_graph = init_neo4j()
 neo4j_driver = get_neo4j_driver()
-vector_index = get_vector_index()
+vector_index = init_vector_index()
 
 # Check that all components are initialized
 # if not all([ollama_llm, neo4j_graph, neo4j_driver, vector_index]):
 #     st.error("Failed to initialize required components. Please check your configurations.")
 #     st.stop()
-if ollama_llm is None or neo4j_graph is None or neo4j_driver is None:
+if ollama_llm is None or neo4j_graph is None or neo4j_driver is None or vector_index is None:
     st.error("Failed to initialize required components. Please check your configurations.")
     st.stop()
 
@@ -210,8 +210,8 @@ if uploaded_files:
                 st.session_state.graph_data["edges"].extend(edges)
                 # Compute embeddings for new nodes and update vector index
                 compute_embeddings_for_new_nodes()
-                vector_index = get_vector_index()
-                similar_testcases = get_similar_testcases(vector_index, prompt)
+                vector_index = init_vector_index()
+                # similar_testcases = get_similar_testcases(vector_index, prompt)
             except Exception as e:
                 st.sidebar.error(f"Error processing file {uploaded_file.name}: {str(e)}")
     st.sidebar.success(f"Knowledge graph updated with {len(st.session_state.uploaded_files)} datasets!")

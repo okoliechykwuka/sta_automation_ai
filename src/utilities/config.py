@@ -13,6 +13,8 @@ class Config:
         self.NEO4J_PASSWORD = st.secrets.get("NEO4J_PASSWORD")
         self.MODEL_ENDPOINT = st.secrets.get("MODEL_ENDPOINT")
         self.OPENAI_API_KEY = st.secrets.get("OPENAI_API_KEY")
+        self.PINECONE_API_KEY = st.secrets.get("PINECONE_API_KEY")
+        self.PINECONE_ENVIRONMENT = st.secrets.get("PINECONE_ENVIRONMENT")
 
         # If any are None (e.g., running locally), load from .env
         if not all([self.NEO4J_URI, self.NEO4J_USER, self.NEO4J_PASSWORD, self.MODEL_ENDPOINT, self.OPENAI_API_KEY]):
@@ -22,6 +24,8 @@ class Config:
             self.NEO4J_PASSWORD = os.getenv('NEO4J_PASSWORD', self.NEO4J_PASSWORD)
             self.MODEL_ENDPOINT = os.getenv('MODEL_ENDPOINT', self.MODEL_ENDPOINT)
             self.OPENAI_API_KEY = os.getenv('OPENAI_API_KEY', self.OPENAI_API_KEY)
+            self.PINECONE_API_KEY = os.getenv('PINECONE_API_KEY', self.PINECONE_API_KEY)
+            self.PINECONE_ENVIRONMENT = os.getenv('PINECONE_ENVIRONMENT', self.PINECONE_ENVIRONMENT)
 
 app_config = Config()
 

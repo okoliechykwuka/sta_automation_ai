@@ -29,6 +29,7 @@ from kgraph_index import (
     map_data_to_graph, update_neo4j_with_graph, clear_neo4j_database,
     add_prompt_to_graph, get_similar_testcases, get_test_case_structure
 )
+
 from baseline_data import load_baseline_data
 from utilities.config import app_config
 
@@ -105,7 +106,8 @@ if ollama_llm is None or neo4j_graph is None or neo4j_driver is None or vector_i
 qa_chain = GraphCypherQAChain.from_llm(
     ollama_llm,
     graph=neo4j_graph,
-    verbose=True
+    verbose=True,
+    allow_dangerous_requests=True
 )
 
 def get_graph_info_for_test_case(test_case_type):

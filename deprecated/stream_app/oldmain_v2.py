@@ -1,36 +1,31 @@
 import sys
 import os
 import streamlit as st
-st.cache_resource.clear()
 import pandas as pd
 import networkx as nx
 from pyvis.network import Network
 from langchain_community.llms import Ollama
-# from langchain.llms import Ollama
-# from langchain.callbacks.manager import Callbackllmsr
 from langchain.callbacks.manager import CallbackManager
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 from langchain_community.graphs import Neo4jGraph
 from langchain.chains import GraphCypherQAChain
 import plotly.express as px
 import streamlit.components.v1 as components
-# from langchain_llms import OpenAI
-from langchain_community.llms.openai import OpenAI
+from langchain_openai import OpenAI
 import logging
 from neo4j.exceptions import Neo4jError
-from fpdf import FPDF
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(current_dir)
-sys.path.append(os.path.join(current_dir, '..'))
+sys.path.append(os.path.join(current_dir, '../utilities'))
 
 from kgraph_index import (
-    get_neo4j_driver, create_vector_index, compute_embeddings_for_new_nodes, map_data_to_graph, 
+    get_neo4j_driver, create_vector_index, map_data_to_graph, 
     update_neo4j_with_graph, clear_neo4j_database, add_prompt_to_graph,
     get_similar_testcases, get_test_case_structure
 )
 from baseline_data import load_baseline_data
-from utilities.config import app_config
+from config import config
 
 # Initialize logging
 logging.basicConfig(level=logging.DEBUG)
@@ -44,17 +39,26 @@ if "graph_data" not in st.session_state:
 if "uploaded_files" not in st.session_state:
     st.session_state.uploaded_files = []
 
+# @st.cache_resource
+# def init_openai():
+#     try:
+#         return OpenAI(
+#             api_key=config.OPENAI_API_KEY,
+#             temperature=0.1,
+#             max_tokens=400  # Set the max tokens limit here
+#         )
+#     except Exception as e:
+#         st.error(f"Failed to initialize OpenAI: {str(e)}")
+#         return None
+
 @st.cache_resource
 def init_ollama():
-    if not app_config.MODEL_ENDPOINT:
-        st.error("MODEL_ENDPOINT is missing.")
-        return None
     try:
         return Ollama(
             model="sta_llama3.1_v2",
             num_ctx=6096,
             temperature=0.1,
-            base_url=app_config.MODEL_ENDPOINT,
+            base_url="https://0c74-102-91-93-248.ngrok-free.app/",
             callbacks=[StreamingStdOutCallbackHandler()]
         )
     except Exception as e:
@@ -63,43 +67,30 @@ def init_ollama():
 
 @st.cache_resource
 def init_neo4j():
-    if not all([app_config.NEO4J_URI, app_config.NEO4J_USER, app_config.NEO4J_PASSWORD]):
-        st.error("Neo4j configuration variables are missing.")
-        return None
     try:
-        graph = Neo4jGraph(
-            url=app_config.NEO4J_URI,
-            username=app_config.NEO4J_USER,
-            password=app_config.NEO4J_PASSWORD
+        return Neo4jGraph(
+            url=config.NEO4J_URI,
+            username=config.NEO4J_USER,
+            password=config.NEO4J_PASSWORD
         )
-        # Test the connection
-        graph.query("RETURN 1")
-        return graph
     except Exception as e:
         st.error(f"Failed to initialize Neo4j: {str(e)}")
         return None
 
-@st.cache_resource
-def get_vector_index():
-    return create_vector_index()
-
 # Initialize components
+# openai_llm = init_openai()
 ollama_llm = init_ollama()
 neo4j_graph = init_neo4j()
 neo4j_driver = get_neo4j_driver()
-vector_index = get_vector_index()
+vector_index = create_vector_index()
 
-# Check that all components are initialized
-# if not all([ollama_llm, neo4j_graph, neo4j_driver, vector_index]):
+# if openai_llm is None or neo4j_graph is None or neo4j_driver is None:
 #     st.error("Failed to initialize required components. Please check your configurations.")
 #     st.stop()
+
 if ollama_llm is None or neo4j_graph is None or neo4j_driver is None:
     st.error("Failed to initialize required components. Please check your configurations.")
     st.stop()
-
-# if vector_index is None:
-#     st.error("Vector index could not be created. Please check your configuration and OpenAI API usage.")
-#     st.stop()
 
 # Create a GraphCypherQAChain
 qa_chain = GraphCypherQAChain.from_llm(
@@ -121,13 +112,46 @@ def get_graph_info_for_test_case(test_case_type):
         logger.error(f"Neo4j error occurred: {str(e)}")
         return None
 
+
+# def generate_test_cases(prompt, test_type, use_knowledge_graph, num_testcases, uploaded_datasets=None):
+#     responses = []
+#     for i in range(num_testcases):
+#         context = ""
+        
+#         if use_knowledge_graph:
+#             similar_testcases = get_similar_testcases(vector_index, prompt)
+#             if similar_testcases:
+#                 context += "Based on the following similar test cases:\n\n"
+#                 for testcase, score in similar_testcases:
+#                     context += f"Test Case (similarity score: {score:.2f}):\n{testcase}\n\n"
+#             else:
+#                 context += "No similar test cases found.\n"
+            
+#             if uploaded_datasets and i < len(uploaded_datasets):
+#                 dataset_info = get_dataset_info(uploaded_datasets[i])
+#                 context += f"Using information from dataset: {uploaded_datasets[i].name}\n"
+#                 context += f"Dataset info: {dataset_info}\n"
+#             else:
+#                 graph_info = get_graph_info_for_test_case(test_type)
+#                 if graph_info:
+#                     steps, expected_results = graph_info
+#                     context += f"Steps from graph: {steps}\nExpected Results: {expected_results}\n"
+#                 else:
+#                     logger.warning("No additional information found in the knowledge graph.")
+#                     context += "No additional relevant information found in the knowledge graph.\n"
+        
+#         full_prompt = f"{context}\nGenerate a new test case named '{test_type}_{i+1}' for: {prompt}\n"
+#         full_prompt += "Please follow a similar structure to the example test cases, including all relevant sections (Settings, Variables, Test Cases) and maintain a step-by-step approach."
+
+#         response = ollama_llm(full_prompt)
+#         add_prompt_to_graph(neo4j_driver, prompt, response, f"{test_type}_{i+1}")
+#         responses.append(response)
+    
+#     return responses
+
 def generate_test_cases(prompt, test_type, use_knowledge_graph, num_testcases, uploaded_datasets=None):
     responses = []
-    
     for i in range(num_testcases):
-        # Display progress for each test case being generated
-        st.write(f"Generating test case {i+1}...")
-        
         context = ""
         
         if use_knowledge_graph:
@@ -150,10 +174,18 @@ def generate_test_cases(prompt, test_type, use_knowledge_graph, num_testcases, u
         full_prompt = f"{context}\nGenerate a new test case named '{test_type}_{i+1}' for: {prompt}\n"
         full_prompt += "Please follow a similar structure to the example test cases, including all relevant sections (Settings, Variables, Test Cases) and maintain a step-by-step approach."
 
+        # Call the LLM model for test case generation
         response = ollama_llm(full_prompt)
+
+        # Append generated response
         responses.append(response)
+        
+        # Add the response and prompt to the knowledge graph for future reference
         add_prompt_to_graph(neo4j_driver, prompt, response, f"{test_type}_{i+1}")
+    
     return responses
+
+
 
 def get_dataset_info(dataset):
     # This function would extract relevant information from the dataset
@@ -164,28 +196,24 @@ def get_dataset_info(dataset):
     except Exception as e:
         return f"Error reading dataset: {str(e)}"
 
-def download_test_cases(test_cases):
-    pdf = FPDF()
-    pdf.add_page()
-    pdf.set_font("Arial", size=10)
+def visualize_graph(nodes, edges):
+    G = nx.Graph()
+    for node in nodes:
+        node_name = str(node['name'])
+        G.add_node(node_name, title=node['type'])
+    for edge in edges:
+        source = str(edge['source'])
+        target = str(edge['target'])
+        G.add_edge(source, target, title=edge['relation'])
 
-    for idx, test_case in enumerate(test_cases, 1):
-        if idx > 1:
-            # line of dashes before each test case (except the first one)
-            pdf.cell(0, 5, "-" * 150, ln=True, align="C")
-            pdf.ln(5)  # space after the line of dashes
-
-        pdf.cell(200, 8, f"Test Case {idx}", ln=True, align="L")
-        pdf.multi_cell(0, 6, test_case)
-        pdf.ln(5)  # space after each test case
+    net = Network(notebook=False, width="100%", height="500px")
+    net.from_nx(G)
+    net.save_graph("pyvis_graph.html")
     
-    pdf_output = pdf.output(dest='S').encode('latin1')
-    st.download_button(
-        label="Download Test Cases",
-        data=pdf_output,
-        file_name="generated_test_cases.pdf",
-        mime="application/pdf"
-    )
+    with open("pyvis_graph.html", "r", encoding="utf-8") as f:
+        html = f.read()
+    
+    components.html(html, height=500)
 
 # Sidebar
 st.sidebar.title("Configuration")
@@ -208,24 +236,14 @@ if uploaded_files:
                 update_neo4j_with_graph(neo4j_driver, nodes, edges)
                 st.session_state.graph_data["nodes"].extend(nodes)
                 st.session_state.graph_data["edges"].extend(edges)
-                # Compute embeddings for new nodes and update vector index
-                compute_embeddings_for_new_nodes()
-                vector_index = get_vector_index()
-                similar_testcases = get_similar_testcases(vector_index, prompt)
             except Exception as e:
                 st.sidebar.error(f"Error processing file {uploaded_file.name}: {str(e)}")
     st.sidebar.success(f"Knowledge graph updated with {len(st.session_state.uploaded_files)} datasets!")
 
-st.sidebar.title("Configuration")
-st.sidebar.markdown("""
-How to use this advanced chatbot:
-
-1. Enter your prompt for test case generation in the text area.
-2. Click the "Generate Test Cases" button to generate the test cases.
-3. Review the generated test cases in the text area.
-4. If you're satisfied, click the "Download Test Cases" button to download the test cases as a PDF.
-5. You can continue the conversation by entering a new prompt in the text area.
-""")
+if st.session_state.uploaded_files:
+    st.sidebar.subheader("Uploaded Files")
+    for file in st.session_state.uploaded_files:
+        st.sidebar.text(file.name)
 
 if st.sidebar.button("Clear Session and Database"):
     st.session_state.messages = []
@@ -238,41 +256,73 @@ if st.sidebar.button("Clear Conversation"):
     st.session_state.messages = []
     st.sidebar.success("Conversation cleared!")
 
-# Main content
-st.title("STA-LLaMA3.1 - Software Testing Automation Chatbot")
+# Visualization in sidebar
+if st.session_state.graph_data["nodes"]:
+    st.sidebar.subheader("Knowledge Graph Visualization")
+    visualize_graph(st.session_state.graph_data["nodes"], st.session_state.graph_data["edges"])
+    
+    st.sidebar.subheader("Data Summary")
+    df_nodes = pd.DataFrame(st.session_state.graph_data["nodes"])
+    fig = px.pie(df_nodes, names='type', title='Distribution of Node Types')
+    st.sidebar.plotly_chart(fig, use_container_width=True)
 
-# Input and conversation box
-col1, col2 = st.columns([3, 1])
+# Main content
+st.title("sTA-LLaMA3.1 - Software Testing Automation Chatbot")
+st.markdown("""
+This advanced chatbot assists in generating software test cases using AI and knowledge graph technology. 
+It can create both keyword-driven and data-driven test cases based on your inputs and uploaded datasets.
+""")
+
+# Chat interface
+for message in st.session_state.messages:
+    with st.chat_message(message["role"]):
+        st.markdown(message["content"])
+
+# Input area
+col1, col2, col3 = st.columns([3, 1, 1])
 with col1:
     prompt = st.text_input("Enter your prompt for test case generation:")
 with col2:
-    num_testcases = st.number_input("Number of test cases:", min_value=1, value=1, step=1)
+    test_case_option = st.radio("Generation method:", ["Custom", "Dataset-based"], horizontal=True)
+with col3:
+    if test_case_option == "Custom":
+        num_testcases = st.number_input("Number of test cases:", min_value=1, value=1, step=1)
+    else:
+        num_testcases = len(st.session_state.uploaded_files)
+        st.write(f"Generating {num_testcases} test cases")
 
-# Display past messages and responses
-if "messages" in st.session_state:
-    for message in st.session_state.messages:
-        with st.chat_message(message["role"]):
-            st.markdown(message["content"])
-
-# Button to generate test cases and continue the conversation
 if st.button("Generate Test Cases"):
     if prompt:
-        # Store the user's prompt
         st.session_state.messages.append({"role": "user", "content": prompt})
         with st.chat_message("user"):
             st.markdown(prompt)
 
-        # Generate and display responses
         with st.chat_message("assistant"):
-            responses = generate_test_cases(prompt, test_type, use_knowledge_graph, num_testcases)
-
+            uploaded_datasets = st.session_state.uploaded_files if test_case_option == "Dataset-based" else None
+            responses = generate_test_cases(prompt, test_type, use_knowledge_graph, num_testcases, uploaded_datasets)
+            
             for i, response in enumerate(responses, 1):
-                st.text_area(f"Test Case {i}", response, height=200)
+                with st.expander(f"Test Case {i}"):
+                    st.markdown(response)
+                    st.download_button(
+                        label=f"Download Test Case {i}",
+                        data=response,
+                        file_name=f"generated_test_case_{i}.txt",
+                        mime="text/plain"
+                    )
             
-            # Append assistant's responses to messages for continued conversation
             st.session_state.messages.append({"role": "assistant", "content": "\n\n".join(responses)})
-            
-            # Allow downloading of the test cases
-            download_test_cases(responses)
     else:
         st.warning("Please enter a prompt for test case generation.")
+
+# Instructions
+st.markdown("""
+## How to use this advanced chatbot:
+1. Configure the chatbot using the sidebar options.
+2. Upload test case datasets to enhance the Knowledge Graph.
+3. Enter a prompt and specify the number of test cases to generate.
+4. Click 'Generate Test Cases' to create test cases based on your input.
+5. View and download the generated test cases.
+6. Refer to previous conversations in the chat history.
+7. Clear the conversation or reset the entire session as needed.
+""")

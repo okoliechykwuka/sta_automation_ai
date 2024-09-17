@@ -17,4 +17,4 @@ langchain-openai
 tenacity
 python-dotenv
 sentence-transformers
-pinecone-client=5.0.1
+pinecone-client==5.0.1

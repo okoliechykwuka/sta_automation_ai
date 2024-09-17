@@ -4,6 +4,7 @@ import os
 import sys
 import pandas as pd
 from neo4j import GraphDatabase
+from functools import wraps
 from langchain_community.vectorstores import Neo4jVector
 from langchain_openai import OpenAIEmbeddings
 # from langchain_community.embeddings import OpenAIEmbeddings
@@ -17,6 +18,28 @@ sys.path.append(os.path.join(current_dir, '..'))
 
 from utilities.config import app_config
 
+# Simple rate limiter
+class RateLimiter:
+    def __init__(self, calls_per_minute):
+        self.calls_per_minute = calls_per_minute
+        self.call_times = []
+
+    def wait(self):
+        now = time.time()
+        self.call_times = [t for t in self.call_times if now - t < 60]
+        if len(self.call_times) >= self.calls_per_minute:
+            sleep_time = 60 - (now - self.call_times[0])
+            time.sleep(max(sleep_time, 0))
+        self.call_times.append(time.time())
+
+def rate_limited(f):
+    limiter = RateLimiter(calls_per_minute=60)  # Adjust this value as needed
+    @wraps(f)
+    def wrapper(*args, **kwargs):
+        limiter.wait()
+        return f(*args, **kwargs)
+    return wrapper
+
 def get_neo4j_driver():
     try:
         return GraphDatabase.driver(
@@ -29,8 +52,12 @@ def get_neo4j_driver():
         print(f"Error creating Neo4j driver: {str(e)}")
         return None
 
-def compute_embeddings_for_new_nodes(batch_size=100, max_retries=5, initial_retry_delay=5):
+@rate_limited
+def compute_embeddings(texts):
     embeddings = OpenAIEmbeddings(openai_api_key=app_config.OPENAI_API_KEY)
+    return embeddings.embed_documents(texts)
+
+def compute_embeddings_for_new_nodes(batch_size=100):
     driver = get_neo4j_driver()
     
     with driver.session() as session:
@@ -57,26 +84,17 @@ def compute_embeddings_for_new_nodes(batch_size=100, max_retries=5, initial_retr
         batch_texts = texts[i:i+batch_size]
         batch_ids = ids[i:i+batch_size]
         
-        retry_delay = initial_retry_delay
-        for retry in range(max_retries):
-            try:
-                embeddings_list = embeddings.embed_documents(batch_texts)
-                
-                with driver.session() as session:
-                    for node_id, embedding_vector in zip(batch_ids, embeddings_list):
-                        session.run("""
-                        MATCH (n:TestCase {id: $id})
-                        SET n.embedding = $embedding
-                        """, id=node_id, embedding=embedding_vector)
-                
-                break  # Success, exit retry loop
-            except Exception as e:
-                if retry < max_retries - 1:
-                    st.warning(f"Error computing embeddings: {e}. Retrying in {retry_delay} seconds...")
-                    time.sleep(retry_delay)
-                    retry_delay *= 2  # Exponential backoff
-                else:
-                    st.error(f"Failed to compute embeddings after {max_retries} attempts: {e}")
+        try:
+            embeddings_list = compute_embeddings(batch_texts)
+            
+            with driver.session() as session:
+                for node_id, embedding_vector in zip(batch_ids, embeddings_list):
+                    session.run("""
+                    MATCH (n:TestCase {id: $id})
+                    SET n.embedding = $embedding
+                    """, id=node_id, embedding=embedding_vector)
+        except Exception as e:
+            st.error(f"Error computing embeddings: {e}")
 
 def create_vector_index():
     compute_embeddings_for_new_nodes()
@@ -168,6 +186,11 @@ def add_prompt_to_graph(driver, prompt, response, testcase_name):
             prompt=prompt, response=response
         )
 
+def get_similar_testcases(vector_index, prompt, k=5):
+    results = vector_index.similarity_search_with_score(prompt, k=k)
+    return [(result[0].page_content, result[1]) for result in results]
+
+@rate_limited
 def get_similar_testcases(vector_index, prompt, k=5):
     results = vector_index.similarity_search_with_score(prompt, k=k)
     return [(result[0].page_content, result[1]) for result in results]

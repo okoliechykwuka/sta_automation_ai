@@ -1,7 +1,7 @@
 fpdf
 knowledge_graph
 langchain
-langchain_community
+langchain-community
 pandas
 protobuf
 Requests
@@ -15,3 +15,5 @@ pyvis
 plotly
 langchain-openai
 tenacity
+python-dotenv
+sentence-transformers

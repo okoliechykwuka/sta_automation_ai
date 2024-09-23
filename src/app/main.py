@@ -212,82 +212,82 @@ if st.sidebar.button("Load Baseline Data"):
     load_baseline_data(baseline_file_path)
     st.sidebar.success("Baseline data loaded successfully!")
 
-# uploaded_files = st.sidebar.file_uploader("Upload test case data (CSV or Excel)", type=["csv", "xlsx"], accept_multiple_files=True)
-# if uploaded_files:
-#     for uploaded_file in uploaded_files:
-#         if uploaded_file not in st.session_state.uploaded_files:
-#             st.session_state.uploaded_files.append(uploaded_file)
-#             try:
-#                 data = pd.read_csv(uploaded_file, encoding='ISO-8859-1') if uploaded_file.name.endswith('.csv') else pd.read_excel(uploaded_file)
-#                 nodes, edges = map_data_to_graph(data)
-#                 update_neo4j_with_graph(neo4j_driver, nodes, edges)
-#                 st.session_state.graph_data["nodes"].extend(nodes)
-#                 st.session_state.graph_data["edges"].extend(edges)
-#                 # Compute embeddings for new nodes and update vector index
-#                 compute_embeddings_for_new_nodes()
-#                 vector_index = init_vector_index()
-#                 # similar_testcases = get_similar_testcases(vector_index, prompt)
-#             except Exception as e:
-#                 st.sidebar.error(f"Error processing file {uploaded_file.name}: {str(e)}")
-#     st.sidebar.success(f"Knowledge graph updated with {len(st.session_state.uploaded_files)} datasets!")
+uploaded_files = st.sidebar.file_uploader("Upload test case data (CSV or Excel)", type=["csv", "xlsx"], accept_multiple_files=True)
+if uploaded_files:
+    for uploaded_file in uploaded_files:
+        if uploaded_file not in st.session_state.uploaded_files:
+            st.session_state.uploaded_files.append(uploaded_file)
+            try:
+                data = pd.read_csv(uploaded_file, encoding='ISO-8859-1') if uploaded_file.name.endswith('.csv') else pd.read_excel(uploaded_file)
+                nodes, edges = map_data_to_graph(data)
+                update_neo4j_with_graph(neo4j_driver, nodes, edges)
+                st.session_state.graph_data["nodes"].extend(nodes)
+                st.session_state.graph_data["edges"].extend(edges)
+                # Compute embeddings for new nodes and update vector index
+                compute_embeddings_for_new_nodes()
+                vector_index = init_vector_index()
+                # similar_testcases = get_similar_testcases(vector_index, prompt)
+            except Exception as e:
+                st.sidebar.error(f"Error processing file {uploaded_file.name}: {str(e)}")
+    st.sidebar.success(f"Knowledge graph updated with {len(st.session_state.uploaded_files)} datasets!")
 
-# st.sidebar.title("Configuration")
-# st.sidebar.markdown("""
-# How to use this advanced chatbot:
+st.sidebar.title("Configuration")
+st.sidebar.markdown("""
+How to use this advanced chatbot:
 
-# 1. Enter your prompt for test case generation in the text area.
-# 2. Click the "Generate Test Cases" button to generate the test cases.
-# 3. Review the generated test cases in the text area.
-# 4. If you're satisfied, click the "Download Test Cases" button to download the test cases as a PDF.
-# 5. You can continue the conversation by entering a new prompt in the text area.
-# """)
+1. Enter your prompt for test case generation in the text area.
+2. Click the "Generate Test Cases" button to generate the test cases.
+3. Review the generated test cases in the text area.
+4. If you're satisfied, click the "Download Test Cases" button to download the test cases as a PDF.
+5. You can continue the conversation by entering a new prompt in the text area.
+""")
 
-# if st.sidebar.button("Clear Session and Database"):
-#     st.session_state.messages = []
-#     st.session_state.graph_data = {"nodes": [], "edges": []}
-#     st.session_state.uploaded_files = []
-#     clear_neo4j_database(neo4j_driver)
-#     st.sidebar.success("Session cleared and database emptied!")
+if st.sidebar.button("Clear Session and Database"):
+    st.session_state.messages = []
+    st.session_state.graph_data = {"nodes": [], "edges": []}
+    st.session_state.uploaded_files = []
+    clear_neo4j_database(neo4j_driver)
+    st.sidebar.success("Session cleared and database emptied!")
 
-# if st.sidebar.button("Clear Conversation"):
-#     st.session_state.messages = []
-#     st.sidebar.success("Conversation cleared!")
+if st.sidebar.button("Clear Conversation"):
+    st.session_state.messages = []
+    st.sidebar.success("Conversation cleared!")
 
-# # Main content
-# st.title("STA-LLaMA3.1 - Software Testing Automation Chatbot")
+# Main content
+st.title("STA-LLaMA3.1 - Software Testing Automation Chatbot")
 
-# # Input and conversation box
-# col1, col2 = st.columns([3, 1])
-# with col1:
-#     prompt = st.text_input("Enter your prompt for test case generation:")
-# with col2:
-#     num_testcases = st.number_input("Number of test cases:", min_value=1, value=1, step=1)
+# Input and conversation box
+col1, col2 = st.columns([3, 1])
+with col1:
+    prompt = st.text_input("Enter your prompt for test case generation:")
+with col2:
+    num_testcases = st.number_input("Number of test cases:", min_value=1, value=1, step=1)
 
-# # Display past messages and responses
-# if "messages" in st.session_state:
-#     for message in st.session_state.messages:
-#         with st.chat_message(message["role"]):
-#             st.markdown(message["content"])
+# Display past messages and responses
+if "messages" in st.session_state:
+    for message in st.session_state.messages:
+        with st.chat_message(message["role"]):
+            st.markdown(message["content"])
 
-# # Button to generate test cases and continue the conversation
-# if st.button("Generate Test Cases"):
-#     if prompt:
-#         # Store the user's prompt
-#         st.session_state.messages.append({"role": "user", "content": prompt})
-#         with st.chat_message("user"):
-#             st.markdown(prompt)
+# Button to generate test cases and continue the conversation
+if st.button("Generate Test Cases"):
+    if prompt:
+        # Store the user's prompt
+        st.session_state.messages.append({"role": "user", "content": prompt})
+        with st.chat_message("user"):
+            st.markdown(prompt)
 
-#         # Generate and display responses
-#         with st.chat_message("assistant"):
-#             responses = generate_test_cases(prompt, test_type, use_knowledge_graph, num_testcases)
+        # Generate and display responses
+        with st.chat_message("assistant"):
+            responses = generate_test_cases(prompt, test_type, use_knowledge_graph, num_testcases)
 
-#             for i, response in enumerate(responses, 1):
-#                 st.text_area(f"Test Case {i}", response, height=200)
+            for i, response in enumerate(responses, 1):
+                st.text_area(f"Test Case {i}", response, height=200)
             
-#             # Append assistant's responses to messages for continued conversation
-#             st.session_state.messages.append({"role": "assistant", "content": "\n\n".join(responses)})
+            # Append assistant's responses to messages for continued conversation
+            st.session_state.messages.append({"role": "assistant", "content": "\n\n".join(responses)})
             
-#             # Allow downloading of the test cases
-#             download_test_cases(responses)
-#     else:
-#         st.warning("Please enter a prompt for test case generation.")
+            # Allow downloading of the test cases
+            download_test_cases(responses)
+    else:
+        st.warning("Please enter a prompt for test case generation.")

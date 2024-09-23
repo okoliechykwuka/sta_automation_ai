@@ -4,7 +4,7 @@ import pandas as pd
 from neo4j import GraphDatabase
 from dotenv import load_dotenv
 
-load_dotenv('.env', override=True)
+load_dotenv()
 
 NEO4J_URI = os.getenv('NEO4J_URI')
 NEO4J_USER = os.getenv('NEO4J_USER')

@@ -203,7 +203,12 @@ use_knowledge_graph = st.sidebar.checkbox("Use Knowledge Graph", value=True)
 test_type = st.sidebar.radio("Select Test Case Type", ["Keyword-Driven", "Data-Driven"])
 
 if st.sidebar.button("Load Baseline Data"):
-    baseline_file_path = "combineddata.csv"
+    # Get the directory of the current script
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+
+    # Construct the baseline_file_path
+    baseline_file_path = os.path.join(current_dir, "combineddata.csv")
+    # baseline_file_path = "combineddata.csv"
     load_baseline_data(baseline_file_path)
     st.sidebar.success("Baseline data loaded successfully!")
 

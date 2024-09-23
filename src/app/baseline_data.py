@@ -11,7 +11,7 @@ NEO4J_URI = st.secrets.get('NEO4J_URI')
 NEO4J_USER = st.secrets.get('NEO4J_USER')
 NEO4J_PASSWORD = st.secrets.get('NEO4J_PASSWORD')
 
-st.write(NEO4J_URI, NEO4J_USER, NEO4J_PASSWORD)
+# st.write(NEO4J_URI, NEO4J_USER, NEO4J_PASSWORD)
 
 def insert_data(tx, row):
     tx.run('''

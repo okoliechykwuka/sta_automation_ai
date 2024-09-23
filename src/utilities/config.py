@@ -28,8 +28,3 @@ class Config:
             self.PINECONE_ENVIRONMENT = os.getenv('PINECONE_ENVIRONMENT', self.PINECONE_ENVIRONMENT)
 
 app_config = Config()
-
-# For debugging, you can print out which variables were loaded
-# Be cautious not to print sensitive information like passwords or API keys
-st.write(f"Loaded NEO4J_URI: {app_config.NEO4J_URI}")
-st.write(f"Loaded MODEL_ENDPOINT: {app_config.MODEL_ENDPOINT}")

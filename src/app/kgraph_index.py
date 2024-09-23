@@ -67,28 +67,34 @@ def compute_embeddings_for_new_nodes(batch_size=100):
     texts = []
     ids = []
     for node in nodes:
-        text = ' '.join([
-            node.get('prompt', ''),
-            node.get('testcase_name', ''),
-            node.get('response', ''),
-            node.get('documentation', ''),
-        ])
-        texts.append(text)
-        ids.append(node['id'])
+        if node['id'] is not None:
+            text = ' '.join([
+                node.get('prompt', ''),
+                node.get('testcase_name', ''),
+                node.get('response', ''),
+                node.get('documentation', ''),
+            ])
+            texts.append(text)
+            ids.append(node['id'])
+        else:
+            print(f"Skipping node with null id: {node}")
 
-    for i in range(0, len(texts), batch_size):
-        batch_texts = texts[i:i+batch_size]
-        batch_ids = ids[i:i+batch_size]
-
-        try:
-            embeddings_list = compute_embeddings(batch_texts)
-
-            # Store embeddings in Pinecone
-            vectors = [(id, embedding, {"text": text}) for id, embedding, text in zip(batch_ids, embeddings_list, batch_texts)]
-            index.upsert(vectors=vectors)
-
-        except Exception as e:
-            st.error(f"Error computing embeddings: {e}")
+    if ids:
+        for i in range(0, len(texts), batch_size):
+            batch_texts = texts[i:i+batch_size]
+            batch_ids = ids[i:i+batch_size]
+    
+            try:
+                embeddings_list = compute_embeddings(batch_texts)
+    
+                # Store embeddings in Pinecone
+                vectors = [(id, embedding, {"text": text}) for id, embedding, text in zip(batch_ids, embeddings_list, batch_texts)]
+                index.upsert(vectors=vectors)
+    
+            except Exception as e:
+                st.error(f"Error computing embeddings: {e}")
+    else:
+        print("No valid nodes found to process")
 
 def create_vector_index():
     compute_embeddings_for_new_nodes()

@@ -5,9 +5,9 @@ langchain-community
 pandas
 protobuf
 Requests
-torch
+#torch
 tqdm
-transformers
+#transformers
 streamlit
 requests
 neo4j
@@ -16,5 +16,5 @@ plotly
 langchain-openai
 tenacity
 python-dotenv
-sentence-transformers
+#sentence-transformers
 pinecone-client==5.0.1

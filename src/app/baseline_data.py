@@ -1,14 +1,15 @@
 # baseline_data.py
 import os
+import streamlit as st
 import pandas as pd
 from neo4j import GraphDatabase
 from dotenv import load_dotenv
 
 load_dotenv()
 
-NEO4J_URI = os.getenv('NEO4J_URI')
-NEO4J_USER = os.getenv('NEO4J_USER')
-NEO4J_PASSWORD = os.getenv('NEO4J_PASSWORD')
+NEO4J_URI = st.secrets.get('NEO4J_URI')
+NEO4J_USER = st.secrets.get('NEO4J_USER')
+NEO4J_PASSWORD = st.secrets.get('NEO4J_PASSWORD')
 
 def insert_data(tx, row):
     tx.run('''

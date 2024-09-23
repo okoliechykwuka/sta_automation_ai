@@ -62,6 +62,6 @@ def load_baseline_data(file_path):
     driver.close()
     print("Baseline data loaded successfully.")
 
-if __name__ == "__main__":
-    baseline_file_path = "combineddata.csv"  # Update this path as needed
-    load_baseline_data(baseline_file_path)
+# if __name__ == "__main__":
+#     baseline_file_path = "combineddata.csv"  # Update this path as needed
+#     load_baseline_data(baseline_file_path)

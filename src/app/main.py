@@ -55,7 +55,7 @@ def init_ollama():
         
         return RunpodLLM(
                 endpoint_url=app_config.MODEL_ENDPOINT,
-                model="sta_llama3.1",
+                model="testforceai/sta_llama3.1",
                 callbacks=[StreamingStdOutCallbackHandler()]
                 
             )

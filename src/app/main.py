@@ -174,6 +174,29 @@ def get_dataset_info(dataset):
     except Exception as e:
         return f"Error reading dataset: {str(e)}"
 
+# def download_test_cases(test_cases):
+#     pdf = FPDF()
+#     pdf.add_page()
+#     pdf.set_font("Arial", size=10)
+
+#     for idx, test_case in enumerate(test_cases, 1):
+#         if idx > 1:
+#             # line of dashes before each test case (except the first one)
+#             pdf.cell(0, 5, "-" * 150, ln=True, align="C")
+#             pdf.ln(5)  # space after the line of dashes
+
+#         pdf.cell(200, 8, f"Test Case {idx}", ln=True, align="L")
+#         pdf.multi_cell(0, 6, test_case)
+#         pdf.ln(5)  # space after each test case
+    
+#     pdf_output = pdf.output(dest='S').encode('latin1')
+#     st.download_button(
+#         label="Download Test Cases",
+#         data=pdf_output,
+#         file_name="generated_test_cases.pdf",
+#         mime="application/pdf"
+#     )
+
 def download_test_cases(test_cases):
     pdf = FPDF()
     pdf.add_page()
@@ -181,13 +204,20 @@ def download_test_cases(test_cases):
 
     for idx, test_case in enumerate(test_cases, 1):
         if idx > 1:
-            # line of dashes before each test case (except the first one)
-            pdf.cell(0, 5, "-" * 150, ln=True, align="C")
-            pdf.ln(5)  # space after the line of dashes
+            pdf.add_page()  # Start each test case on a new page
 
-        pdf.cell(200, 8, f"Test Case {idx}", ln=True, align="L")
-        pdf.multi_cell(0, 6, test_case)
-        pdf.ln(5)  # space after each test case
+        pdf.set_font("Arial", 'B', 12)
+        pdf.cell(200, 10, f"Test Case {idx}", ln=True, align="L")
+        pdf.set_font("Arial", size=10)
+        
+        lines = test_case.split('\n')
+        for line in lines:
+            if line.startswith('***'):
+                pdf.set_font("Arial", 'B', 11)
+                pdf.cell(0, 6, line, ln=True)
+                pdf.set_font("Arial", size=10)
+            else:
+                pdf.multi_cell(0, 5, line)
     
     pdf_output = pdf.output(dest='S').encode('latin1')
     st.download_button(
@@ -284,14 +314,26 @@ if st.button("Generate Test Cases"):
             # Display each test case in a properly structured format
             formatted_responses = []
             for i, response in enumerate(responses, 1):
-                formatted_response = f"Test Case {i}\n" + response.replace('\n', '\n\t')
-                st.text_area(f"Test Case {i}", formatted_response, height=200)
+                # Split the response into sections
+                sections = response.split('***')
+                formatted_response = f"Test Case {i}\n"
+                for section in sections:
+                    if section.strip():
+                        # Add section title
+                        title = section.split('\n')[0].strip()
+                        formatted_response += f"\n*** {title} ***\n"
+                        # Add section content with indentation
+                        content = '\n'.join(section.split('\n')[1:])
+                        formatted_response += '\n'.join([f"    {line}" for line in content.split('\n') if line.strip()])
+                        formatted_response += '\n'
+                
+                st.text_area(f"Test Case {i}", formatted_response, height=300)
                 formatted_responses.append(formatted_response)
                 
             # Append assistant's responses to messages for continued conversation
-            st.session_state.messages.append({"role": "assistant", "content": "\n\n".join(responses)})
+            st.session_state.messages.append({"role": "assistant", "content": "\n\n".join(formatted_responses)})
             
             # Allow downloading of the test cases
-            download_test_cases(responses)
+            download_test_cases(formatted_responses)
     else:
         st.warning("Please enter a prompt for test case generation.")

@@ -281,9 +281,13 @@ if st.button("Generate Test Cases"):
         with st.chat_message("assistant"):
             responses = generate_test_cases(prompt, test_type, use_knowledge_graph, num_testcases)
 
+            # Display each test case in a properly structured format
+            formatted_responses = []
             for i, response in enumerate(responses, 1):
-                st.text_area(f"Test Case {i}", response, height=200)
-            
+                formatted_response = f"Test Case {i}\n" + response.replace('\n', '\n\t')
+                st.text_area(f"Test Case {i}", formatted_response, height=200)
+                formatted_responses.append(formatted_response)
+                
             # Append assistant's responses to messages for continued conversation
             st.session_state.messages.append({"role": "assistant", "content": "\n\n".join(responses)})
             

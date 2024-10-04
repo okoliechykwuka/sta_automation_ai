@@ -5,7 +5,7 @@ from langchain_core.outputs import GenerationChunk
 import requests
 import json
 
-class RunpodLLM(LLM):
+class CloudLLM(LLM):
     """A custom LLM that interfaces with a RunPod serverless endpoint.
 
     This LLM sends requests to a specified RunPod endpoint and processes
@@ -13,14 +13,14 @@ class RunpodLLM(LLM):
 
     Args:
         endpoint_url: The URL of the RunPod serverless endpoint.
-        model: The name of the model to use (e.g., "sta_llama3.1").
+        model: The name of the model to use (e.g., "testforceai/sta_llama3.1").
 
     Example:
         .. code-block:: python
 
-            llm = RunpodLLM(
+            llm = CloudLLM(
                 endpoint_url="https://{POD-ID}-11434.proxy.runpod.net/api/generate",
-                model="sta_llama3.1"
+                model="testforceai/sta_llama3.1"
             )
             result = llm.invoke("Your prompt here")
     """
@@ -116,11 +116,11 @@ class RunpodLLM(LLM):
     def _identifying_params(self) -> Mapping[str, Any]:
         """Get the identifying parameters."""
         return {
-            "model_name": f"RunpodLLM-{self.model}",
+            "model_name": f"CloudLLM-{self.model}",
             "endpoint_url": self.endpoint_url
         }
 
     @property
     def _llm_type(self) -> str:
         """Get the type of LLM."""
-        return "runpod_llm"
+        return "cloud_llm"

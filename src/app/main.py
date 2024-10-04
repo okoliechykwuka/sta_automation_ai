@@ -33,6 +33,7 @@ from kgraph_index import (
 
 from baseline_data import load_baseline_data
 from utilities.config import app_config
+from custom_llm import CloudLLM
 
 # Initialize logging
 logging.basicConfig(level=logging.DEBUG)
@@ -53,7 +54,7 @@ def init_ollama():
         return None
     try:
         
-        return RunpodLLM(
+        return CloudLLM(
                 endpoint_url=app_config.MODEL_ENDPOINT,
                 model="testforceai/sta_llama3.1",
                 callbacks=[StreamingStdOutCallbackHandler()]

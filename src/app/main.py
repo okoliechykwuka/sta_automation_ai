@@ -300,6 +300,9 @@ if "messages" in st.session_state:
             st.markdown(message["content"])
 
 # Button to generate test cases and continue the conversation
+
+
+# Button to generate test cases and continue the conversation
 if st.button("Generate Test Cases"):
     if prompt:
         # Store the user's prompt

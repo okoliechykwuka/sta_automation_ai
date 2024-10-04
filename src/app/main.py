@@ -45,6 +45,8 @@ if "graph_data" not in st.session_state:
     st.session_state.graph_data = {"nodes": [], "edges": []}
 if "uploaded_files" not in st.session_state:
     st.session_state.uploaded_files = []
+if "database_cleared" not in st.session_state:
+    st.session_state.database_cleared = False
 
 @st.cache_resource
 def init_ollama():
@@ -232,6 +234,11 @@ st.sidebar.title("Configuration")
 use_knowledge_graph = st.sidebar.checkbox("Use Knowledge Graph", value=True)
 test_type = st.sidebar.radio("Select Test Case Type", ["Keyword-Driven", "Data-Driven"])
 
+if st.sidebar.button("Clear Database"):
+    clear_neo4j_database(neo4j_driver)
+    st.session_state.database_cleared = True
+    st.sidebar.success("Database cleared successfully!")
+
 if st.sidebar.button("Load Baseline Data"):
     # Get the directory of the current script
     current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -284,7 +291,7 @@ if st.sidebar.button("Clear Conversation"):
     st.sidebar.success("Conversation cleared!")
 
 # Main content
-st.title("STA-LLaMA3.1 - Software Testing Automation Chatbot")
+st.title("Software Testing Automation Chatbot")
 
 # Input and conversation box
 col1, col2 = st.columns([3, 1])

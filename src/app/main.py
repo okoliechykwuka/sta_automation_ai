@@ -5,7 +5,8 @@ st.cache_resource.clear()
 import pandas as pd
 import networkx as nx
 from pyvis.network import Network
-from langchain_community.llms import Ollama
+from custom_llm import RunpodLLM
+# from langchain_community.llms import Ollama
 # from langchain.llms import Ollama
 # from langchain.callbacks.manager import Callbackllmsr
 from langchain.callbacks.manager import CallbackManager
@@ -51,13 +52,20 @@ def init_ollama():
         st.error("MODEL_ENDPOINT is missing.")
         return None
     try:
-        return Ollama(
-            model="sta_llama3.1_v2",
-            num_ctx=6096,
-            temperature=0.1,
-            base_url=app_config.MODEL_ENDPOINT,
-            callbacks=[StreamingStdOutCallbackHandler()]
-        )
+        
+        return RunpodLLM(
+                endpoint_url=app_config.MODEL_ENDPOINT,
+                model="testforceai/sta_llama3.1",
+                callbacks=[StreamingStdOutCallbackHandler()]
+                
+            )
+        # return Ollama(
+        #     model="sta_llama3.1_v2",
+        #     num_ctx=6096,
+        #     temperature=0.1,
+        #     base_url=app_config.MODEL_ENDPOINT,
+        #     callbacks=[StreamingStdOutCallbackHandler()]
+        # )
     except Exception as e:
         st.error(f"Failed to initialize Ollama: {str(e)}")
         return None
@@ -152,7 +160,7 @@ def generate_test_cases(prompt, test_type, use_knowledge_graph, num_testcases, u
         full_prompt = f"{context}\nGenerate a new test case named '{test_type}_{i+1}' for: {prompt}\n"
         full_prompt += "Please follow a similar structure to the example test cases, including all relevant sections (Settings, Variables, Test Cases) and maintain a step-by-step approach."
 
-        response = ollama_llm(full_prompt)
+        response = ollama_llm.invoke(full_prompt)
         responses.append(response)
         add_prompt_to_graph(neo4j_driver, prompt, response, f"{test_type}_{i+1}")
     return responses
@@ -195,7 +203,12 @@ use_knowledge_graph = st.sidebar.checkbox("Use Knowledge Graph", value=True)
 test_type = st.sidebar.radio("Select Test Case Type", ["Keyword-Driven", "Data-Driven"])
 
 if st.sidebar.button("Load Baseline Data"):
-    baseline_file_path = "combineddata.csv"
+    # Get the directory of the current script
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+
+    # Construct the baseline_file_path
+    baseline_file_path = os.path.join(current_dir, "combineddata.csv")
+    # baseline_file_path = "combineddata.csv"
     load_baseline_data(baseline_file_path)
     st.sidebar.success("Baseline data loaded successfully!")
 

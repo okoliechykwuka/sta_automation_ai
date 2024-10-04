@@ -212,11 +212,13 @@ def download_test_cases(test_cases):
         
         lines = test_case.split('\n')
         for line in lines:
-            if line.startswith('***'):
+            if line.strip() and not line.startswith('    '):
+                # This is a section title
                 pdf.set_font("Arial", 'B', 11)
                 pdf.cell(0, 6, line, ln=True)
                 pdf.set_font("Arial", size=10)
             else:
+                # This is content
                 pdf.multi_cell(0, 5, line)
     
     pdf_output = pdf.output(dest='S').encode('latin1')
@@ -319,9 +321,9 @@ if st.button("Generate Test Cases"):
                 formatted_response = f"Test Case {i}\n"
                 for section in sections:
                     if section.strip():
-                        # Add section title
+                        # Add section title without extra asterisks
                         title = section.split('\n')[0].strip()
-                        formatted_response += f"\n*** {title} ***\n"
+                        formatted_response += f"\n{title}\n"
                         # Add section content with indentation
                         content = '\n'.join(section.split('\n')[1:])
                         formatted_response += '\n'.join([f"    {line}" for line in content.split('\n') if line.strip()])

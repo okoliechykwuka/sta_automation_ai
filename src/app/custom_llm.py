@@ -6,27 +6,30 @@ import requests
 import json
 
 class CloudLLM(LLM):
-    """A custom LLM that interfaces with a RunPod serverless endpoint.
+    """A custom LLM that interfaces with a EC2 serverless instance endpoint.
 
-    This LLM sends requests to a specified RunPod endpoint and processes
+    This LLM sends requests to a specified EC2 endpoint and processes
     the streaming responses.
 
     Args:
-        endpoint_url: The URL of the RunPod serverless endpoint.
+        endpoint_url: The URL of the EC2 serverless endpoint.
         model: The name of the model to use (e.g., "testforceai/sta_llama3.1").
+        temperature: Controls randomness in output. Lower values make the model more deterministic.
 
     Example:
         .. code-block:: python
 
             llm = CloudLLM(
                 endpoint_url="https://{POD-ID}-11434.proxy.runpod.net/api/generate",
-                model="testforceai/sta_llama3.1"
+                model="testforceai/sta_llama3.1",
+                temperature=0.0
             )
             result = llm.invoke("Your prompt here")
     """
 
     endpoint_url: str
     model: str
+    temperature: float = 0.0
 
     def _call(
         self,
@@ -76,7 +79,8 @@ class CloudLLM(LLM):
         headers = {"Content-Type": "application/json"}
         payload = json.dumps({
             "model": self.model,
-            "prompt": prompt
+            "prompt": prompt,
+            "temperature": self.temperature
         })
 
         with requests.post(self.endpoint_url, data=payload, headers=headers, stream=True) as response:
@@ -100,7 +104,8 @@ class CloudLLM(LLM):
         headers = {"Content-Type": "application/json"}
         payload = json.dumps({
             "model": self.model,
-            "prompt": prompt
+            "prompt": prompt,
+            "temperature": self.temperature
         })
         
         response = requests.post(self.endpoint_url, data=payload, headers=headers)
@@ -117,7 +122,8 @@ class CloudLLM(LLM):
         """Get the identifying parameters."""
         return {
             "model_name": f"CloudLLM-{self.model}",
-            "endpoint_url": self.endpoint_url
+            "endpoint_url": self.endpoint_url,
+            "temperature": self.temperature
         }
 
     @property

@@ -5,16 +5,12 @@ st.cache_resource.clear()
 import pandas as pd
 import networkx as nx
 from pyvis.network import Network
-# from langchain_community.llms import Ollama
-# from langchain.llms import Ollama
-# from langchain.callbacks.manager import Callbackllmsr
 from langchain.callbacks.manager import CallbackManager
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 from langchain_community.graphs import Neo4jGraph
 from langchain.chains import GraphCypherQAChain
 import plotly.express as px
 import streamlit.components.v1 as components
-# from langchain_llms import OpenAI
 from langchain_community.llms.openai import OpenAI
 import logging
 from neo4j.exceptions import Neo4jError
@@ -58,6 +54,7 @@ def init_ollama():
         return CloudLLM(
                 endpoint_url=app_config.MODEL_ENDPOINT,
                 model="testforceai/sta_llama3.1",
+                temperature=0.0,
                 callbacks=[StreamingStdOutCallbackHandler()]
                 
             )
@@ -100,17 +97,9 @@ neo4j_graph = init_neo4j()
 neo4j_driver = get_neo4j_driver()
 vector_index = init_vector_index()
 
-# Check that all components are initialized
-# if not all([ollama_llm, neo4j_graph, neo4j_driver, vector_index]):
-#     st.error("Failed to initialize required components. Please check your configurations.")
-#     st.stop()
 if ollama_llm is None or neo4j_graph is None or neo4j_driver is None or vector_index is None:
     st.error("Failed to initialize required components. Please check your configurations.")
     st.stop()
-
-# if vector_index is None:
-#     st.error("Vector index could not be created. Please check your configuration and OpenAI API usage.")
-#     st.stop()
 
 # Create a GraphCypherQAChain
 qa_chain = GraphCypherQAChain.from_llm(
@@ -168,36 +157,15 @@ def generate_test_cases(prompt, test_type, use_knowledge_graph, num_testcases, u
     return responses
 
 def get_dataset_info(dataset):
-    # This function would extract relevant information from the dataset
-    # For demonstration, we'll just return a simple summary
+    """
+        This function would extract relevant information from the dataset
+        For demonstration, we'll just return a simple summary
+    """
     try:
         df = pd.read_csv(dataset) if dataset.name.endswith('.csv') else pd.read_excel(dataset)
         return f"Columns: {', '.join(df.columns)}, Rows: {len(df)}"
     except Exception as e:
         return f"Error reading dataset: {str(e)}"
-
-# def download_test_cases(test_cases):
-#     pdf = FPDF()
-#     pdf.add_page()
-#     pdf.set_font("Arial", size=10)
-
-#     for idx, test_case in enumerate(test_cases, 1):
-#         if idx > 1:
-#             # line of dashes before each test case (except the first one)
-#             pdf.cell(0, 5, "-" * 150, ln=True, align="C")
-#             pdf.ln(5)  # space after the line of dashes
-
-#         pdf.cell(200, 8, f"Test Case {idx}", ln=True, align="L")
-#         pdf.multi_cell(0, 6, test_case)
-#         pdf.ln(5)  # space after each test case
-    
-#     pdf_output = pdf.output(dest='S').encode('latin1')
-#     st.download_button(
-#         label="Download Test Cases",
-#         data=pdf_output,
-#         file_name="generated_test_cases.pdf",
-#         mime="application/pdf"
-#     )
 
 def download_test_cases(test_cases):
     pdf = FPDF()
@@ -240,12 +208,11 @@ if st.sidebar.button("Clear Database"):
     st.sidebar.success("Database cleared successfully!")
 
 if st.sidebar.button("Load Baseline Data"):
-    # Get the directory of the current script
     current_dir = os.path.dirname(os.path.abspath(__file__))
 
     # Construct the baseline_file_path
     baseline_file_path = os.path.join(current_dir, "combineddata.csv")
-    # baseline_file_path = "combineddata.csv"
+    
     load_baseline_data(baseline_file_path)
     st.sidebar.success("Baseline data loaded successfully!")
 
@@ -307,9 +274,6 @@ if "messages" in st.session_state:
             st.markdown(message["content"])
 
 # Button to generate test cases and continue the conversation
-
-
-# Button to generate test cases and continue the conversation
 if st.button("Generate Test Cases"):
     if prompt:
         # Store the user's prompt
@@ -329,10 +293,10 @@ if st.button("Generate Test Cases"):
                 formatted_response = f"Test Case {i}\n"
                 for section in sections:
                     if section.strip():
-                        # Add section title
+                        # title section
                         title = section.split('\n')[0].strip()
                         formatted_response += f"\n*** {title} ***\n"
-                        # Add section content with indentation
+                        # content section with indentation
                         content = '\n'.join(section.split('\n')[1:])
                         formatted_response += '\n'.join([f"    {line}" for line in content.split('\n') if line.strip()])
                         formatted_response += '\n'

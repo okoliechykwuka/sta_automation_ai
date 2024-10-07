@@ -65,6 +65,7 @@ pytest_debug.log
 .vscode/
 
 # Environments
+.env
 .venv
 venv/
 stdautomationenv/
@@ -116,8 +117,9 @@ src/utilities/logger.py
 docker-compose.yml
 Dockerfile
 
+# Ignore secrets files
+.env
 
 # models
 src/app/model/unsloth.Q4_K_M.gguf
 src/app/.streamlit/secrets.toml
-

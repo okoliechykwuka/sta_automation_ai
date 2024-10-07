@@ -1,17 +1,30 @@
 from dotenv import load_dotenv
 import os
+import streamlit as st
 
 # Load environment variables from .env file
 load_dotenv()
 
 class Config:
-    NEO4J_URI = os.getenv('NEO4J_URI')
-    NEO4J_USER = os.getenv('NEO4J_USER')
-    NEO4J_PASSWORD = os.getenv('NEO4J_PASSWORD')
-    MODEL_ENDPOINT = os.getenv('MODEL_ENDPOINT')
-    OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
+    def __init__(self):
+        # First, try to get secrets from st.secrets (works on Streamlit Cloud)
+        self.NEO4J_URI = st.secrets.get("NEO4J_URI")
+        self.NEO4J_USER = st.secrets.get("NEO4J_USER")
+        self.NEO4J_PASSWORD = st.secrets.get("NEO4J_PASSWORD")
+        self.MODEL_ENDPOINT = st.secrets.get("MODEL_ENDPOINT")
+        self.OPENAI_API_KEY = st.secrets.get("OPENAI_API_KEY")
+        self.PINECONE_API_KEY = st.secrets.get("PINECONE_API_KEY")
+        self.PINECONE_ENVIRONMENT = st.secrets.get("PINECONE_ENVIRONMENT")
 
-config = Config()
+        # If any are None (e.g., running locally), load from .env
+        if not all([self.NEO4J_URI, self.NEO4J_USER, self.NEO4J_PASSWORD, self.MODEL_ENDPOINT, self.OPENAI_API_KEY]):
+            load_dotenv()
+            self.NEO4J_URI = os.getenv('NEO4J_URI', self.NEO4J_URI)
+            self.NEO4J_USER = os.getenv('NEO4J_USER', self.NEO4J_USER)
+            self.NEO4J_PASSWORD = os.getenv('NEO4J_PASSWORD', self.NEO4J_PASSWORD)
+            self.MODEL_ENDPOINT = os.getenv('MODEL_ENDPOINT', self.MODEL_ENDPOINT)
+            self.OPENAI_API_KEY = os.getenv('OPENAI_API_KEY', self.OPENAI_API_KEY)
+            self.PINECONE_API_KEY = os.getenv('PINECONE_API_KEY', self.PINECONE_API_KEY)
+            self.PINECONE_ENVIRONMENT = os.getenv('PINECONE_ENVIRONMENT', self.PINECONE_ENVIRONMENT)
 
-# print(f"Loaded OPENAI_API_KEY: {config.OPENAI_API_KEY}")
-print(f"Loaded MODEL_ENDPOINT: {config.MODEL_ENDPOINT}")
+app_config = Config()

@@ -9,11 +9,11 @@ load_dotenv('.env', override=True)
 NEO4J_URI = os.getenv('NEO4J_URI')
 NEO4J_USERNAME = os.getenv('NEO4J_USERNAME')
 NEO4J_PASSWORD = os.getenv('NEO4J_PASSWORD')
-
+OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 
 # Create the vector index
 vector_index = Neo4jVector.from_existing_graph(
-    OpenAIEmbeddings(api_key="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"),
+    embeddings = OpenAIEmbeddings(api_key=openai_api_key),
     url=NEO4J_URI,
     username=NEO4J_USERNAME,
     password=NEO4J_PASSWORD,

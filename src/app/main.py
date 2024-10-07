@@ -1,33 +1,34 @@
 import sys
 import os
 import streamlit as st
+st.cache_resource.clear()
 import pandas as pd
 import networkx as nx
 from pyvis.network import Network
-from langchain_community.llms import Ollama
 from langchain.callbacks.manager import CallbackManager
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 from langchain_community.graphs import Neo4jGraph
 from langchain.chains import GraphCypherQAChain
 import plotly.express as px
 import streamlit.components.v1 as components
-from langchain_openai import OpenAI
+from langchain_community.llms.openai import OpenAI
 import logging
 from neo4j.exceptions import Neo4jError
 from fpdf import FPDF
-# from tenacity import retry, stop_after_attempt, wait_fixed
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(current_dir)
-sys.path.append(os.path.join(current_dir, '../utilities'))
+sys.path.append(os.path.join(current_dir, '..'))
 
 from kgraph_index import (
-    get_neo4j_driver, create_vector_index, map_data_to_graph, 
-    update_neo4j_with_graph, clear_neo4j_database, add_prompt_to_graph,
-    get_similar_testcases, get_test_case_structure
+    get_neo4j_driver, create_vector_index, compute_embeddings_for_new_nodes,
+    map_data_to_graph, update_neo4j_with_graph, clear_neo4j_database,
+    add_prompt_to_graph, get_similar_testcases, get_test_case_structure
 )
+
 from baseline_data import load_baseline_data
-from config import config
+from utilities.config import app_config
+from custom_llm import CloudLLM
 
 # Initialize logging
 logging.basicConfig(level=logging.DEBUG)
@@ -40,41 +41,63 @@ if "graph_data" not in st.session_state:
     st.session_state.graph_data = {"nodes": [], "edges": []}
 if "uploaded_files" not in st.session_state:
     st.session_state.uploaded_files = []
+if "database_cleared" not in st.session_state:
+    st.session_state.database_cleared = False
 
-@retry(stop=stop_after_attempt(3), wait=wait_fixed(2))
 @st.cache_resource
 def init_ollama():
+    if not app_config.MODEL_ENDPOINT:
+        st.error("MODEL_ENDPOINT is missing.")
+        return None
     try:
-        return Ollama(
-            model="sta_llama3.1_v2",
-            num_ctx=6096,
-            temperature=0.1,
-            base_url="https://0c74-102-91-93-248.ngrok-free.app/",
-            callbacks=[StreamingStdOutCallbackHandler()]
-        )
+        
+        return CloudLLM(
+                endpoint_url=app_config.MODEL_ENDPOINT,
+                model="testforceai/sta_llama3.1",
+                temperature=0.0,
+                callbacks=[StreamingStdOutCallbackHandler()]
+                
+            )
+        # return Ollama(
+        #     model="sta_llama3.1_v2",
+        #     num_ctx=6096,
+        #     temperature=0.1,
+        #     base_url=app_config.MODEL_ENDPOINT,
+        #     callbacks=[StreamingStdOutCallbackHandler()]
+        # )
     except Exception as e:
         st.error(f"Failed to initialize Ollama: {str(e)}")
-        return
+        return None
 
 @st.cache_resource
 def init_neo4j():
+    if not all([app_config.NEO4J_URI, app_config.NEO4J_USER, app_config.NEO4J_PASSWORD]):
+        st.error("Neo4j configuration variables are missing.")
+        return None
     try:
-        return Neo4jGraph(
-            url=config.NEO4J_URI,
-            username=config.NEO4J_USER,
-            password=config.NEO4J_PASSWORD
+        graph = Neo4jGraph(
+            url=app_config.NEO4J_URI,
+            username=app_config.NEO4J_USER,
+            password=app_config.NEO4J_PASSWORD
         )
+        # Test the connection
+        graph.query("RETURN 1")
+        return graph
     except Exception as e:
         st.error(f"Failed to initialize Neo4j: {str(e)}")
         return None
+
+@st.cache_resource
+def init_vector_index():
+    return create_vector_index()
 
 # Initialize components
 ollama_llm = init_ollama()
 neo4j_graph = init_neo4j()
 neo4j_driver = get_neo4j_driver()
-vector_index = create_vector_index()
+vector_index = init_vector_index()
 
-if ollama_llm is None or neo4j_graph is None or neo4j_driver is None:
+if ollama_llm is None or neo4j_graph is None or neo4j_driver is None or vector_index is None:
     st.error("Failed to initialize required components. Please check your configurations.")
     st.stop()
 
@@ -82,7 +105,8 @@ if ollama_llm is None or neo4j_graph is None or neo4j_driver is None:
 qa_chain = GraphCypherQAChain.from_llm(
     ollama_llm,
     graph=neo4j_graph,
-    verbose=True
+    verbose=True,
+    allow_dangerous_requests=True
 )
 
 def get_graph_info_for_test_case(test_case_type):
@@ -127,14 +151,16 @@ def generate_test_cases(prompt, test_type, use_knowledge_graph, num_testcases, u
         full_prompt = f"{context}\nGenerate a new test case named '{test_type}_{i+1}' for: {prompt}\n"
         full_prompt += "Please follow a similar structure to the example test cases, including all relevant sections (Settings, Variables, Test Cases) and maintain a step-by-step approach."
 
-        response = ollama_llm(full_prompt)
+        response = ollama_llm.invoke(full_prompt)
         responses.append(response)
         add_prompt_to_graph(neo4j_driver, prompt, response, f"{test_type}_{i+1}")
     return responses
 
 def get_dataset_info(dataset):
-    # This function would extract relevant information from the dataset
-    # For demonstration, we'll just return a simple summary
+    """
+        This function would extract relevant information from the dataset
+        For demonstration, we'll just return a simple summary
+    """
     try:
         df = pd.read_csv(dataset) if dataset.name.endswith('.csv') else pd.read_excel(dataset)
         return f"Columns: {', '.join(df.columns)}, Rows: {len(df)}"
@@ -148,13 +174,20 @@ def download_test_cases(test_cases):
 
     for idx, test_case in enumerate(test_cases, 1):
         if idx > 1:
-            # line of dashes before each test case (except the first one)
-            pdf.cell(0, 5, "-" * 150, ln=True, align="C")
-            pdf.ln(5)  # space after the line of dashes
+            pdf.add_page()  # Start each test case on a new page
 
-        pdf.cell(200, 8, f"Test Case {idx}", ln=True, align="L")
-        pdf.multi_cell(0, 6, test_case)
-        pdf.ln(5)  # space after each test case
+        pdf.set_font("Arial", 'B', 12)
+        pdf.cell(200, 10, f"Test Case {idx}", ln=True, align="L")
+        pdf.set_font("Arial", size=10)
+        
+        lines = test_case.split('\n')
+        for line in lines:
+            if line.startswith('***'):
+                pdf.set_font("Arial", 'B', 11)
+                pdf.cell(0, 6, line, ln=True)
+                pdf.set_font("Arial", size=10)
+            else:
+                pdf.multi_cell(0, 5, line)
     
     pdf_output = pdf.output(dest='S').encode('latin1')
     st.download_button(
@@ -169,8 +202,17 @@ st.sidebar.title("Configuration")
 use_knowledge_graph = st.sidebar.checkbox("Use Knowledge Graph", value=True)
 test_type = st.sidebar.radio("Select Test Case Type", ["Keyword-Driven", "Data-Driven"])
 
+if st.sidebar.button("Clear Database"):
+    clear_neo4j_database(neo4j_driver)
+    st.session_state.database_cleared = True
+    st.sidebar.success("Database cleared successfully!")
+
 if st.sidebar.button("Load Baseline Data"):
-    baseline_file_path = "combineddata.csv"
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+
+    # Construct the baseline_file_path
+    baseline_file_path = os.path.join(current_dir, "combineddata.csv")
+    
     load_baseline_data(baseline_file_path)
     st.sidebar.success("Baseline data loaded successfully!")
 
@@ -185,6 +227,10 @@ if uploaded_files:
                 update_neo4j_with_graph(neo4j_driver, nodes, edges)
                 st.session_state.graph_data["nodes"].extend(nodes)
                 st.session_state.graph_data["edges"].extend(edges)
+                # Compute embeddings for new nodes and update vector index
+                compute_embeddings_for_new_nodes()
+                vector_index = init_vector_index()
+                # similar_testcases = get_similar_testcases(vector_index, prompt)
             except Exception as e:
                 st.sidebar.error(f"Error processing file {uploaded_file.name}: {str(e)}")
     st.sidebar.success(f"Knowledge graph updated with {len(st.session_state.uploaded_files)} datasets!")
@@ -212,7 +258,7 @@ if st.sidebar.button("Clear Conversation"):
     st.sidebar.success("Conversation cleared!")
 
 # Main content
-st.title("STA-LLaMA3.1 - Software Testing Automation Chatbot")
+st.title("Software Testing Automation Chatbot")
 
 # Input and conversation box
 col1, col2 = st.columns([3, 1])
@@ -239,13 +285,29 @@ if st.button("Generate Test Cases"):
         with st.chat_message("assistant"):
             responses = generate_test_cases(prompt, test_type, use_knowledge_graph, num_testcases)
 
+            # Display each test case in a properly structured format
+            formatted_responses = []
             for i, response in enumerate(responses, 1):
-                st.text_area(f"Test Case {i}", response, height=200)
-            
+                # Split the response into sections
+                sections = response.split('***')
+                formatted_response = f"Test Case {i}\n"
+                for section in sections:
+                    if section.strip():
+                        # title section
+                        title = section.split('\n')[0].strip()
+                        formatted_response += f"\n*** {title} ***\n"
+                        # content section with indentation
+                        content = '\n'.join(section.split('\n')[1:])
+                        formatted_response += '\n'.join([f"    {line}" for line in content.split('\n') if line.strip()])
+                        formatted_response += '\n'
+                
+                st.text_area(f"Test Case {i}", formatted_response, height=300)
+                formatted_responses.append(formatted_response)
+                
             # Append assistant's responses to messages for continued conversation
-            st.session_state.messages.append({"role": "assistant", "content": "\n\n".join(responses)})
+            st.session_state.messages.append({"role": "assistant", "content": "\n\n".join(formatted_responses)})
             
             # Allow downloading of the test cases
-            download_test_cases(responses)
+            download_test_cases(formatted_responses)
     else:
         st.warning("Please enter a prompt for test case generation.")
